@@ -1,1 +1,1 @@
-# Studiprojekts.de
+# Studiprojekts
