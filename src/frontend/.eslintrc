@@ -6,6 +6,7 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:import/typescript",
     "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended",
     "plugin:prettier/recommended",
     "prettier"
   ],
@@ -15,26 +16,56 @@
       "jsx": true
     },
     "ecmaVersion": "latest",
-    "sourceType": "module"
+    "sourceType": "module",
+    "project": "tsconfig.json"
   },
   "plugins": ["react", "@typescript-eslint", "import", "jsx-a11y", "react-hooks", "prettier"],
   "rules": {
-    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/array-type": ["warn", { "default": "array-simple" }],
+    "@typescript-eslint/consistent-type-exports": "warn",
+    "@typescript-eslint/consistent-type-imports": "warn",
+    "@typescript-eslint/no-require-imports": "error",
+    "@typescript-eslint/require-array-sort-compare": "error",
     "@typescript-eslint/no-non-null-assertion": "off",
-    "@typescript-eslint/no-unused-vars": [
-      "warn",
-      {
-        "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^_",
-        "caughtErrorsIgnorePattern": "^_"
-      }
-    ],
-
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
 
     "prettier/prettier": [
       "warn"
-    ]
+    ],
+
+    "no-duplicate-imports": "warn",
+    "no-use-before-define": "warn",
+    "arrow-body-style": ["warn", "as-needed"],
+    "camelcase": "warn",
+    "eqeqeq": "warn",
+    "no-alert": "error",
+    "no-magic-numbers": "warn",
+    "no-nested-ternary": "warn",
+    "no-throw-literal": "warn",
+    "no-var": "warn",
+    "prefer-const": "warn",
+    "spaced-comment": "warn",
+    "array-bracket-spacing": "warn",
+    "arrow-spacing": ["warn", { "before": true, "after": true }],
+    "block-spacing": "warn",
+    "comma-dangle": ["warn", "always-multiline"],
+    "comma-spacing": "warn",
+    "dot-location": ["warn", "property"],
+    "eol-last": "warn",
+    "indent": ["warn", 4],
+    "jsx-quotes": ["warn", "prefer-double"],
+    "max-len": ["warn", { "code": 100, "comments": 125 }],
+    "newline-per-chained-call": "warn",
+    "no-multiple-empty-lines": ["warn", { "max": 3 }],
+    "no-trailing-spaces": "warn",
+    "quotes": "warn",
+    "semi": "warn",
+
+    "no-console": ["warn", {"allow": ["warn", "error"]}],
+    "keyword-spacing": ["error", {"before": true, "after": true}],
+    "space-before-function-paren": ["error", {
+      "anonymous": "never", 
+      "named": "never", 
+      "asyncArrow": "always"}
+    ],
   }
 }
