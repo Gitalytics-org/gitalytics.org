@@ -6,9 +6,7 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:import/typescript",
     "plugin:react/jsx-runtime",
-    "plugin:react-hooks/recommended",
-    "plugin:prettier/recommended",
-    "prettier"
+    "plugin:react-hooks/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -19,7 +17,7 @@
     "sourceType": "module",
     "project": "tsconfig.json"
   },
-  "plugins": ["react", "@typescript-eslint", "import", "jsx-a11y", "react-hooks", "prettier"],
+  "plugins": ["react", "@typescript-eslint", "import", "jsx-a11y", "react-hooks"],
   "rules": {
     "@typescript-eslint/array-type": ["warn", { "default": "array-simple" }],
     "@typescript-eslint/consistent-type-exports": "warn",
@@ -27,10 +25,6 @@
     "@typescript-eslint/no-require-imports": "error",
     "@typescript-eslint/require-array-sort-compare": "error",
     "@typescript-eslint/no-non-null-assertion": "off",
-
-    "prettier/prettier": [
-      "warn"
-    ],
 
     "no-duplicate-imports": "warn",
     "no-use-before-define": "warn",
@@ -55,7 +49,7 @@
     "jsx-quotes": ["warn", "prefer-double"],
     "max-len": ["warn", { "code": 100, "comments": 125 }],
     "newline-per-chained-call": "warn",
-    "no-multiple-empty-lines": ["warn", { "max": 3 }],
+    "no-multiple-empty-lines": "warn",
     "no-trailing-spaces": "warn",
     "quotes": "warn",
     "semi": "warn",
@@ -66,6 +60,6 @@
       "anonymous": "never", 
       "named": "never", 
       "asyncArrow": "always"}
-    ],
+    ]
   }
 }
