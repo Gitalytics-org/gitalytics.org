@@ -3,9 +3,13 @@
 r"""
 
 """
-import uvicorn
 from runconfig import args
 
 
 if __name__ == '__main__':
-    uvicorn.run("api:app", host=args.host, port=args.port, reload=args.reload, workers=args.workers)
+    if args.create_database:
+        from api.database.db import createDatabase
+        createDatabase()
+    else:
+        import uvicorn
+        uvicorn.run("api:app", host=args.host, port=args.port, reload=args.reload, workers=args.workers)

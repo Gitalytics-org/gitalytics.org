@@ -16,6 +16,7 @@ class Namespace:
     port: int
     reload: bool
     workers: int
+    create_database: bool
 
 
 __parser = __ap.ArgumentParser(
@@ -31,5 +32,7 @@ __parser.add_argument("--reload", action="store_true", default=False,
                       help="automatically reload after changes")
 __parser.add_argument("-w", "--workers", type=int,
                       help="number of workers (for production)")
+__parser.add_argument("--create-database", action="store_true", default=False,
+                      help="create tables")
 
 args = __parser.parse_args(namespace=Namespace())
