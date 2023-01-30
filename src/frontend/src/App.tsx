@@ -14,25 +14,21 @@ const queryClient = new QueryClient({
     },
 });
 
+const App = () => (
+    <div>
+        <h1 className="text-4xl text-center">
+            Hello World
+            <InfoLetter>
+                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+            </InfoLetter>
+        </h1>
+    </div>
+);
 
 export default function AppWrapper() {
     return (
         <QueryClientProvider client={queryClient}>
             <App />
         </QueryClientProvider>
-    );
-}
-
-
-export function App() {
-    return (
-        <div>
-            <h1 className="text-4xl text-center">
-                Hello World
-                <InfoLetter>
-                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-                </InfoLetter>
-            </h1>
-        </div>
     );
 }
