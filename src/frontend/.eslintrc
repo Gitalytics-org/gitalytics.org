@@ -27,7 +27,7 @@
     "@typescript-eslint/no-non-null-assertion": "off",
 
     "no-duplicate-imports": "warn",
-    "no-use-before-define": "warn",
+    // "no-use-before-define": "warn",
     "arrow-body-style": ["warn", "as-needed"],
     "camelcase": "warn",
     "eqeqeq": "warn",
@@ -47,7 +47,7 @@
     "eol-last": "warn",
     "indent": ["warn", 4],
     "jsx-quotes": ["warn", "prefer-double"],
-    "max-len": ["warn", { "code": 100, "comments": 125 }],
+    // "max-len": ["warn", { "code": 100, "comments": 125 }],
     "newline-per-chained-call": "warn",
     "no-multiple-empty-lines": "warn",
     "no-trailing-spaces": "warn",
