@@ -19,16 +19,14 @@ class Repository(Id, Timestamps, BaseModel):
     __tablename__ = "repository"
 
     name = sql.Column(sql.String(255), nullable=False)
+    # add many-to-one relationship to Workspace
+
 
 class DayActivity(Id, Timestamps, BaseModel):
     __tablename__ = "day_activity"
 
     day = sql.Column(sql.Date, nullable=False)
-
-
-
-    
-
-
-
-
+    commit_count = sql.Column(sql.Integer, nullable=False)
+    lines_added = sql.Column(sql.Integer, nullable=False)
+    lines_removed = sql.Column(sql.Integer, nullable=False)
+    # add many-to-one relationship to Repository
