@@ -1,0 +1,30 @@
+#!/usr/bin/python3
+# -*- coding=utf-8 -*-
+r"""
+
+"""
+import typing
+import fastapi
+import pydantic
+from api.database.models import Workspace
+from api.database.db import createLocalSession
+
+
+router = fastapi.APIRouter()
+
+
+
+class ResponseModel(pydantic.BaseModel):
+    status: typing.Literal["success"]
+
+
+@router.get("/new-workspace/{workspace_name}", response_model=ResponseModel)
+async def create_workspace(workspace_name: str):
+
+    with createLocalSession() as session:
+        new_workspace = Workspace(name=workspace_name)
+
+        session.add(new_workspace)
+        session.commit()
+    
+    return {"status": "success"}
