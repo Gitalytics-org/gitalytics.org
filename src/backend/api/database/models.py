@@ -5,27 +5,26 @@ r"""
 """
 import sqlalchemy as sql
 from .db import Base as BaseModel
+from .model_components import IdMixin as Id, TimestampMixin as Timestamps
+from .enums import GitPlattform
 
 
-class Workspace(BaseModel):
+class Workspace(Id, Timestamps, BaseModel):
     __tablename__ = "workspace"
 
-    id = sql.Column(sql.Integer, primary_key=True, autoincrement=True)
-    name = sql.Column(sql.String(255), nullable=False)
+    name = sql.Column(sql.String, nullable=False)
+    plattform = sql.Column(sql.Enum(GitPlattform), nullable=False)
 
-    def __repr__(self) -> str:
-        return f"Workspace {self.id} with the name '{self.name}'"
-
-class Repository(BaseModel):
+class Repository(Id, Timestamps, BaseModel):
     __tablename__ = "repository"
 
-    id = sql.Column(sql.Integer, primary_key=True, autoincrement=True)
     name = sql.Column(sql.String(255), nullable=False)
 
-class DayActivity(BaseModel):
+class DayActivity(Id, Timestamps, BaseModel):
     __tablename__ = "day_activity"
 
-    id = sql.Column(sql.Integer, primary_key=True, autoincrement=True)
+    day = sql.Column(sql.Date, nullable=False)
+
 
 
     
