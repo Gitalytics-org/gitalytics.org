@@ -14,9 +14,10 @@ engine = sql.create_engine(
     echo=True,  # set to False for less output
 )
 
-class _MetaSession(sqlalchemy.orm.Session):
-    def __enter__(self) -> sqlalchemy.orm.Session: ...
 
+class _MetaSession(sql.orm.Session):
+    def __enter__(self) -> sql.orm.Session:
+        return super().__enter__()
 
 def createLocalSession() -> _MetaSession:
     return _MetaSession(bind=engine)

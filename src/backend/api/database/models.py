@@ -13,6 +13,9 @@ class Workspace(BaseModel):
     id = sql.Column(sql.Integer, primary_key=True, autoincrement=True)
     name = sql.Column(sql.String(255), nullable=False)
 
+    def __repr__(self) -> str:
+        return f"Workspace {self.id} with the name '{self.name}'"
+
 class Repository(BaseModel):
     __tablename__ = "repository"
 
