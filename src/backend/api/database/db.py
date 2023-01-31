@@ -13,10 +13,16 @@ engine = sql.create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False},
     echo=True,  # set to False for less output
 )
-SessionLocal = sql.orm.sessionmaker(bind=engine)
+
+class _MetaSession(sqlalchemy.orm.Session):
+    def __enter__(self) -> sqlalchemy.orm.Session: ...
+
+
+def createLocalSession() -> _MetaSession:
+    return _MetaSession(bind=engine)
+
 
 Base = sql.orm.declarative_base()
-
 
 def createDatabase():
     # creates tables if not exists
