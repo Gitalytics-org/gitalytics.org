@@ -27,7 +27,12 @@
     "@typescript-eslint/no-non-null-assertion": "off",
 
     "no-duplicate-imports": "warn",
-    // "no-use-before-define": "warn",
+    "no-use-before-define": ["warn", {
+      "functions": false,
+      "classes": true,
+      "variables": true,
+      "allowNamedExports": false
+    }],
     "arrow-body-style": ["warn", "as-needed"],
     "camelcase": "warn",
     "eqeqeq": "warn",
