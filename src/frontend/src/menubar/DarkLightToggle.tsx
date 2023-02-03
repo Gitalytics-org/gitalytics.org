@@ -17,7 +17,7 @@ export default function DarkLightToggle() {
     }
 
     return <button className="flex gap-2 select-none items-center" onClick={toggle}>
-        <img src={isDark ? DarkSrc : LightSrc} alt="" className="w-10 h-10 dark:invert" />
+        <img src={isDark ? DarkSrc : LightSrc} alt="" className="w-10 h-10 m-1 dark:invert" />
         <span className="whitespace-nowrap">
             {isDark ? "Dark-Mode" : "Light-Mode"}
         </span>
