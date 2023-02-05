@@ -22,8 +22,8 @@ class Repository(Id, Timestamps, BaseModel):
     # add many-to-one relationship to Workspace
 
 
-class DayActivity(Id, Timestamps, BaseModel):
-    __tablename__ = "day_activity"
+class DayOfRepositoryActivity(Id, Timestamps, BaseModel):
+    __tablename__ = "day_of_repository_activity"
 
     day = sql.Column(sql.Date, nullable=False)
     commit_count = sql.Column(sql.Integer, nullable=False)
