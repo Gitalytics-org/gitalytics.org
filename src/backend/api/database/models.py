@@ -4,7 +4,7 @@ r"""
 
 """
 import sqlalchemy as sql
-from .db import Base as BaseModel
+from .db import BaseModel
 from .model_components import IdMixin as Id, TimestampMixin as Timestamps
 from .enums import GitPlattform
 
