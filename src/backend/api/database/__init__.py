@@ -3,6 +3,6 @@
 r"""
 
 """
-from .db import SessionLocal as Session
+from .db import createLocalSession
 from . import models
 from . import crud
