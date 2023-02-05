@@ -11,5 +11,9 @@
     "eslint.lintTask.options": "",
     "eslint.workingDirectories": [
         "src/frontend"
+    ],
+    "cSpell.words": [
+        "chartjs",
+        "registerables"
     ]
 }
