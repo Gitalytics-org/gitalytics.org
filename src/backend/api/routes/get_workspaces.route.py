@@ -33,6 +33,4 @@ async def create_workspace():
     with createLocalSession() as session:
         workspaces = session.query(Workspace).all()
     
-    print(workspaces)
-
     return {"workspaces": workspaces}
