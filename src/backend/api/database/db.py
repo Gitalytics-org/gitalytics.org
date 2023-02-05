@@ -23,8 +23,8 @@ def createLocalSession() -> _MetaSession:
     return _MetaSession(bind=engine)
 
 
-Base = sql.orm.declarative_base()
+BaseModel = sql.orm.declarative_base()
 
 def createDatabase():
     # creates tables if not exists
-    Base.metadata.create_all(bind=engine)
+    BaseModel.metadata.create_all(bind=engine)
