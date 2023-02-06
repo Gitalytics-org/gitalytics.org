@@ -49,7 +49,8 @@ for fp in glob.glob("**/*.route.py", root_dir=p.join(ROOT, "routes"), recursive=
 
 # only now mount (order is important!)
 app.mount(
-    "/", fastapi.staticfiles.StaticFiles(
+    "/",
+    fastapi.staticfiles.StaticFiles(
         directory=p.join(ROOT, "web-ui"),
         html=True,
     ),

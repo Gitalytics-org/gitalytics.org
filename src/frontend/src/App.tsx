@@ -1,6 +1,8 @@
+import { Chart as ChartJS, registerables } from "chart.js";
 import { QueryClient, QueryClientProvider } from "react-query";
 import InfoLetter from "./components/InfoLetter";
 
+ChartJS.register(...registerables);
 
 const queryClient = new QueryClient({
     defaultOptions: {
