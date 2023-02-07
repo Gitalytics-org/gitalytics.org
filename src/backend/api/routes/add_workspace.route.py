@@ -13,7 +13,6 @@ from api.database.db import createLocalSession
 router = fastapi.APIRouter()
 
 
-
 class ResponseModel(pydantic.BaseModel):
     status: typing.Literal["success"]
 

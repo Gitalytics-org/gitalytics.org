@@ -22,7 +22,7 @@ app = fastapi.FastAPI(
 )
 app.add_middleware(
     fastapi.middleware.cors.CORSMiddleware,
-    allow_origins=["*"],  # maybe replace later
+    allow_origins=["https://gitalytics.org", "http://localhost:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
