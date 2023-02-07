@@ -19,11 +19,13 @@ class _MetaSession(sql.orm.Session):
     def __enter__(self) -> sql.orm.Session:
         return super().__enter__()
 
+
 def createLocalSession() -> _MetaSession:
     return _MetaSession(bind=engine)
 
 
 BaseModel = sql.orm.declarative_base()
+
 
 def createDatabase():
     # creates tables if not exists
