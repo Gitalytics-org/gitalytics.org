@@ -1,40 +1,16 @@
-import { Chart as ChartJS, registerables } from "chart.js";
-import { QueryClient, QueryClientProvider } from "react-query";
-import InfoLetter from "./components/InfoLetter";
-
-ChartJS.register(...registerables);
-
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            cacheTime: 300000, // 5min
-            staleTime: 60000, // 1min
-            refetchOnMount: false,
-            refetchOnReconnect: true,
-            refetchOnWindowFocus: false,
-        },
-    },
-});
-
-
-export default function AppWrapper() {
-    return (
-        <QueryClientProvider client={queryClient}>
-            <App />
-        </QueryClientProvider>
-    );
-}
+import AppBody from "./appbody";
+import MenuBar from "./menubar";
 
 
 export function App() {
     return (
-        <div>
-            <h1 className="text-4xl text-center">
-                Hello World
-                <InfoLetter>
-                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-                </InfoLetter>
-            </h1>
+        <div className="bg-white text-black dark:bg-slate-800 dark:text-white transition-colors">
+            <div className="w-14 hover:w-[min(250px,100%)] transition-[width] backdrop-blur-sm bg-black bg-opacity-20 h-screen overflow-x-clip fixed top-0 left-0 flex flex-col gap-2 p-1">
+                <MenuBar />
+            </div>
+            <div className="min-h-screen p-2 ml-14">
+                <AppBody />
+            </div>
         </div>
     );
 }

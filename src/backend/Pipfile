@@ -7,8 +7,8 @@ name = "pypi"
 fastapi = "*"
 uvicorn = {extras = ["standard"], version = "*"}
 sqlalchemy = "*"
-datetime = "*"
 cryptography = "*"
+datetime = "*"
 
 [dev-packages]
 
