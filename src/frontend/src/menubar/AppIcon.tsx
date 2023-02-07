@@ -1,5 +1,5 @@
-import AppIconSrc from "./icons/gitalytics_orange_dropshadow.svg";
-import GitIconSrc from "./icons/Github_Logo_Black.svg";
+import AppIconSrc from "@assets/gitalytics_orange_dropshadow.svg";
+import GitIconSrc from "@assets/Github_Logo_Black.svg";
 
 
 export default function AppIcon() {

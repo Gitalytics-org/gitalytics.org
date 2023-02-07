@@ -1,6 +1,6 @@
 import { useState } from "react";
-import DarkSrc from "./icons/dark.png";
-import LightSrc from "./icons/light.png";
+import DarkSrc from "@assets/dark.png";
+import LightSrc from "@assets/light.png";
 
 
 export default function DarkLightToggle() {
