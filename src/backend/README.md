@@ -11,6 +11,12 @@ $ pipenv install
 $ pipenv run python3 main.py [...args]
 ```
 
+# environment template
+```env
+GITHUB_CLIENT_ID='...'
+GITHUB_CLIENT_SECRET='...'
+```
+
 
 # further information
 

@@ -9,6 +9,8 @@ uvicorn = {extras = ["standard"], version = "*"}
 sqlalchemy = "*"
 cryptography = "*"
 datetime = "*"
+python-dotenv = "*"
+httpx = "*"
 
 [dev-packages]
 

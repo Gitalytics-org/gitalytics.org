@@ -1,4 +1,4 @@
-import InfoLetter from "~/components/InfoLetter";
+import InfoLetter from "~/elements/InfoLetter";
 
 export default function AppBody() {
     return <>

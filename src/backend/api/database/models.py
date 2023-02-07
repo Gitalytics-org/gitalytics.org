@@ -15,6 +15,7 @@ class Workspace(Id, Timestamps, BaseModel):
     name = sql.Column(sql.String, nullable=False)
     plattform = sql.Column(sql.Enum(GitPlattform), nullable=False)
 
+
 class Repository(Id, Timestamps, BaseModel):
     __tablename__ = "repository"
 
