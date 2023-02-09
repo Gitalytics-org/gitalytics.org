@@ -1,6 +1,8 @@
 import { Chart as ChartJS, registerables } from "chart.js";
+import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { App } from "./App";
+import { BrowserRouter, useLocation } from "react-router-dom";
+import App from "./App";
 
 ChartJS.register(...registerables);
 
@@ -20,7 +22,21 @@ const queryClient = new QueryClient({
 export default function AppWrapper() {
     return (
         <QueryClientProvider client={queryClient}>
-            <App />
+            <BrowserRouter>
+                <ScrollToTop />
+                <App />
+            </BrowserRouter>
         </QueryClientProvider>
     );
+}
+
+// react-router sometimes doesn't scrolls to top after page-change
+export function ScrollToTop() {
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo({left: 0, top: 0});
+    }, [pathname]);
+
+    return null;
 }
