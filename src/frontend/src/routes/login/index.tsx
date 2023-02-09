@@ -14,10 +14,10 @@ export default function LoginPage() {
                 <Link className="my-auto" to="/api/auth/github/login/">
                     <img className="dark:invert" src={GithubIconSrc} alt="github" />
                 </Link>
-                <Link className="my-auto"  to="/api/auth/bitbucket/login/">
+                <Link className="my-auto grayscale cursor-not-allowed"  to="/api/auth/bitbucket/login/" onClick={(e) => e.preventDefault()}>
                     <img src={BitbucketIconSrc} alt="bitbucket" />
                 </Link>
-                <Link className="my-auto"  to="/api/auth/gitlab/login/">
+                <Link className="my-auto grayscale cursor-not-allowed"  to="/api/auth/gitlab/login/" onClick={(e) => e.preventDefault()}>
                     <img src={GitlabIconSrc} alt="gitlab" />
                 </Link>
             </div>
