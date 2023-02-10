@@ -5,7 +5,7 @@ import Footer from "~/components/Footer";
 export default function ContactPage() {
     return <>
         <div className="grid grid-cols-2 w-screen h-screen">
-            <img className="w-full h-auto aspect-square my-auto" src={GitalyticsLogoSrc} alt="logo" />
+            <img className="h-full m-auto p-5" src={GitalyticsLogoSrc} alt="logo" />
             <div className="my-auto min-h-[50vh]">
                 <h1 className="text-center text-[6vw]">Contact Us</h1>
                 <div className="grid grid-cols-2">
