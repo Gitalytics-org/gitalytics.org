@@ -7,9 +7,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        lp: "white",
-        dp: "slate-700",
-        gitalytics: "#F05133",
+        // primary: "var(--primary-color)",
+        // secondary: "var(--secondary-color)",
+        // accent: "var(--accent-color)",
+        primary: "rgb(var(--primary-color) / <alpha-value>)",
+        secondary: "rgb(var(--secondary-color) / <alpha-value>)",
+        accent: "rgb(var(--accent-color) / <alpha-value>)",
       }
     },
   },

@@ -8,7 +8,7 @@ import TermsPage from "./routes/terms";
 
 
 export default function App() {
-    return <div className="bg-white dark:bg-slate-700">
+    return <div className="bg-primary text-secondary">
         <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
