@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, useLocation } from "react-router-dom";
 import App from "./App";
+import RootDarkModeProvider from "./components/RootDarkModeProvider";
 
 ChartJS.register(...registerables);
 
@@ -23,8 +24,10 @@ export default function AppWrapper() {
     return (
         <QueryClientProvider client={queryClient}>
             <BrowserRouter>
-                <ScrollToTop />
-                <App />
+                <RootDarkModeProvider>
+                    <ScrollToTop />
+                    <App />
+                </RootDarkModeProvider>
             </BrowserRouter>
         </QueryClientProvider>
     );

@@ -1,25 +1,16 @@
-import { useState } from "react";
+import { useContext } from "react";
 import DarkSrc from "@assets/dark.png";
 import LightSrc from "@assets/light.png";
+import { DarkModeContext } from "~/components/RootDarkModeProvider";
 
 
 export default function DarkLightToggle() {
-    const [isDark, setIsDark] = useState(document.documentElement.classList.contains("dark"));
+    const darkMode = useContext(DarkModeContext);
 
-    function toggle() {
-        if (isDark) {
-            document.documentElement.classList.remove("dark");
-            setIsDark(false);
-        } else {
-            document.documentElement.classList.add("dark");
-            setIsDark(true);
-        }
-    }
-
-    return <button className="flex gap-2 select-none items-center" onClick={toggle}>
-        <img src={isDark ? DarkSrc : LightSrc} alt="" className="w-10 h-10 m-1 dark:invert" />
+    return <button className="flex gap-2 select-none items-center" onClick={darkMode.toggle}>
+        <img src={darkMode.is ? DarkSrc : LightSrc} alt="" className="w-10 h-10 m-1 dark:invert" />
         <span className="whitespace-nowrap">
-            {isDark ? "Dark-Mode" : "Light-Mode"}
+            {darkMode.is ? "Dark-Mode" : "Light-Mode"}
         </span>
     </button>;
 }
