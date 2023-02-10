@@ -7,14 +7,19 @@ interface DarkModeValue {
     toggle: () => void
 }
 
-const initialDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+const DARK = "dark";
+// const LIGHT = "light";
+const STORAGE_KEY = "dark-mode";
+
+const initialDark = !!(localStorage.getItem(STORAGE_KEY) ?? window.matchMedia("(prefers-color-scheme: dark)").matches);
+if (initialDark) {
+    document.documentElement.classList.add(DARK);
+}
 export const DarkModeContext = React.createContext<DarkModeValue>({
     is: initialDark,
     set: () => undefined,
     toggle: () => undefined,
 });
-const DARK = "dark";
-// const LIGHT = "light";
 
 
 export default function RootDarkModeProvider(props: React.PropsWithChildren) {
@@ -23,8 +28,10 @@ export default function RootDarkModeProvider(props: React.PropsWithChildren) {
     function set(is: boolean) {
         if (is) {
             document.documentElement.classList.add(DARK);
+            localStorage.setItem(STORAGE_KEY, "1");
         } else {
             document.documentElement.classList.remove(DARK);
+            localStorage.removeItem(STORAGE_KEY);
         }
         setIsDark(is);
     }
