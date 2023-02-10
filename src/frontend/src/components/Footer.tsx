@@ -1,21 +1,26 @@
-import GitalyticsLogoSrc from "@assets/gitalytics_orange_dropshadow.svg";
 import { Link } from "react-router-dom";
+import GitalyticsLogoSrc from "@assets/gitalytics_orange_dropshadow.svg";
+import DarkSrc from "@assets/dark.png";
+import LightSrc from "@assets/light.png";
+import { useContext } from "react";
+import { DarkModeContext } from "./RootDarkModeProvider";
 
 
 export default function Footer() {
-    return <div className="flex flex-col justify-center from-lp to-slate-400 bg-gradient-to-b">
+    return <div className="flex flex-col justify-center from-transparent to-slate-300 dark:to-slate-700 bg-gradient-to-b relative">
         <SeparatorLine />
         <Links />
         <CopyRight />
+        <DarkLightToggle />
     </div>;
 }
 
 function SeparatorLine() {
-    return <div className="bg-slate-300 h-1 rounded-md mx-5 my-2" />;
+    return <div className="bg-secondary bg-opacity-50 h-1 rounded-md mx-5 my-2" />;
 }
 
 function Links() {
-    const Dot = () => <div className="w-1 h-1 rounded-full my-auto bg-slate-400" />;
+    const Dot = () => <div className="w-1 h-1 rounded-full my-auto bg-accent" />;
 
     return <div className="flex gap-1 justify-center">
         <Link to="/" className="hover:underline">
@@ -47,4 +52,13 @@ function CopyRight() {
         </p>
         <img className="w-10 h-10 mx-auto" src={GitalyticsLogoSrc} alt="logo" />
     </div>;
+}
+
+
+function DarkLightToggle() {
+    const isDark = useContext(DarkModeContext);
+
+    return <button className="absolute left-5 bottom-5 w-10 h-10 dark:invert rounded-full cursor-pointer" onClick={isDark.toggle} title="toggle dark-mode">
+        <img src={isDark.is ? DarkSrc : LightSrc} alt="" />
+    </button>;
 }
