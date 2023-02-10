@@ -13,12 +13,15 @@ export default function LoginPage() {
             <div className="grow flex justify-around gap-20 px-5">
                 <Link className="my-auto" to="/api/auth/github/login/">
                     <img className="dark:invert" src={GithubIconSrc} alt="github" />
+                    <p className="text-center opacity-50">Login via Github</p>
                 </Link>
-                <Link className="my-auto grayscale cursor-not-allowed"  to="/api/auth/bitbucket/login/" onClick={(e) => e.preventDefault()}>
+                <Link className="my-auto grayscale cursor-not-allowed"  to="/api/auth/bitbucket/login/" onClick={(e) => e.preventDefault()} title="not available yet">
                     <img src={BitbucketIconSrc} alt="bitbucket" />
+                    <p className="text-center opacity-50 line-through">Login via Bitbucket</p>
                 </Link>
-                <Link className="my-auto grayscale cursor-not-allowed"  to="/api/auth/gitlab/login/" onClick={(e) => e.preventDefault()}>
+                <Link className="my-auto grayscale cursor-not-allowed"  to="/api/auth/gitlab/login/" onClick={(e) => e.preventDefault()} title="not available yet">
                     <img src={GitlabIconSrc} alt="gitlab" />
+                    <p className="text-center opacity-50 line-through">Login via Gitlab</p>
                 </Link>
             </div>
         </div>
