@@ -9,8 +9,7 @@ import urllib.parse as urlparse
 import fastapi
 import pydantic
 import httpx
-
-from pprint import pprint
+from api.common import SessionStorage
 
 
 class AuthSettings(pydantic.BaseSettings):
@@ -33,11 +32,18 @@ class GithubResponse(pydantic.BaseModel):
     token_type: t.Literal["bearer"]
 
 
+class GithubErrorResponse(pydantic.BaseModel):
+    error: str
+    error_description: str
+    error_uri: str
+
+
 settings = AuthSettings()
 router = fastapi.APIRouter(prefix="/auth/github")
 
 
-@router.get("/login")
+@router.get("/login", status_code=fastapi.status.HTTP_307_TEMPORARY_REDIRECT,
+            response_class=fastapi.responses.RedirectResponse)
 async def login_redirect():
     r"""
     redirects to the Github login-page
@@ -50,13 +56,15 @@ async def login_redirect():
     )
     urlbase = "https://github.com/login/oauth/authorize"
     url = f"{urlbase}?{urlparse.urlencode(params)}"
-    return fastapi.responses.RedirectResponse(
-        url=url,
-    )
+    return fastapi.responses.RedirectResponse(url=url)
 
 
-@router.get("/verify")
-async def verify(code: str):
+@router.get("/verify", status_code=fastapi.status.HTTP_307_TEMPORARY_REDIRECT,
+            response_class=fastapi.responses.RedirectResponse,
+            responses={
+                fastapi.status.HTTP_400_BAD_REQUEST: {}
+            })
+async def verify(code: str, session: SessionStorage = fastapi.Depends(SessionStorage)):
     r"""
     redirect point for
     """
@@ -83,10 +91,8 @@ async def verify(code: str):
     try:
         data = GithubResponse(**data)
     except pydantic.ValidationError:
-        raise fastapi.HTTPException(fastapi.status.HTTP_400_BAD_REQUEST)
+        raise fastapi.HTTPException(fastapi.status.HTTP_400_BAD_REQUEST, detail=data.get("error_description"))
 
-    pprint(data)
+    session.set("token", data.access_token)
 
-    return fastapi.responses.RedirectResponse(
-        url="/",
-    )
+    return session.toRedirectResponse(url="/")

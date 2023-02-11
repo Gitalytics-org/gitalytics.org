@@ -20,12 +20,12 @@ class WorkspaceViewModel(pydantic.BaseModel):
     class Config:
         orm_mode = True
 
-class ViewModel(pydantic.BaseModel):
+
+class ResponseModel(pydantic.BaseModel):
     workspaces: typing.List[WorkspaceViewModel]
 
 
-
-@router.get("/get-workspaces", response_model=ViewModel)
+@router.get("/get-workspaces", response_model=ResponseModel)
 async def create_workspace():
     r"""
     list all workspaces in the database
