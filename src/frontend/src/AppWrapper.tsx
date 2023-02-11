@@ -1,7 +1,7 @@
 import { Chart as ChartJS, registerables } from "chart.js";
 import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter, useLocation } from "react-router-dom";
+import { HashRouter as Router, useLocation } from "react-router-dom";
 import App from "./App";
 import RootDarkModeProvider from "./components/RootDarkModeProvider";
 
@@ -23,12 +23,12 @@ const queryClient = new QueryClient({
 export default function AppWrapper() {
     return (
         <QueryClientProvider client={queryClient}>
-            <BrowserRouter>
+            <Router>
                 <RootDarkModeProvider>
                     <ScrollToTop />
                     <App />
                 </RootDarkModeProvider>
-            </BrowserRouter>
+            </Router>
         </QueryClientProvider>
     );
 }
