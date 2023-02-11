@@ -7,6 +7,7 @@ interface Props extends PropsWithChildren {
 }
 
 // note: if pointer event=none hover is not recognized and the popup disappears
+// TODO: delay before popping up
 export default function InfoLetter(props: Props) {
     return (
         <span className={`group relative cursor-default mx-1 ${props.className}`}>

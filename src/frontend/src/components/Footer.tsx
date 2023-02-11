@@ -56,9 +56,9 @@ function CopyRight() {
 
 
 function DarkLightToggle() {
-    const isDark = useContext(DarkModeContext);
+    const darkMode = useContext(DarkModeContext);
 
-    return <button className="absolute left-5 bottom-5 w-10 h-10 dark:invert rounded-full cursor-pointer" onClick={isDark.toggle} title="toggle dark-mode">
-        <img src={isDark.is ? DarkSrc : LightSrc} alt="" />
+    return <button className="absolute left-5 bottom-5 w-10 h-10 dark:invert rounded-full cursor-pointer" onClick={darkMode.toggle} title="toggle dark-mode">
+        <img src={darkMode.is ? DarkSrc : LightSrc} alt="" />
     </button>;
 }
