@@ -53,6 +53,7 @@ app.mount(
     fastapi.staticfiles.StaticFiles(
         directory=p.join(ROOT, "web-ui"),
         html=True,
+        check_dir=False
     ),
     name="web-ui"  # don't know why
 )
