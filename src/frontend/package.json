@@ -6,8 +6,7 @@
   "scripts": {
     "start": "vite",
     "dev": "vite",
-    "build": "tsc && vite build",
-    "postbuild": "rm -rf ../backend/web-ui/* && mv dist/* ../backend/api/web-ui",
+    "build": "tsc && vite build --outDir ../backend/api/web-ui --emptyOutDir",
     "preview": "vite preview",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
