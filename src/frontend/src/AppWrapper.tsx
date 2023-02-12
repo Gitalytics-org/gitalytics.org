@@ -2,8 +2,14 @@ import { Chart as ChartJS, registerables } from "chart.js";
 import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { HashRouter as Router, useLocation } from "react-router-dom";
+import axios from "axios";
 import App from "./App";
 import RootDarkModeProvider from "./components/RootDarkModeProvider";
+import { baseUrl, isProduction } from "./common";
+
+axios.defaults.baseURL = `${baseUrl}/api`;
+axios.defaults.withCredentials = !isProduction;
+axios.defaults.timeout = 30_000;  // 30s
 
 ChartJS.register(...registerables);
 
