@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { HashRouter as Router, useLocation } from "react-router-dom";
 import axios from "axios";
-import App from "./App";
-import RootDarkModeProvider from "./components/RootDarkModeProvider";
+import App from "~/App";
+import RootDarkModeProvider from "~/components/RootDarkModeProvider";
 import { baseUrl, isProduction } from "./common";
 
 axios.defaults.baseURL = `${baseUrl}/api`;
@@ -40,7 +40,7 @@ export default function AppWrapper() {
 }
 
 // react-router sometimes doesn't scrolls to top after page-change
-export function ScrollToTop() {
+function ScrollToTop() {
     const { pathname } = useLocation();
 
     useEffect(() => {
