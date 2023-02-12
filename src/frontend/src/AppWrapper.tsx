@@ -28,14 +28,14 @@ const queryClient = new QueryClient({
 
 export default function AppWrapper() {
     return (
-        <QueryClientProvider client={queryClient}>
-            <Router>
+        <Router>
+            <ScrollToTop />
+            <QueryClientProvider client={queryClient}>
                 <RootDarkModeProvider>
-                    <ScrollToTop />
                     <App />
                 </RootDarkModeProvider>
-            </Router>
-        </QueryClientProvider>
+            </QueryClientProvider>
+        </Router>
     );
 }
 
