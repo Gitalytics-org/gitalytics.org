@@ -1,16 +1,21 @@
-import AppBody from "./appbody";
-import MenuBar from "./menubar";
+import { Route, Routes } from "react-router-dom";
+import AboutPage from "~/pages/about";
+import AppPage from "~/pages/app/app";
+import ContactPage from "~/pages/contact";
+import LandingPage from "~/pages/landingpage";
+import LoginPage from "~/pages/login";
+import TermsPage from "~/pages/terms";
 
 
-export function App() {
-    return (
-        <div className="bg-white text-black dark:bg-slate-800 dark:text-white transition-colors">
-            <div className="w-14 hover:w-[min(250px,100%)] transition-[width] backdrop-blur-sm bg-black bg-opacity-20 h-screen overflow-x-clip fixed top-0 left-0 flex flex-col gap-2 p-1">
-                <MenuBar />
-            </div>
-            <div className="min-h-screen p-2 ml-14">
-                <AppBody />
-            </div>
-        </div>
-    );
+export default function App() {
+    return <div className="bg-primary text-secondary transition-colors duration-500">
+        <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/app" element={<AppPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+        </Routes>
+    </div>;
 }
