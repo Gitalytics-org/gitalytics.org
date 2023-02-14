@@ -7,13 +7,13 @@ This file contanis all SQLAlchemy ORM Database models
 import sqlalchemy as sql
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .db import BaseModel
-from .model_components import IdMixin as Id, BigIdMixin as BigId, TimestampsMixin as Timestamps, CreatedAtMixin as CreatedAt
+from .model_components import IdMixin, BigIdMixin, TimestampsMixin, CreatedAtMixin
 from .enums import GitPlattform
 from datetime import datetime
 from typing import Set
 
 
-class Workspace(Id, Timestamps, BaseModel):
+class Workspace(IdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "workspace"
 
     name: Mapped[str] = mapped_column(sql.String, nullable=False)
@@ -21,7 +21,7 @@ class Workspace(Id, Timestamps, BaseModel):
     repositories: Mapped[Set["Repository"]] = relationship(back_populates="workspace")
 
 
-class Author(Id, Timestamps, BaseModel):
+class Author(IdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "author"
 
     name: Mapped[str] = mapped_column(sql.String, nullable=False)
@@ -29,7 +29,7 @@ class Author(Id, Timestamps, BaseModel):
     commits: Mapped[Set["Commit"]] = relationship(back_populates="author")
 
 
-class Repository(Id, Timestamps, BaseModel):
+class Repository(IdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "repository"
 
     name: Mapped[str] = mapped_column(sql.String, nullable=False)
@@ -39,7 +39,7 @@ class Repository(Id, Timestamps, BaseModel):
 
 
 
-class Commit(BigId, CreatedAt, BaseModel):
+class Commit(BigIdMixin, CreatedAtMixin, BaseModel):
     __tablename__ = "commit"
 
     committed_at: Mapped[datetime] = mapped_column(sql.DateTime, nullable=False)
