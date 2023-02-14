@@ -1,11 +1,20 @@
+
 import sqlalchemy as sql
+from datetime import datetime
+from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import mapped_column
 from .db import BaseModel
 
 
-class TimestampMixin:
-    time_created = sql.Column(sql.DateTime(timezone=True), server_default=sql.func.now())
-    time_updated = sql.Column(sql.DateTime(timezone=True), onupdate=sql.func.now())
+class TimestampsMixin:
+    created_at: Mapped[datetime] = mapped_column(sql.DateTime(timezone=True), server_default=sql.func.now())
+    updated_at: Mapped[datetime] = mapped_column(sql.DateTime(timezone=True), onupdate=sql.func.now())
 
+class CreatedAtMixin:
+    created_at: Mapped[datetime] = mapped_column(sql.DateTime(timezone=True), server_default=sql.func.now())
 
 class IdMixin:
-    id = sql.Column(sql.Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(sql.Integer, primary_key=True, autoincrement=True)
+
+class BigIdMixin:
+    id: Mapped[int] = mapped_column(sql.BigInteger, primary_key=True, autoincrement=True)
