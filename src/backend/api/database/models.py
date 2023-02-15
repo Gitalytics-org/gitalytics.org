@@ -5,7 +5,6 @@ This file contanis all SQLAlchemy ORM Database models
 """
 
 import sqlalchemy as sql
-from sqlalchemy import Table, Column, ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .db import BaseModel
 from .model_components import IdMixin, BigIdMixin, TimestampsMixin, CreatedAtMixin
@@ -61,9 +60,9 @@ class Session(IdMixin, TimestampsMixin, BaseModel):
     workspaces: Mapped[Set["Workspace"]] = relationship(secondary="access_workspace")
 
 
-workspace_access = Table(
+workspace_access = sql.Table(
     "workspace_access",
     BaseModel.metadata,
-    Column("session", ForeignKey("session.id")),
-    Column("workspace", ForeignKey("workspace.id")),
+    sql.Column("session", sql.ForeignKey("session.id")),
+    sql.Column("workspace", sql.ForeignKey("workspace.id")),
 )
