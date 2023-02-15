@@ -6,8 +6,8 @@ r"""
 import typing
 import fastapi
 import pydantic
-from api.database.models import Workspace
-from api.database.db import createLocalSession
+from database import Workspace
+from database.db import createLocalSession
 
 
 router = fastapi.APIRouter()
