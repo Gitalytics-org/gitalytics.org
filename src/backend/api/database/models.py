@@ -5,10 +5,7 @@ This file contanis all SQLAlchemy ORM Database models
 """
 
 import sqlalchemy as sql
-from sqlalchemy import Table
-from sqlalchemy import Column
-from sqlalchemy import ForeignKey
-from sqlalchemy import Integer
+from sqlalchemy import Table, Column, ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .db import BaseModel
 from .model_components import IdMixin, BigIdMixin, TimestampsMixin, CreatedAtMixin
