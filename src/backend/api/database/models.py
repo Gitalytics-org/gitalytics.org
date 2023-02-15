@@ -38,7 +38,6 @@ class Repository(IdMixin, TimestampsMixin, BaseModel):
     workspace: Mapped["Workspace"] = relationship(back_populates="repositories")
 
 
-
 class Commit(BigIdMixin, CreatedAtMixin, BaseModel):
     __tablename__ = "commit"
 
@@ -51,3 +50,19 @@ class Commit(BigIdMixin, CreatedAtMixin, BaseModel):
     author_id: Mapped[int] = mapped_column(sql.ForeignKey("author.id"), nullable=False)
     author: Mapped["Author"] = relationship(back_populates="commits")
 
+
+class Session(IdMixin, TimestampsMixin, BaseModel):
+    __tablename__ = "session"
+
+    access_token: Mapped[str] = mapped_column(sql.String, nullable=False)
+    refresh_token: Mapped[str] = mapped_column(sql.String, nullable=False)
+    plattform: Mapped[GitPlattform] = mapped_column(sql.Enum(GitPlattform), nullable=False)
+    workspaces: Mapped[Set["Workspace"]] = relationship(secondary="access_workspace")
+
+
+workspace_access = sql.Table(
+    "workspace_access",
+    BaseModel.metadata,
+    sql.Column("session", sql.ForeignKey("session.id")),
+    sql.Column("workspace", sql.ForeignKey("workspace.id")),
+)
