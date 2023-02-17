@@ -16,45 +16,28 @@ import shutil
 import os
 import tempfile
 from git import Repo
-import my_logger
 
-REGEX = r"(?P<hash>[a-z0-9]+);(?P<date>.+);(?P<author>.+);(?P<email>.+)\n\n" \
-        r"(?: (?P<changed>\d+) files? changed,?)?" \
-        r"(?: (?P<inserted>\d+) insertions?\(\+\),?)?" \
-        r"(?: (?P<deleted>\d+) deletions?\(\-\))?"
+
+REGEX = r"(?P<hash>[a-z0-9]+);(?P<datetime>.+);(?P<author_name>.+);(?P<email>.+)\n\n" \
+        r"(?: (?P<files_changed>\d+) files? changed,?)?" \
+        r"(?: (?P<lines_inserted>\d+) insertions?\(\+\),?)?" \
+        r"(?: (?P<lines_deleted>\d+) deletions?\(\-\))?"
 url = "https://github.com/konstantinlob/gitalytics.org"
+
 
 class ParsedCommit(pydantic.BaseModel):
     hash: str
-    author: str
+    author_name: str
     email: str
-    date: datetime
-    changed: int
-    inserted: int
-    deleted: int
+    datetime: datetime
+    files_changed: int
+    lines_inserted: int
+    lines_deleted: int
 
-    @pydantic.validator('changed', 'inserted', 'deleted', pre=True)
+    @pydantic.validator('files_changed', 'lines_inserted', 'lines_deleted', pre=True)
     def validate(cls, value):
         return value or 0
 
-def getLog(cloneUrl):
-    repo_path = tempfile.mktemp()
-
-    if os.path.exists(repo_path):
-        shutil.rmtree(repo_path)
-
-    repo = Repo.clone_from(
-        cloneUrl,
-        to_path=repo_path,
-        no_checkout=True
-    )
-    print("repo " +url+ " cloned successfully")
-
-    log = repo.git.log('--shortstat', '--no-merges', '--format=%H;%aI;%an;%ae')
-
-    if os.path.exists(repo_path):
-        shutil.rmtree(repo_path)
-    return log
 
 def parseLog(log: str) -> typing.Iterator[ParsedCommit]:
     for match in re.finditer(REGEX, log):

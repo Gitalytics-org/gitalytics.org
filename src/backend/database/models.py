@@ -8,7 +8,7 @@ import sqlalchemy as sql
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .db import BaseModel
 from .model_components import IdMixin, BigIdMixin, TimestampsMixin, CreatedAtMixin
-from .enums import GitPlattform
+from .enums import GitPlatform
 from datetime import datetime
 from typing import Set
 
@@ -17,7 +17,7 @@ class Workspace(IdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "workspace"
 
     name: Mapped[str] = mapped_column(sql.String, nullable=False)
-    plattform: Mapped[GitPlattform] = mapped_column(sql.Enum(GitPlattform), nullable=False)
+    platform: Mapped[GitPlatform] = mapped_column(sql.Enum(GitPlatform), nullable=False)
     repositories: Mapped[Set["Repository"]] = relationship(back_populates="workspace")
 
 
@@ -33,12 +33,13 @@ class Repository(IdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "repository"
 
     name: Mapped[str] = mapped_column(sql.String, nullable=False)
+    last_hash: Mapped[str] = mapped_column(sql.String, nullable=True)
     commits: Mapped[Set["Commit"]] = relationship(back_populates="repository")
     workspace_id: Mapped[int] = mapped_column(sql.ForeignKey("workspace.id"), nullable=False)
     workspace: Mapped["Workspace"] = relationship(back_populates="repositories")
 
 
-class Commit(BigIdMixin, CreatedAtMixin, BaseModel):
+class Commit(IdMixin, CreatedAtMixin, BaseModel):
     __tablename__ = "commit"
 
     committed_at: Mapped[datetime] = mapped_column(sql.DateTime, nullable=False)
@@ -56,13 +57,13 @@ class Session(IdMixin, TimestampsMixin, BaseModel):
 
     access_token: Mapped[str] = mapped_column(sql.String, nullable=False)
     refresh_token: Mapped[str] = mapped_column(sql.String, nullable=False)
-    plattform: Mapped[GitPlattform] = mapped_column(sql.Enum(GitPlattform), nullable=False)
-    workspaces: Mapped[Set["Workspace"]] = relationship(secondary="access_workspace")
+    platform: Mapped[GitPlatform] = mapped_column(sql.Enum(GitPlatform), nullable=False)
+    # workspaces: Mapped[Set["Workspace"]] = relationship(secondary="access_workspace")
 
 
-workspace_access = sql.Table(
-    "workspace_access",
-    BaseModel.metadata,
-    sql.Column("session", sql.ForeignKey("session.id")),
-    sql.Column("workspace", sql.ForeignKey("workspace.id")),
-)
+# workspace_access = sql.Table(
+#     "workspace_access",
+#     BaseModel.metadata,
+#     sql.Column("session", sql.ForeignKey("session.id")),
+#     sql.Column("workspace", sql.ForeignKey("workspace.id")),
+# )

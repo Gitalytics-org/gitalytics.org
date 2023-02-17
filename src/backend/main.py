@@ -4,6 +4,7 @@ r"""
 
 """
 from runconfig import args
+import logconfig  # noqa
 
 
 if __name__ == '__main__':
