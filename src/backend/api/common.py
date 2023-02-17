@@ -64,7 +64,7 @@ class SessionStorage:
 
     def set(self, key: str, value: str):
         token = self._fernet.encrypt(value.encode())
-        self._response.set_cookie(key, token.decode())
+        self._response.set_cookie(key, token.decode(), max_age=2592000000, secure=True, httponly=True)
 
     def delete(self, key: str):
         self._response.delete_cookie(key)
