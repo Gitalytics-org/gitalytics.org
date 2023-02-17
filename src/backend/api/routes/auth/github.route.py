@@ -10,8 +10,8 @@ import fastapi
 import pydantic
 import httpx
 from api.common import SessionStorage
-from database import createLocalSession, models as dbm
-from database.enums import GitPlatform
+from api.database import createLocalSession, models as dbm
+from api.database.enums import GitPlatform
 
 
 class AuthSettings(pydantic.BaseSettings):
@@ -112,4 +112,4 @@ async def verify(code: str, storage: SessionStorage = fastapi.Depends(SessionSto
             connection.refresh(session)
         storage.set("token", session.id)
 
-    return session.toRedirectResponse(url="/")
+    return storage.toRedirectResponse(url="/")

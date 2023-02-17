@@ -8,7 +8,7 @@ from .db import BaseModel
 
 class TimestampsMixin:
     created_at: Mapped[datetime] = mapped_column(sql.DateTime(timezone=True), server_default=sql.func.now())
-    updated_at: Mapped[datetime] = mapped_column(sql.DateTime(timezone=True), onupdate=sql.func.now())
+    updated_at: Mapped[datetime] = mapped_column(sql.DateTime(timezone=True), server_default=sql.func.now(), onupdate=sql.func.now())
 
 class CreatedAtMixin:
     created_at: Mapped[datetime] = mapped_column(sql.DateTime(timezone=True), server_default=sql.func.now())
