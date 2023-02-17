@@ -19,7 +19,7 @@ settings = Settings()
 
 
 @fastapi.Depends
-def SessionToken(request: fastapi.Request) -> str:
+def SessionToken(request: fastapi.Request) -> dbm.Session:
     r"""
     requires and loads the secret session-key from the cookies
     important: no validation
@@ -33,8 +33,18 @@ def SessionToken(request: fastapi.Request) -> str:
         token = request.cookies["token"]
     except KeyError:
         raise fastapi.HTTPException(fastapi.status.HTTP_401_UNAUTHORIZED)
-    value = fernet.decrypt(token.encode()).decode()
-    return value
+    session_id = json.loads(fernet.decrypt(token.encode()).decode())
+
+    with createLocalSession() as connection:
+        session = connection\
+            .query(dbm.Session)\
+            .filter(dbm.Session.id == session_id)\
+            .one_or_none()
+
+    if not session:
+        raise fastapi.HTTPException(fastapi.status.HTTP_401_UNAUTHORIZED)
+
+    return session
 
 
 class SessionStorage:
@@ -60,9 +70,10 @@ class SessionStorage:
                 raise
             return default
         else:
-            return self._fernet.decrypt(token.encode()).decode()
+            return json.loads(self._fernet.decrypt(token.encode()).decode())
 
-    def set(self, key: str, value: str):
+    def set(self, key: str, value):
+        value = json.dumps(value)
         token = self._fernet.encrypt(value.encode())
         self._response.set_cookie(key, token.decode())
 

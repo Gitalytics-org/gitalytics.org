@@ -1,6 +1,6 @@
 from enum import Enum
 
 
-class GitPlattform(Enum):
+class GitPlatform(Enum):
     GITHUB = "github"
     BITBUCKET = "bitbucket"

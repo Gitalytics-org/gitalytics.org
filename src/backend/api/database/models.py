@@ -8,7 +8,7 @@ import sqlalchemy as sql
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .db import BaseModel
 from .model_components import IdMixin, BigIdMixin, TimestampsMixin, CreatedAtMixin
-from .enums import GitPlattform
+from .enums import GitPlatform
 from datetime import datetime
 from typing import Set
 
@@ -17,7 +17,7 @@ class Workspace(IdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "workspace"
 
     name: Mapped[str] = mapped_column(sql.String, nullable=False)
-    plattform: Mapped[GitPlattform] = mapped_column(sql.Enum(GitPlattform), nullable=False)
+    platform: Mapped[GitPlatform] = mapped_column(sql.Enum(GitPlatform), nullable=False)
     repositories: Mapped[Set["Repository"]] = relationship(back_populates="workspace")
 
 
@@ -55,9 +55,9 @@ class Session(IdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "session"
 
     access_token: Mapped[str] = mapped_column(sql.String, nullable=False)
-    refresh_token: Mapped[str] = mapped_column(sql.String, nullable=False)
-    plattform: Mapped[GitPlattform] = mapped_column(sql.Enum(GitPlattform), nullable=False)
-    workspaces: Mapped[Set["Workspace"]] = relationship(secondary="access_workspace")
+    refresh_token: Mapped[str] = mapped_column(sql.String, nullable=True)
+    platform: Mapped[GitPlatform] = mapped_column(sql.Enum(GitPlatform), nullable=False)
+    workspaces: Mapped[Set["Workspace"]] = relationship(secondary="workspace_access")
 
 
 workspace_access = sql.Table(
