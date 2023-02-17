@@ -15,6 +15,7 @@ import shutil
 import logging
 import tempfile
 import git
+from datetime import datetime
 from database import createLocalSession, models as dbm
 from .gitprovider_stuff import getRepositoryList, RepositoryInfo
 from .output_analyzer import parseLog
@@ -64,7 +65,10 @@ def repo_update(workspace: dbm.Workspace, repository_info: RepositoryInfo):
                         dbm.Repository.workspace_id == workspace.id)\
                 .one()
 
-            log = git_repository.git.log('--shortstat', '--no-merges', '--format=%H;%aI;%an;%ae', "--after", repository.updated_at.isoformat())
+            # replace --after with the hash
+            log = git_repository.git.log('--shortstat', '--no-merges', '--format=%H;%aI;%an;%ae', "--after", repository.last_refresh.isoformat())
+            print("LOG-OUTPUT:")
+            print(log)
 
             for commit in parseLog(log):
                 obj = dbm.Commit(
@@ -78,11 +82,7 @@ def repo_update(workspace: dbm.Workspace, repository_info: RepositoryInfo):
                 session.add(obj)
             session.commit()
 
-            try:
-                repository.last_hash = commit.hash
-                session.commit()
-            except UnboundLocalError:
-                pass
+            repository.last_refresh = datetime.now()
     finally:
         if p.isdir(repo_path):
             shutil.rmtree(repo_path)
@@ -120,7 +120,7 @@ def repo_init(workspace: dbm.Workspace, repository_info: RepositoryInfo):
                 session.add(obj)
             session.commit()
 
-            repository.last_hash = commit.hash
+            repository.last_refresh = datetime.now()
             session.commit()
     finally:
         if p.isdir(repo_path):

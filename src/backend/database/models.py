@@ -33,7 +33,7 @@ class Repository(IdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "repository"
 
     name: Mapped[str] = mapped_column(sql.String, nullable=False)
-    last_hash: Mapped[str] = mapped_column(sql.String, nullable=True)
+    last_refresh: Mapped[datetime] = mapped_column(sql.DateTime, nullable=True)
     commits: Mapped[Set["Commit"]] = relationship(back_populates="repository")
     workspace_id: Mapped[int] = mapped_column(sql.ForeignKey("workspace.id"), nullable=False)
     workspace: Mapped["Workspace"] = relationship(back_populates="repositories")

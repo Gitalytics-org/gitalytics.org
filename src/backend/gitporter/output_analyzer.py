@@ -12,10 +12,6 @@ import re
 import typing
 from datetime import datetime
 import pydantic
-import shutil
-import os
-import tempfile
-from git import Repo
 
 
 REGEX = r"(?P<hash>[a-z0-9]+);(?P<datetime>.+);(?P<author_name>.+);(?P<email>.+)\n\n" \
