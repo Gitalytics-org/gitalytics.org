@@ -110,6 +110,6 @@ async def verify(code: str, storage: SessionStorage = fastapi.Depends(SessionSto
             connection.add(session)
             connection.commit()
             connection.refresh(session)
-        storage.set("token", session.id)
+        storage.set("session-id", session.id)
 
     return storage.toRedirectResponse(url="/")
