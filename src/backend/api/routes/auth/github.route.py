@@ -74,7 +74,7 @@ async def login_redirect(request: fastapi.Request):
             })
 async def verify(code: str, storage: SessionStorage = fastapi.Depends(SessionStorage)):
     r"""
-    redirect point for
+    callback endpoint from Github
     """
     # https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${requestToken}
 
