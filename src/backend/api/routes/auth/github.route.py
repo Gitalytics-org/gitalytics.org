@@ -55,7 +55,7 @@ async def login_redirect(request: fastapi.Request):
     except fastapi.HTTPException:
         pass  # not existing or wrong token
     else:
-        return fastapi.responses.RedirectResponse(url="/app")
+        return fastapi.responses.RedirectResponse(url="/")
     # state = secrets.token_hex()
     params = dict(
         client_id=settings.GITHUB_CLIENT_ID,
