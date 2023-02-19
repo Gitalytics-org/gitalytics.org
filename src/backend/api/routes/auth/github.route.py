@@ -101,7 +101,7 @@ async def verify(code: str, storage: SessionStorage = fastapi.Depends(SessionSto
             .query(dbm.Session)\
             .filter(dbm.Session.access_token == data.access_token)\
             .one_or_none()
-        if not session:
+        if session is None:
             session = dbm.Session(
                 access_token=data.access_token,
                 refresh_token=None,
