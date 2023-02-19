@@ -46,16 +46,16 @@ router = fastapi.APIRouter(prefix="/auth/github")
 
 @router.get("/login", status_code=fastapi.status.HTTP_307_TEMPORARY_REDIRECT,
             response_class=fastapi.responses.RedirectResponse)
-async def login_redirect(request: fastapi.Request):
+async def login_redirect():
     r"""
     redirects to the Github login-page
     """
-    try:
-        SessionToken.dependency(request=request)
-    except fastapi.HTTPException:
-        pass  # not existing or wrong token
-    else:
-        return fastapi.responses.RedirectResponse(url="/#/app")
+    # try:
+    #     SessionToken.dependency(request=request)
+    # except fastapi.HTTPException:
+    #     pass  # not existing or wrong token
+    # else:
+    #     return fastapi.responses.RedirectResponse(url="/#/app")
     # state = secrets.token_hex()
     params = dict(
         client_id=settings.GITHUB_CLIENT_ID,

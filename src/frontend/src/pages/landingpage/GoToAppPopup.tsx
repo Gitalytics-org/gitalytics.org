@@ -10,8 +10,8 @@ export default function GoToAppPopup() {
         return null;
     }
 
-    return <Link to="/app" className="rounded-full bg-accent h-10 w-10 hover:w-36 flex fixed left-2 top-2 transition-[width] gap-1 overflow-hidden">
+    return <Link to="/app" className="rounded-full bg-accent h-10 w-10 hover:w-40 flex fixed left-2 top-2 transition-[width] gap-1 overflow-hidden z-10 border border-primary">
         <img className="h-full aspect-square" src={GraphIconSrc} alt="" />
-        <span className="whitespace-nowrap my-auto">Show Graphs</span>
+        <span className="whitespace-nowrap my-auto">Show Statistics</span>
     </Link>;
 }
