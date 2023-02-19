@@ -78,9 +78,9 @@ gpUpdateAllParser.set_defaults(function=run_gitporter_update_all)
 gpUpdateWorkspaceParser = gitPorterSubparsers.add_parser("update-workspace",
                                                          formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 gpUpdateWorkspaceParser.set_defaults(function=run_gitporter_update_workspace)
-gpUpdateWorkspaceParser.add_argument('platform', help="name of the workspace to update",
+gpUpdateWorkspaceParser.add_argument('-p', '--platform', required=True, help="name of the workspace to update",
                                      choices=["GITHUB", "BITBUCKET", "GITLAB"])
-gpUpdateWorkspaceParser.add_argument('workspace', help="git provider")
+gpUpdateWorkspaceParser.add_argument('-w', '--workspace', required=True, help="git provider")
 
 
 if __name__ == '__main__':
