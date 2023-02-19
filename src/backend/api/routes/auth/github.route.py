@@ -55,7 +55,7 @@ async def login_redirect(request: fastapi.Request):
     except fastapi.HTTPException:
         pass  # not existing or wrong token
     else:
-        return fastapi.responses.RedirectResponse(url="/")
+        return fastapi.responses.RedirectResponse(url="/#/app")
     # state = secrets.token_hex()
     params = dict(
         client_id=settings.GITHUB_CLIENT_ID,
@@ -118,4 +118,4 @@ async def verify(code: str, storage: SessionStorage = fastapi.Depends(SessionSto
             connection.refresh(session)
         storage.set("session-id", session.id)
 
-    return storage.toRedirectResponse(url="/app")
+    return storage.toRedirectResponse(url="/#/app")
