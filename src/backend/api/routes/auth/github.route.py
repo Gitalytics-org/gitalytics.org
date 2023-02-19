@@ -9,7 +9,7 @@ import urllib.parse as urlparse
 import fastapi
 import pydantic
 import httpx
-from api.common import SessionStorage
+from api.common import SessionStorage, SessionToken
 from api.database import createLocalSession, models as dbm
 from api.database.enums import GitPlatform
 
@@ -46,10 +46,16 @@ router = fastapi.APIRouter(prefix="/auth/github")
 
 @router.get("/login", status_code=fastapi.status.HTTP_307_TEMPORARY_REDIRECT,
             response_class=fastapi.responses.RedirectResponse)
-async def login_redirect():
+async def login_redirect(request: fastapi.Request):
     r"""
     redirects to the Github login-page
     """
+    try:
+        SessionToken.dependency(request=request)
+    except fastapi.HTTPException:
+        pass  # not existing or wrong token
+    else:
+        return fastapi.responses.RedirectResponse(url="/app")
     # state = secrets.token_hex()
     params = dict(
         client_id=settings.GITHUB_CLIENT_ID,
@@ -112,4 +118,4 @@ async def verify(code: str, storage: SessionStorage = fastapi.Depends(SessionSto
             connection.refresh(session)
         storage.set("session-id", session.id)
 
-    return storage.toRedirectResponse(url="/")
+    return storage.toRedirectResponse(url="/app")

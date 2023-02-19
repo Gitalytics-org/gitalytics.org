@@ -7,7 +7,8 @@ import typing as t
 import fastapi
 import httpx
 import pydantic
-from api.common import SessionToken, BearerAuth
+from api.common import SessionToken, HttpxBearerAuth
+from api.database import models as dbm
 
 
 class RawRequestsSettings(pydantic.BaseSettings):
@@ -33,9 +34,12 @@ class MeResponseModel(pydantic.BaseModel):
             responses={
                 fastapi.status.HTTP_401_UNAUTHORIZED: {}
             })
-async def raw_me(token: str = SessionToken):
+async def raw_me(session: dbm.Session = SessionToken):
+    r"""
+    get the information about the current user
+    """
     async with httpx.AsyncClient(base_url=settings.GITHUB_API_URL) as client:
-        response = await client.get("/user", auth=BearerAuth(token))
+        response = await client.get("/user", auth=HttpxBearerAuth(session.access_token))
         if not response.is_success:
             raise fastapi.HTTPException(response.status_code, detail=response.reason_phrase)
         return response.json()
