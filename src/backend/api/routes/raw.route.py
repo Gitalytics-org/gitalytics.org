@@ -8,7 +8,7 @@ import fastapi
 import httpx
 import pydantic
 from api.common import SessionToken, HttpxBearerAuth
-from api.database import models as dbm
+from database import models as dbm
 
 
 class RawRequestsSettings(pydantic.BaseSettings):

@@ -6,10 +6,11 @@ r"""
 import sys
 import argparse
 from __version__ import __version__
+import logconfig  # noqa
 
 
 def create_database():
-    from api.database.db import createDatabase
+    from database.db import createDatabase
     createDatabase()
 
 

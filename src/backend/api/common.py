@@ -9,7 +9,7 @@ import httpx
 import fastapi
 import pydantic
 from cryptography.fernet import Fernet
-from api.database import createLocalSession, models as dbm
+from database import createLocalSession, models as dbm
 
 
 class Settings(pydantic.BaseSettings):

@@ -10,8 +10,8 @@ import fastapi
 import pydantic
 import httpx
 from api.common import SessionStorage, SessionToken
-from api.database import createLocalSession, models as dbm
-from api.database.enums import GitPlatform
+from database import createLocalSession, models as dbm
+from database.enums import GitPlatform
 
 
 class AuthSettings(pydantic.BaseSettings):

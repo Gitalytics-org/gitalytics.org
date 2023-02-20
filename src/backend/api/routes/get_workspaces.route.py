@@ -6,7 +6,7 @@ r"""
 import typing
 import fastapi
 import pydantic
-from database import Workspace
+from database.models import Workspace
 from database.db import createLocalSession
 
 
