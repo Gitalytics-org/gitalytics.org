@@ -30,13 +30,13 @@ class CommitViewModel(pydantic.BaseModel):
 class ResponseModel(pydantic.BaseModel):
     commits: list[CommitViewModel]
 
-@router.get("/commits", response_model=ResponseModel)
-async def get_commits():
+@router.get("/commits/{workspace_id}", response_model=ResponseModel)
+async def get_commits(workspace_id: int):
     r"""
     list all commits in the workspace
     """
     with createLocalSession() as session:
-        statement = select(Commit, Repository).join(Repository.commits).filter(Repository.workspace_id == 1)
+        statement = select(Commit, Repository).join(Repository.commits).filter(Repository.workspace_id == workspace_id)
         commits = session.scalars(statement).all()
 
     return {"commits": commits}
