@@ -14,4 +14,4 @@ if uname:
         session.add(workspace)
         session.commit()
 else:
-    gitporter.update_all()
+    gitporter.update_all_workspaces()

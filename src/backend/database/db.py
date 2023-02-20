@@ -14,14 +14,14 @@ engine = sql.create_engine(
     echo=True,  # set to False for less output
 )
 
-
-class _MetaSession(sql.orm.Session):
+# Why does this wrapper exist?
+class DatabaseSession(sql.orm.Session):
     def __enter__(self) -> sql.orm.Session:
         return super().__enter__()
 
 
-def createLocalSession() -> _MetaSession:
-    return _MetaSession(bind=engine)
+def createLocalSession() -> DatabaseSession:
+    return DatabaseSession(bind=engine)
 
 
 BaseModel = sql.orm.declarative_base()
