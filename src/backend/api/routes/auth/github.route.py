@@ -9,7 +9,7 @@ import urllib.parse as urlparse
 import fastapi
 import pydantic
 import httpx
-from api.common import SessionStorage
+from api.common import SessionStorage, SessionToken
 from api.database import createLocalSession, models as dbm
 from api.database.enums import GitPlatform
 
@@ -50,6 +50,12 @@ async def login_redirect():
     r"""
     redirects to the Github login-page
     """
+    # try:
+    #     SessionToken.dependency(request=request)
+    # except fastapi.HTTPException:
+    #     pass  # not existing or wrong token
+    # else:
+    #     return fastapi.responses.RedirectResponse(url="/#/app")
     # state = secrets.token_hex()
     params = dict(
         client_id=settings.GITHUB_CLIENT_ID,
@@ -68,7 +74,7 @@ async def login_redirect():
             })
 async def verify(code: str, storage: SessionStorage = fastapi.Depends(SessionStorage)):
     r"""
-    redirect point for
+    callback endpoint from Github
     """
     # https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${requestToken}
 
@@ -112,4 +118,4 @@ async def verify(code: str, storage: SessionStorage = fastapi.Depends(SessionSto
             connection.refresh(session)
         storage.set("session-id", session.id)
 
-    return storage.toRedirectResponse(url="/")
+    return storage.toRedirectResponse(url="/#/app")

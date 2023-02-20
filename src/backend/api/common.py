@@ -9,7 +9,7 @@ import httpx
 import fastapi
 import pydantic
 from cryptography.fernet import Fernet
-from api.database import models as dbm
+from api.database import createLocalSession, models as dbm
 
 
 class Settings(pydantic.BaseSettings):
@@ -32,10 +32,10 @@ def SessionToken(request: fastapi.Request) -> dbm.Session:
     """
     fernet = Fernet(settings.COOKIE_KEY)
     try:
-        token = request.cookies["token"]
+        token = request.cookies["session-id"]
     except KeyError:
         raise fastapi.HTTPException(fastapi.status.HTTP_401_UNAUTHORIZED)
-    session_id = json.loads(fernet.decrypt(token.encode()).decode())
+    session_id: int = json.loads(fernet.decrypt(token.encode()).decode())
 
     with createLocalSession() as connection:
         session = connection\
@@ -80,10 +80,10 @@ class SessionStorage:
         self._response.set_cookie(key, token.decode(), max_age=2592000000, secure=True, httponly=True)
 
     def delete(self, key: str):
-        self._response.delete_cookie(key)
+        self._response.delete_cookie(key, secure=True, httponly=True)
 
 
-class BearerAuth(httpx.Auth):
+class HttpxBearerAuth(httpx.Auth):
     """
     Allows the 'auth' argument to be passed as a (username, password) pair,
     and uses HTTP Basic authentication.
