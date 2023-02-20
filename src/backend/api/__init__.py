@@ -9,7 +9,7 @@ import glob
 import importlib.util
 import fastapi.middleware.cors
 import fastapi.staticfiles
-from runconfig import __version__, args
+from __version__ import __version__
 
 
 ROOT = p.dirname(__file__)

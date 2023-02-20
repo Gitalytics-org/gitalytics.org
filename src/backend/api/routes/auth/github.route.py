@@ -9,7 +9,9 @@ import urllib.parse as urlparse
 import fastapi
 import pydantic
 import httpx
-from api.common import SessionStorage
+from api.common import SessionStorage, SessionToken
+from api.database import createLocalSession, models as dbm
+from api.database.enums import GitPlatform
 
 
 class AuthSettings(pydantic.BaseSettings):
@@ -48,6 +50,12 @@ async def login_redirect():
     r"""
     redirects to the Github login-page
     """
+    # try:
+    #     SessionToken.dependency(request=request)
+    # except fastapi.HTTPException:
+    #     pass  # not existing or wrong token
+    # else:
+    #     return fastapi.responses.RedirectResponse(url="/#/app")
     # state = secrets.token_hex()
     params = dict(
         client_id=settings.GITHUB_CLIENT_ID,
@@ -64,9 +72,9 @@ async def login_redirect():
             responses={
                 fastapi.status.HTTP_400_BAD_REQUEST: {}
             })
-async def verify(code: str, session: SessionStorage = fastapi.Depends(SessionStorage)):
+async def verify(code: str, storage: SessionStorage = fastapi.Depends(SessionStorage)):
     r"""
-    redirect point for
+    callback endpoint from Github
     """
     # https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${requestToken}
 
@@ -93,6 +101,21 @@ async def verify(code: str, session: SessionStorage = fastapi.Depends(SessionSto
     except pydantic.ValidationError:
         raise fastapi.HTTPException(fastapi.status.HTTP_400_BAD_REQUEST, detail=data.get("error_description"))
 
-    session.set("token", data.access_token)
+    with createLocalSession() as connection:
 
-    return session.toRedirectResponse(url="/")
+        session = connection\
+            .query(dbm.Session)\
+            .filter(dbm.Session.access_token == data.access_token)\
+            .one_or_none()
+        if session is None:
+            session = dbm.Session(
+                access_token=data.access_token,
+                refresh_token=None,
+                platform=GitPlatform.GITHUB
+            )
+            connection.add(session)
+            connection.commit()
+            connection.refresh(session)
+        storage.set("session-id", session.id)
+
+    return storage.toRedirectResponse(url="/#/app")
