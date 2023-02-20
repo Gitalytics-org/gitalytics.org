@@ -37,7 +37,10 @@ def update_all_workspaces():
 def update_workspace(workspace_name: str, platform: GitPlatform):
     repositories_infos = getRepositoryList(platform=platform, workspace=workspace_name)
     with createLocalSession() as session:
-        workspace = session.query(dbm.Workspace).filter(dbm.Workspace.name == workspace_name, dbm.Workspace.platform == platform).one_or_none()
+        workspace = session.query(dbm.Workspace)\
+                        .filter(dbm.Workspace.name == workspace_name,
+                                dbm.Workspace.platform == platform)\
+                        .one_or_none()
         if workspace is None:
             workspace = dbm.Workspace(name=workspace_name, platform=platform)
             session.add(workspace)
