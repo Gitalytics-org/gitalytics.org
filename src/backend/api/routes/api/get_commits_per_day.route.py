@@ -3,15 +3,12 @@
 r"""
 
 """
-import json
-import typing
 import fastapi
 import pydantic
-from api.database.models import Repository, Commit, Workspace
+from api.database.models import Repository, Commit
 from api.database.db import createLocalSession
 from sqlalchemy import select, func
 from sqlalchemy.sql import extract
-from datetime import datetime
 
 router = fastapi.APIRouter()
 
@@ -22,7 +19,7 @@ class ResponseModel(pydantic.BaseModel):
         orm_mode = True
 
 @router.get("/commits_per_day/{workspace_id}/{year}", response_model=ResponseModel)
-async def get_commits(workspace_id: int, year: int):
+async def get_commits_per_day(workspace_id: int, year: int):
     r"""
     get commits per day in the workspace from a specific year
     """
