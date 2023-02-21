@@ -33,12 +33,13 @@ class Repository(IdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "repository"
 
     name: Mapped[str] = mapped_column(sql.String, nullable=False)
+    last_refresh: Mapped[datetime] = mapped_column(sql.DateTime, nullable=True)
     commits: Mapped[Set["Commit"]] = relationship(back_populates="repository")
     workspace_id: Mapped[int] = mapped_column(sql.ForeignKey("workspace.id"), nullable=False)
     workspace: Mapped["Workspace"] = relationship(back_populates="repositories")
 
 
-class Commit(BigIdMixin, CreatedAtMixin, BaseModel):
+class Commit(IdMixin, CreatedAtMixin, BaseModel):
     __tablename__ = "commit"
 
     committed_at: Mapped[datetime] = mapped_column(sql.DateTime, nullable=False)
@@ -55,14 +56,14 @@ class Session(IdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "session"
 
     access_token: Mapped[str] = mapped_column(sql.String, nullable=False)
-    refresh_token: Mapped[str] = mapped_column(sql.String, nullable=True)
+    refresh_token: Mapped[str] = mapped_column(sql.String, nullable=False)
     platform: Mapped[GitPlatform] = mapped_column(sql.Enum(GitPlatform), nullable=False)
-    workspaces: Mapped[Set["Workspace"]] = relationship(secondary="workspace_access")
+    # workspaces: Mapped[Set["Workspace"]] = relationship(secondary="access_workspace")
 
 
-workspace_access = sql.Table(
-    "workspace_access",
-    BaseModel.metadata,
-    sql.Column("session", sql.ForeignKey("session.id")),
-    sql.Column("workspace", sql.ForeignKey("workspace.id")),
-)
+# workspace_access = sql.Table(
+#     "workspace_access",
+#     BaseModel.metadata,
+#     sql.Column("session", sql.ForeignKey("session.id")),
+#     sql.Column("workspace", sql.ForeignKey("workspace.id")),
+# )
