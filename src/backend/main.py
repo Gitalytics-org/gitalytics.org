@@ -23,7 +23,7 @@ def generate_key():
 
 def run_server(host: str, port: int, reload: bool, workers: int):
     import uvicorn
-    uvicorn.run("api:app", host=host, port=port, reload=reload, workers=workers)
+    uvicorn.run("gitalytics_api:app", host=host, port=port, reload=reload, workers=workers)
 
 
 # master parser

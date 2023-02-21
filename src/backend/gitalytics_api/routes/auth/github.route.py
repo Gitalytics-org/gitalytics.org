@@ -9,7 +9,7 @@ import urllib.parse as urlparse
 import fastapi
 import pydantic
 import httpx
-from api.common import SessionStorage, SessionToken
+from gitalytics_api.common import SessionStorage, SessionToken
 from database import createLocalSession, models as dbm
 from database.enums import GitPlatform
 
