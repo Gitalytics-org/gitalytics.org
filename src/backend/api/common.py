@@ -38,9 +38,9 @@ def SessionToken(request: fastapi.Request) -> dbm.Session:
     session_id: int = json.loads(fernet.decrypt(token.encode()).decode())
 
     with createLocalSession() as connection:
-        session = connection\
-            .query(dbm.Session)\
-            .filter(dbm.Session.id == session_id)\
+        session = connection \
+            .query(dbm.Session) \
+            .filter(dbm.Session.id == session_id) \
             .one_or_none()
 
     if not session:

@@ -38,10 +38,3 @@ class ParsedCommit(pydantic.BaseModel):
 def parseLog(log: str) -> typing.Iterator[ParsedCommit]:
     for match in re.finditer(REGEX, log):
         yield ParsedCommit(**match.groupdict())
-
-
-if __name__ == '__main__':
-    my_logger.createLogFilesIfNecessary()
-    output=getLog(url)
-    for commit in parseLog(output):
-        print(commit)
