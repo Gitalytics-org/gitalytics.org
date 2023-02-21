@@ -17,6 +17,11 @@ if not os.path.isdir(LOGGING_PATH):
     os.mkdir(LOGGING_PATH)
 
 
+class WatchFilesFilter(logging.Filter):
+    def filter(self, record: logging.LogRecord) -> bool:
+        return not record.name.startswith("watchfiles")
+
+
 fileLoggingHandler = logging.handlers.RotatingFileHandler(
     filename=os.path.join(
         LOGGING_PATH,
@@ -24,8 +29,9 @@ fileLoggingHandler = logging.handlers.RotatingFileHandler(
     ),
     maxBytes=1024*1024*10,  # roughly 10mb
     backupCount=5,
-    delay=True
+    delay=True,
 )
+fileLoggingHandler.addFilter(WatchFilesFilter())
 
 consoleLoggingHandler = logging.StreamHandler()
 
@@ -37,5 +43,5 @@ logging.basicConfig(
     handlers=[
         fileLoggingHandler,
         consoleLoggingHandler
-    ]
+    ],
 )
