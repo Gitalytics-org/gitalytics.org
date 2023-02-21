@@ -4,7 +4,7 @@ r"""
 
 """
 import fastapi
-from api.common import SessionStorage
+from gitalytics_api.common import SessionStorage
 
 
 router = fastapi.APIRouter(prefix="/auth")

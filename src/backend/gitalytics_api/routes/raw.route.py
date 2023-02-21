@@ -7,7 +7,7 @@ import typing as t
 import fastapi
 import httpx
 import pydantic
-from api.common import SessionToken, HttpxBearerAuth
+from gitalytics_api.common import SessionToken, HttpxBearerAuth
 from database import models as dbm
 
 
