@@ -15,8 +15,6 @@ router = fastapi.APIRouter()
 class ResponseModel(pydantic.BaseModel):
     commits_per_day: dict[str, int]
 
-    class Config:
-        orm_mode = True
 
 @router.get("/commits_per_day/{workspace_id}/{year}", response_model=ResponseModel)
 async def get_commits_per_day(workspace_id: int, year: int):
