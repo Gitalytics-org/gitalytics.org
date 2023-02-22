@@ -16,19 +16,17 @@ LOGGING_PATH = os.path.abspath(
 if not os.path.isdir(LOGGING_PATH):
     os.mkdir(LOGGING_PATH)
 
-
 fileLoggingHandler = logging.handlers.RotatingFileHandler(
     filename=os.path.join(
         LOGGING_PATH,
         f"gitalytics.log"
     ),
-    maxBytes=1024*1024*10,  # roughly 10mb
+    maxBytes=1024 * 1024 * 10,  # roughly 10mb
     backupCount=5,
     delay=True
 )
 
 consoleLoggingHandler = logging.StreamHandler()
-
 
 logging.basicConfig(
     format="{asctime} | {levelname:.3} | {name:20} | {funcName:20} | {message}",

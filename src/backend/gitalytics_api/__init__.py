@@ -14,7 +14,6 @@ from __version__ import __version__
 
 ROOT = p.dirname(__file__)
 
-
 app = fastapi.FastAPI(
     title="gitalytics.org",
     description=__doc__,
@@ -27,7 +26,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 for fp in glob.glob("**/*.route.py", root_dir=p.join(ROOT, "routes"), recursive=True):
     MODULE_NAME = "routes." + fp.split(".", 1)[0].replace(p.pathsep, ".")
@@ -45,7 +43,6 @@ for fp in glob.glob("**/*.route.py", root_dir=p.join(ROOT, "routes"), recursive=
         raise
     else:
         print("loaded:", fp, [MODULE_NAME, MODULE_PATH])
-
 
 # only now mount (order is important!)
 app.mount(

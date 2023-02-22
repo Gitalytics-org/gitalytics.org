@@ -32,5 +32,5 @@ async def create_workspace():
     """
     with createLocalSession() as session:
         workspaces = session.query(Workspace).all()
-    
+
     return {"workspaces": workspaces}
