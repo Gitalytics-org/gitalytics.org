@@ -1,5 +1,6 @@
 import Footer from "~/components/Footer";
 import BigWelcome from "./BigWelcome";
+import FAQSection from "./faq";
 import Pricing from "./Pricing";
 import WhatIsThis from "./WhatIsThis";
 
@@ -9,6 +10,7 @@ export default function LandingPage() {
         <BigWelcome />
         <WhatIsThis />
         <Pricing />
+        <FAQSection />
         <Footer />
     </div>;
 }
