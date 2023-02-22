@@ -34,7 +34,10 @@ async def get_commits(workspace_id: int):
     list all commits in the workspace
     """
     with createLocalSession() as connection:
-        statement = select(Commit, Repository).join(Repository.commits).filter(Repository.workspace_id == workspace_id)
-        commits = connection.scalars(statement).all()
+
+        commits = connection.query(Commit)\
+            .join(Repository.commits)\
+            .filter(Repository.workspace_id == workspace_id)\
+            .all()
 
     return {"commits": commits}

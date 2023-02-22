@@ -24,19 +24,13 @@ async def get_commits_per_day(workspace_id: int, year: int):
     get commits per day in the workspace from a specific year
     """
     with createLocalSession() as connection:
-        result = connection.execute(
-            select(func.count(), func.date(Commit.committed_at))
-            .group_by(func.date(Commit.committed_at))
-            .join(Repository.commits)
-            .filter(Repository.workspace_id == workspace_id)
-            .filter(extract('year', Commit.committed_at) == year)
-        ).all()
 
-
-        commits_per_day = {}
-        for row in result:
-            print(row)
-            commits_per_day[row.date] = row.count
+        commits_per_day = connection.query(func.date(Commit.committed_at), func.count())\
+            .group_by(func.date(Commit.committed_at))\
+            .join(Repository.commits)\
+            .filter(Repository.workspace_id == workspace_id)\
+            .filter(extract('year', Commit.committed_at) == year)\
+            .all()
 
 
     return {"commits_per_day": commits_per_day}
