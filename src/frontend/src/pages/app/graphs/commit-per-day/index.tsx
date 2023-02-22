@@ -1,18 +1,27 @@
+import axios from "axios";
 import { Line } from "react-chartjs-2";
-import demoData from "./demo-data.json";
+import { useQuery } from "react-query";
 
-
-const indexed: Record<number, number> = {};
-for (const el of demoData) {
-    const date = new Date(el.date);
-    indexed[new Date(date.getFullYear(), date.getMonth(), date.getDate()).valueOf()] = el.count;
-}
 
 export default function GraphCommitsPerDay() {
-    // const dayIter = Array.from(Array(3 * 365).keys()).map(delta => new Date(Date.now() - (new Date(0, 0, (3*365)-delta)).valueOf()));
-    const dayIter = Array.from(Array(365).keys()).map(delta => {
+    const query = useQuery<Record<string, number>>(
+        ["test-data"],
+        () => axios.get("/test-data").then(r => r.data),
+    );
+    if (query.isLoading) {
+        return null;
+    }
+    if (query.isError) {
+        return <p>Error: {`${query.error}`}</p>;
+    }
+
+    const YEARS = 3;
+    const DAYPERYEAR = 365;
+    const DAYCOUNT = YEARS * DAYPERYEAR;
+
+    const dayIter = Array.from(Array(DAYCOUNT).keys()).map(delta => {
         const date = new Date(Date.now());
-        date.setDate(date.getDate() - (365 - delta));
+        date.setDate(date.getDate() - (DAYCOUNT - delta));
         return new Date(date.getFullYear(), date.getMonth(), date.getDate());
     });
 
@@ -21,8 +30,8 @@ export default function GraphCommitsPerDay() {
             labels: dayIter.map(date => date.toLocaleDateString()),
             // labels: dayIter.map(date => `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`),
             datasets: [{
-                data: dayIter.map(date => indexed[date.valueOf()] ?? 0),
-                label: "roriwa",
+                data: dayIter.map(date => query.data?.[`${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`] ?? 0),
+                label: "PlayerG9",
             }],
         }} options={{
             maintainAspectRatio: false,

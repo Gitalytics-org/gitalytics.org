@@ -56,7 +56,7 @@ class Session(IdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "session"
 
     access_token: Mapped[str] = mapped_column(sql.String, nullable=False)
-    refresh_token: Mapped[str] = mapped_column(sql.String, nullable=False)
+    refresh_token: Mapped[str] = mapped_column(sql.String, nullable=True)
     platform: Mapped[GitPlatform] = mapped_column(sql.Enum(GitPlatform), nullable=False)
     # workspaces: Mapped[Set["Workspace"]] = relationship(secondary="access_workspace")
 

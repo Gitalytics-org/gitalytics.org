@@ -34,6 +34,7 @@ fileLoggingHandler = logging.handlers.RotatingFileHandler(
 fileLoggingHandler.addFilter(WatchFilesFilter())
 
 consoleLoggingHandler = logging.StreamHandler()
+consoleLoggingHandler.addFilter(WatchFilesFilter())
 
 
 logging.basicConfig(
