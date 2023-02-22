@@ -28,7 +28,7 @@ class CommitViewModel(pydantic.BaseModel):
 class ResponseModel(pydantic.BaseModel):
     commits: list[CommitViewModel]
 
-@router.get("/commits/{workspace_id}", response_model=ResponseModel)
+@router.get("/commits/", response_model=ResponseModel)
 async def get_commits(workspace_id: int):
     r"""
     list all commits in the workspace

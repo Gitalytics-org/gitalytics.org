@@ -16,7 +16,7 @@ class ResponseModel(pydantic.BaseModel):
     commits_per_day: dict[str, int]
 
 
-@router.get("/commits_per_day/{workspace_id}/{year}", response_model=ResponseModel)
+@router.get("/commits_per_day/", response_model=ResponseModel)
 async def get_commits_per_day(workspace_id: int, year: int):
     r"""
     get commits per day in the workspace from a specific year
