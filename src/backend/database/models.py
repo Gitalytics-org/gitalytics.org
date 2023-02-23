@@ -60,7 +60,6 @@ class Session(IdMixin, TimestampsMixin, BaseModel):
     platform: Mapped[GitPlatform] = mapped_column(sql.Enum(GitPlatform), nullable=False)
     # workspaces: Mapped[Set["Workspace"]] = relationship(secondary="access_workspace")
 
-
 # workspace_access = sql.Table(
 #     "workspace_access",
 #     BaseModel.metadata,

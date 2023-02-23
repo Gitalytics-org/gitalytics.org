@@ -26,6 +26,10 @@ function Links() {
         <Link to="/" className="hover:underline">
             Home
         </Link>
+        {/* <Dot />
+        <Link to={{pathname: "/", hash: "faq"}} className="hover:underline">
+            FAQ
+        </Link> */}
         <Dot />
         <Link to="/about" className="hover:underline">
             About

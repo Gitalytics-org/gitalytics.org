@@ -15,13 +15,15 @@ def create_database():
     from database.db import createDatabase
     createDatabase()
 
+
 def generate_key():
     from cryptography.fernet import Fernet
     print(Fernet.generate_key().decode())
 
+
 def run_server(host: str, port: int, reload: bool, workers: int):
     import uvicorn
-    uvicorn.run("api:app", host=host, port=port, reload=reload, workers=workers)
+    uvicorn.run("gitalytics_api:app", host=host, port=port, reload=reload, workers=workers)
 
 
 # master parser
@@ -66,7 +68,6 @@ gpUpdateWorkspaceParser.set_defaults(function=gitporter.update_workspace)
 gpUpdateWorkspaceParser.add_argument('-p', '--platform', required=True, help="name of the workspace to update",
                                      choices=GitPlatform, type=lambda p: GitPlatform[p.upper()])
 gpUpdateWorkspaceParser.add_argument('-w', '--workspace-name', required=True, help="git provider")
-
 
 if __name__ == '__main__':
     args = vars(parser.parse_args())

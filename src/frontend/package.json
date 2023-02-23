@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite build --outDir ../backend/api/web-ui --emptyOutDir --watch",
-    "build": "tsc && vite build --outDir ../backend/api/web-ui --emptyOutDir",
+    "start": "vite --strictPort --port 8000 --cors",
+    "dev": "vite build --outDir ../backend/gitalytics_api/web-ui --emptyOutDir --watch",
+    "build": "tsc && vite build --outDir ../backend/gitalytics_api/web-ui --emptyOutDir",
     "preview": "vite preview",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."

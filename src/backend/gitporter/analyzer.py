@@ -16,7 +16,7 @@ import logging
 import tempfile
 import git
 from datetime import datetime
-from database import createLocalSession, DatabaseSession,  models as dbm
+from database import createLocalSession, DatabaseSession, models as dbm
 from database.enums import GitPlatform
 from .gitprovider_stuff import getRepositoryList, RepositoryInfo
 from .output_analyzer import parseLog
@@ -37,10 +37,10 @@ def update_all_workspaces():
 def update_workspace(workspace_name: str, platform: GitPlatform):
     repositories_infos = getRepositoryList(platform=platform, workspace=workspace_name)
     with createLocalSession() as session:
-        workspace = session.query(dbm.Workspace)\
-                        .filter(dbm.Workspace.name == workspace_name,
-                                dbm.Workspace.platform == platform)\
-                        .one_or_none()
+        workspace = session.query(dbm.Workspace) \
+            .filter(dbm.Workspace.name == workspace_name,
+                    dbm.Workspace.platform == platform) \
+            .one_or_none()
         if workspace is None:
             workspace = dbm.Workspace(name=workspace_name, platform=platform)
             session.add(workspace)
@@ -65,13 +65,14 @@ def repo_update(workspace: dbm.Workspace, repository_info: RepositoryInfo, sessi
             no_checkout=True
         )
 
-        repository = session.query(dbm.Repository)\
+        repository = session.query(dbm.Repository) \
             .filter(dbm.Repository.name == repository_info.repository_name,
-                    dbm.Repository.workspace == workspace)\
+                    dbm.Repository.workspace == workspace) \
             .one()
 
         # replace --after with the hash
-        log = git_repository.git.log('--shortstat', '--no-merges', '--format=%H;%aI;%an;%ae', "--after", repository.last_refresh.isoformat())
+        log = git_repository.git.log('--shortstat', '--no-merges', '--format=%H;%aI;%an;%ae', "--after",
+                                     repository.last_refresh.isoformat())
         for commit in parseLog(log):
             obj = dbm.Commit(
                 committed_at=commit.datetime,

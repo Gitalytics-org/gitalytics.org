@@ -7,6 +7,7 @@ import typing
 import fastapi
 import pydantic
 
+
 router = fastapi.APIRouter()
 
 

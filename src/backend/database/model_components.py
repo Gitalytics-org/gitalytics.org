@@ -1,4 +1,3 @@
-
 import sqlalchemy as sql
 from datetime import datetime
 from sqlalchemy.orm import Mapped
@@ -8,7 +7,8 @@ from .db import BaseModel
 
 class TimestampsMixin:
     created_at: Mapped[datetime] = mapped_column(sql.DateTime(timezone=True), server_default=sql.func.now())
-    updated_at: Mapped[datetime] = mapped_column(sql.DateTime(timezone=True), server_default=sql.func.now(), onupdate=sql.func.now())
+    updated_at: Mapped[datetime] = mapped_column(sql.DateTime(timezone=True), server_default=sql.func.now(),
+                                                 onupdate=sql.func.now())
 
 
 class CreatedAtMixin:

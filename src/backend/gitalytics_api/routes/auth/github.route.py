@@ -9,7 +9,7 @@ import urllib.parse as urlparse
 import fastapi
 import pydantic
 import httpx
-from api.common import SessionStorage, SessionToken
+from gitalytics_api.common import SessionStorage, SessionToken
 from database import createLocalSession, models as dbm
 from database.enums import GitPlatform
 
@@ -103,9 +103,9 @@ async def verify(code: str, storage: SessionStorage = fastapi.Depends(SessionSto
 
     with createLocalSession() as connection:
 
-        session = connection\
-            .query(dbm.Session)\
-            .filter(dbm.Session.access_token == data.access_token)\
+        session = connection \
+            .query(dbm.Session) \
+            .filter(dbm.Session.access_token == data.access_token) \
             .one_or_none()
         if session is None:
             session = dbm.Session(
