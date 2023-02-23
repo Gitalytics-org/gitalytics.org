@@ -27,15 +27,15 @@ export default function GitalyticsStatistics() {
         <div className="flex justify-evenly">
             <div>
                 <p className="text-[min(1rem,2vw)] opacity-50">Total Workspaces</p>
-                <p className="text-[5vw]">{query.data?.total_workspaces.toLocaleString()}</p>
+                <p className="text-[5vw]">{query.data?.total_workspaces.toLocaleString()}+</p>
             </div>
             <div>
                 <p className="text-[min(1rem,2vw)] opacity-50">Total Repositories</p>
-                <p className="text-[5vw]">{query.data?.total_repositories.toLocaleString()}</p>
+                <p className="text-[5vw]">{query.data?.total_repositories.toLocaleString()}+</p>
             </div>
             <div>
                 <p className="text-[min(1rem,2vw)] opacity-50">Total Commits</p>
-                <p className="text-[5vw]">{query.data?.total_commits.toLocaleString()}</p>
+                <p className="text-[5vw]">{query.data?.total_commits.toLocaleString()}+</p>
             </div>
         </div>
     </div>;

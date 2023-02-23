@@ -17,6 +17,11 @@ class ResponseViewModel(pydantic.BaseModel):
     total_commits: int
 
 
+def dunno_round(num: int) -> int:
+    nstr = str(num)
+    return int(nstr[0] + "0"*(len(nstr)-1))
+
+
 @router.get("/gitalytics-stats")
 async def getGitalyticsStats():
     with createLocalSession() as connection:
@@ -25,7 +30,7 @@ async def getGitalyticsStats():
         total_commits = connection.query(dbm.Commit).count()
 
     return dict(
-        total_workspaces=total_workspaces,
-        total_repositories=total_repositories,
-        total_commits=total_commits
+        total_workspaces=dunno_round(total_workspaces),
+        total_repositories=dunno_round(total_repositories),
+        total_commits=dunno_round(total_commits),
     )
