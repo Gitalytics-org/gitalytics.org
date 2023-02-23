@@ -6,6 +6,7 @@ r"""
 import fastapi
 import pydantic
 from database import createLocalSession, models as dbm
+from gitalytics_api.common import simple_endpoint_cache
 
 
 router = fastapi.APIRouter()
@@ -23,6 +24,7 @@ def dunno_round(num: int) -> int:
 
 
 @router.get("/gitalytics-stats")
+@simple_endpoint_cache(max_age=60*60)
 async def getGitalyticsStats():
     with createLocalSession() as connection:
         total_workspaces = connection.query(dbm.Workspace).count()
