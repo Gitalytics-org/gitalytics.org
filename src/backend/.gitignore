@@ -1,5 +1,5 @@
 gitalytics.db
-api/web-ui/
+gitalytics_api/web-ui/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
