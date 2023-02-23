@@ -1,12 +1,16 @@
 import axios from "axios";
 import { Line } from "react-chartjs-2";
 import { useQuery } from "react-query";
+import { DateAdd, OneToNArray, toDateString } from "../../utils";
 
 
-export default function GraphCommitsPerDay() {
-    const query = useQuery<Record<string, number>>(
+type ApiDate = Record<string, number>;
+
+
+export default function QueryWrapper() {
+    const query = useQuery<ApiDate>(
         ["test-data"],
-        () => axios.get("/test-data").then(r => r.data),
+        () => axios.get<ApiDate>("/test-data").then(r => r.data),
     );
     if (query.isLoading) {
         return null;
@@ -14,23 +18,23 @@ export default function GraphCommitsPerDay() {
     if (query.isError) {
         return <p>Error: {`${query.error}`}</p>;
     }
+    return <GraphCommitsPerDay data={query.data!} />;
+}
 
+const NO_COMMITS = 0;
+
+export function GraphCommitsPerDay({ data }: { data: ApiDate }) {
     const YEARS = 3;
-    const DAYPERYEAR = 365;
-    const DAYCOUNT = YEARS * DAYPERYEAR;
+    const DAY_PER_YEAR = 365;
+    const DAY_COUNT = YEARS * DAY_PER_YEAR;
 
-    const dayIter = Array.from(Array(DAYCOUNT).keys()).map(delta => {
-        const date = new Date(Date.now());
-        date.setDate(date.getDate() - (DAYCOUNT - delta));
-        return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    });
+    const dayIter = OneToNArray(DAY_COUNT).map((delta) => DateAdd(new Date(), -(DAY_COUNT - delta)));
 
     return <div className="w-full max-h-screen">
         <Line data={{
             labels: dayIter.map(date => date.toLocaleDateString()),
-            // labels: dayIter.map(date => `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`),
             datasets: [{
-                data: dayIter.map(date => query.data?.[`${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`] ?? 0),
+                data: dayIter.map(date => data[toDateString(date)] ?? NO_COMMITS),
                 label: "PlayerG9",
             }],
         }} options={{
