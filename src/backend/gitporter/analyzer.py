@@ -47,9 +47,9 @@ def update_workspace(workspace_name: str, platform: GitPlatform):
                                  dbm.Repository.workspace == workspace) \
                          .one_or_none())
             if exists_in_databse:
-                repo_update(workspace=workspace, repository_info=remote_repository, session=session)
+                repo_update(workspace=workspace, remote_repository=remote_repository, session=session)
             else:
-                repo_init(workspace=workspace, repository_info=remote_repository, session=session)
+                repo_init(workspace=workspace, remote_repository=remote_repository, session=session)
 
 
 def repo_update(workspace: dbm.Workspace, remote_repository: RemoteRepositoryInformation, session: DatabaseSession):
