@@ -62,7 +62,7 @@ def repo_update(workspace: dbm.Workspace, remote_repository: RemoteRepositoryInf
             lines_added=commit.lines_inserted,
             lines_removed=commit.lines_deleted,
             repository_id=repository.id,
-            author_id=getOrCreateAuthorId(name=commit.author_name, email=commit.email, session=session),
+            author=get_or_create_author(name=commit.author_name, email=commit.email, session=session),
         )
         session.add(obj)
     repository.last_commit_hash = commit.hash
@@ -90,7 +90,7 @@ def repo_init(workspace: dbm.Workspace, remote_repository: RemoteRepositoryInfor
             lines_added=commit.lines_inserted,
             lines_removed=commit.lines_deleted,
             repository=repository,
-            author_id=getOrCreateAuthorId(name=commit.author_name, email=commit.email, session=session),
+            author=get_or_create_author(name=commit.author_name, email=commit.email, session=session),
         )
         session.add(obj)
     repository.last_commit_hash = commit.hash
@@ -99,20 +99,18 @@ def repo_init(workspace: dbm.Workspace, remote_repository: RemoteRepositoryInfor
 
 
 @functools.lru_cache(maxsize=50)
-def getOrCreateAuthorId(name: str, email: str, session: DatabaseSession) -> int:
+def get_or_create_author(name: str, email: str, session: DatabaseSession) -> dbm.Author:
     author = session.query(dbm.Author) \
         .filter(dbm.Author.name == name,
                 dbm.Author.email == email) \
         .one_or_none()
 
-    if author:
-        return author.id
+    if author is not None:
+        return author
 
     author = dbm.Author(
         name=name,
         email=email
     )
     session.add(author)
-    session.commit()
-    session.refresh(author)
-    return author.id
+    return author
