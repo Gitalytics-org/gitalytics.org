@@ -49,7 +49,7 @@ def update_workspace(workspace_name: str, platform: GitPlatform):
 
 
 def repo_update(workspace: dbm.Workspace, remote_repository: RemoteRepositoryInformation, session: DatabaseSession):
-    repository = session.query(dbm.Repository) \
+    repository: dbm.Repository = session.query(dbm.Repository) \
         .filter(dbm.Repository.name == remote_repository.repository_name,
                 dbm.Repository.workspace == workspace) \
         .one()
@@ -100,7 +100,7 @@ def repo_init(workspace: dbm.Workspace, remote_repository: RemoteRepositoryInfor
 
 @functools.lru_cache(maxsize=50)
 def get_or_create_author(name: str, email: str, session: DatabaseSession) -> dbm.Author:
-    author = session.query(dbm.Author) \
+    author: dbm.Author|None = session.query(dbm.Author) \
         .filter(dbm.Author.name == name,
                 dbm.Author.email == email) \
         .one_or_none()
