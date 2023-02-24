@@ -70,8 +70,6 @@ def update_repository(workspace: dbm.Workspace, remote_repository: RemoteReposit
     repository.last_commit_hash = commit.hash
     session.commit()
 
-    repository.last_refresh = datetime.now()
-
 
 def initialize_repository(workspace: dbm.Workspace, remote_repository: RemoteRepositoryInformation, session: DatabaseSession):
     repository = dbm.Repository(
