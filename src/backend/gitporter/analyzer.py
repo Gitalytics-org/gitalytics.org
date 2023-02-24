@@ -42,12 +42,12 @@ def update_workspace(workspace_name: str, platform: GitPlatform):
                                  dbm.Repository.workspace == workspace) \
                          .one_or_none())
             if exists_in_databse:
-                repo_update(workspace=workspace, remote_repository=remote_repository, session=session)
+                update_repository(workspace=workspace, remote_repository=remote_repository, session=session)
             else:
-                repo_init(workspace=workspace, remote_repository=remote_repository, session=session)
+                initialize_repository(workspace=workspace, remote_repository=remote_repository, session=session)
 
 
-def repo_update(workspace: dbm.Workspace, remote_repository: RemoteRepositoryInformation, session: DatabaseSession):
+def update_repository(workspace: dbm.Workspace, remote_repository: RemoteRepositoryInformation, session: DatabaseSession):
     repository: dbm.Repository = session.query(dbm.Repository) \
         .filter(dbm.Repository.name == remote_repository.repository_name,
                 dbm.Repository.workspace == workspace) \
@@ -73,7 +73,7 @@ def repo_update(workspace: dbm.Workspace, remote_repository: RemoteRepositoryInf
     repository.last_refresh = datetime.now()
 
 
-def repo_init(workspace: dbm.Workspace, remote_repository: RemoteRepositoryInformation, session: DatabaseSession):
+def initialize_repository(workspace: dbm.Workspace, remote_repository: RemoteRepositoryInformation, session: DatabaseSession):
     repository = dbm.Repository(
         name=remote_repository.repository_name,
         workspace_id=workspace.id,
