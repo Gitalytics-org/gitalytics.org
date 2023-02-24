@@ -28,7 +28,6 @@ def update_all_workspaces():
 
 
 def update_workspace(workspace_name: str, platform: GitPlatform):
-    remote_repositories = get_remote_repositories(platform=platform, workspace=workspace_name)
     with createLocalSession() as session:
         workspace = session.query(dbm.Workspace) \
             .filter(dbm.Workspace.name == workspace_name,
@@ -37,7 +36,7 @@ def update_workspace(workspace_name: str, platform: GitPlatform):
         if workspace is None:
             workspace = dbm.Workspace(name=workspace_name, platform=platform)
             session.add(workspace)
-        for remote_repository in remote_repositories:
+        for remote_repository in get_remote_repositories(platform=platform, workspace=workspace_name):
             exists_in_databse = bool(session.query(dbm.Repository) \
                          .filter(dbm.Repository.name == remote_repository.repository_name,
                                  dbm.Repository.workspace == workspace) \
@@ -53,8 +52,11 @@ def repo_update(workspace: dbm.Workspace, remote_repository: RemoteRepositoryInf
         .filter(dbm.Repository.name == remote_repository.repository_name,
                 dbm.Repository.workspace == workspace) \
         .one()
-
+    
     log = get_git_log_after_commit(clone_url=remote_repository.clone_url, last_commit_hash=repository.last_commit_hash)
+    if log is None:
+        return
+    
     for commit in parseLog(log):
         obj = dbm.Commit(
             committed_at=commit.committed_at,

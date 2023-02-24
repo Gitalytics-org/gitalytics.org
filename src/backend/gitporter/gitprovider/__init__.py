@@ -3,6 +3,7 @@
 r"""
 
 """
+import typing as t
 from database.enums import GitPlatform
 from .common import InfoCollectionError, RepositoryInfo
 from . import github
@@ -17,7 +18,7 @@ provider_dict = {
 }
 
 
-def getRepositoryList(platform: GitPlatform, workspace: str):
+def getRepositoryList(platform: GitPlatform, workspace: str) -> t.List[RepositoryInfo]:
     module = provider_dict[platform]
     try:
         return module.getRepositoryList(workspace=workspace)
