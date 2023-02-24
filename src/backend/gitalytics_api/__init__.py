@@ -38,7 +38,7 @@ for fp in glob.glob("**/*.route.py", root_dir=p.join(ROOT, "routes"), recursive=
     module = importlib.util.module_from_spec(spec)
     sys.modules[spec.name] = module
     try:
-        logging.debug("load and include")
+        logging.debug("execute module and include router")
         spec.loader.exec_module(module)
         app.include_router(module.router, prefix="/api")
     except Exception as exception:
