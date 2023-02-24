@@ -18,7 +18,7 @@ import git
 from datetime import datetime
 from database import createLocalSession, DatabaseSession, models as dbm
 from database.enums import GitPlatform
-from .gitprovider_stuff import getRepositoryList as get_remote_repositories, RepositoryInfo as RemoteRepositoryInformation
+from .gitprovider import getRepositoryList as get_remote_repositories, RepositoryInfo as RemoteRepositoryInformation
 from .output_analyzer import parseLog
 
 
