@@ -18,7 +18,7 @@ import git
 from datetime import datetime
 from database import createLocalSession, DatabaseSession, models as dbm
 from database.enums import GitPlatform
-from .gitprovider_stuff import getRepositoryList, RepositoryInfo
+from .gitprovider_stuff import getRepositoryList as get_remote_repositories, RepositoryInfo as RemoteRepositoryInformation
 from .output_analyzer import parseLog
 
 
@@ -28,14 +28,11 @@ def update_all_workspaces():
     """
     with createLocalSession() as session:
         for workspace in session.query(dbm.Workspace):
-            try:
-                update_workspace(workspace_name=workspace.name, workspace_platform=workspace.platform)
-            except Exception as exc:
-                logging.error("failed to update workspace", exc_info=exc)
+            update_workspace(workspace_name=workspace.name, workspace_platform=workspace.platform)
 
 
 def update_workspace(workspace_name: str, platform: GitPlatform):
-    repositories_infos = getRepositoryList(platform=platform, workspace=workspace_name)
+    remote_repositories = get_remote_repositories(platform=platform, workspace=workspace_name)
     with createLocalSession() as session:
         workspace = session.query(dbm.Workspace) \
             .filter(dbm.Workspace.name == workspace_name,
@@ -44,29 +41,29 @@ def update_workspace(workspace_name: str, platform: GitPlatform):
         if workspace is None:
             workspace = dbm.Workspace(name=workspace_name, platform=platform)
             session.add(workspace)
-        for repository_info in repositories_infos:
+        for remote_repository in remote_repositories:
             exist = bool(session.query(dbm.Repository)
-                         .filter(dbm.Repository.name == repository_info.repository_name,
+                         .filter(dbm.Repository.name == remote_repository.repository_name,
                                  dbm.Repository.workspace == workspace)
                          .one_or_none())
             if exist:
-                repo_update(workspace=workspace, repository_info=repository_info, session=session)
+                repo_update(workspace=workspace, repository_info=remote_repository, session=session)
             else:
-                repo_init(workspace=workspace, repository_info=repository_info, session=session)
+                repo_init(workspace=workspace, repository_info=remote_repository, session=session)
 
 
-def repo_update(workspace: dbm.Workspace, repository_info: RepositoryInfo, session: DatabaseSession):
+def repo_update(workspace: dbm.Workspace, remote_repository: RemoteRepositoryInformation, session: DatabaseSession):
     repo_path = tempfile.mktemp(prefix="gitalytics")
     try:
         git_repository = git.Repo.clone_from(
-            repository_info.clone_url,
+            remote_repository.clone_url,
             to_path=repo_path,
             filter="blob:none",
             no_checkout=True
         )
 
         repository = session.query(dbm.Repository) \
-            .filter(dbm.Repository.name == repository_info.repository_name,
+            .filter(dbm.Repository.name == remote_repository.repository_name,
                     dbm.Repository.workspace == workspace) \
             .one()
 
@@ -91,11 +88,11 @@ def repo_update(workspace: dbm.Workspace, repository_info: RepositoryInfo, sessi
             shutil.rmtree(repo_path)
 
 
-def repo_init(workspace: dbm.Workspace, repository_info: RepositoryInfo, session: DatabaseSession):
+def repo_init(workspace: dbm.Workspace, remote_repository: RemoteRepositoryInformation, session: DatabaseSession):
     repo_path = tempfile.mktemp(prefix="gitalytics")
     try:
         repository = git.Repo.clone_from(
-            repository_info.clone_url,
+            remote_repository.clone_url,
             to_path=repo_path,
             no_checkout=True
         )
@@ -103,7 +100,7 @@ def repo_init(workspace: dbm.Workspace, repository_info: RepositoryInfo, session
         log = repository.git.log('--shortstat', '--no-merges', '--format=%H;%aI;%an;%ae')
 
         repository = dbm.Repository(
-            name=repository_info.repository_name,
+            name=remote_repository.repository_name,
             workspace_id=workspace.id,
         )
         session.add(repository)
