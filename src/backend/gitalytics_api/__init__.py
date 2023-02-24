@@ -4,8 +4,9 @@ r"""
 
 """
 import sys
-import os.path as p
 import glob
+import logging
+import os.path as p
 import importlib.util
 import fastapi.middleware.cors
 import fastapi.staticfiles
@@ -27,22 +28,27 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+logging.info("Loading routes")
+
 for fp in glob.glob("**/*.route.py", root_dir=p.join(ROOT, "routes"), recursive=True):
     MODULE_NAME = "routes." + fp.split(".", 1)[0].replace(p.pathsep, ".")
     MODULE_PATH = p.join(ROOT, "routes", fp)
-    print("Attempt to load", MODULE_NAME, [MODULE_PATH])
+    logging.info(f"Attempt to load: {fp} ({MODULE_NAME})")
     spec = importlib.util.spec_from_file_location(MODULE_NAME, MODULE_PATH)
     module = importlib.util.module_from_spec(spec)
     sys.modules[spec.name] = module
     try:
-        print("load and include")
+        logging.debug("load and include")
         spec.loader.exec_module(module)
         app.include_router(module.router, prefix="/api")
-    except Exception:
-        # del sys.modules[spec.name]
+    except Exception as exception:
+        del sys.modules[spec.name]
+        logging.critical(f"Failed to load {fp}", exc_info=exception)
         raise
     else:
-        print("loaded:", fp, [MODULE_NAME, MODULE_PATH])
+        logging.info(f"loaded: {fp}")
+
+logging.info("Successfully loaded all routes")
 
 # only now mount (order is important!)
 app.mount(

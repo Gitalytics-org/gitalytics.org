@@ -5,6 +5,7 @@ r"""
 """
 import sys
 import argparse
+import logging
 from __version__ import __version__
 import logconfig  # noqa
 import gitporter
@@ -71,4 +72,6 @@ gpUpdateWorkspaceParser.add_argument('-w', '--workspace-name', required=True, he
 
 if __name__ == '__main__':
     args = vars(parser.parse_args())
+    logging.warning("Starting main.py")
+    logging.info(f"starting args: {args}")
     sys.exit(args.pop('function')(**args))
