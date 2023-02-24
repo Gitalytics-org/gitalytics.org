@@ -14,7 +14,7 @@ from datetime import datetime
 import pydantic
 
 
-REGEX = r"(?P<hash>[a-z0-9]+);(?P<datetime>.+);(?P<author_name>.+);(?P<email>.+)\n\n" \
+REGEX = r"(?P<hash>[a-z0-9]+);(?P<committed_at>.+);(?P<author_name>.+);(?P<email>.+)\n\n" \
         r"(?: (?P<files_changed>\d+) files? changed,?)?" \
         r"(?: (?P<lines_inserted>\d+) insertions?\(\+\),?)?" \
         r"(?: (?P<lines_deleted>\d+) deletions?\(\-\))?"
@@ -25,7 +25,7 @@ class ParsedCommit(pydantic.BaseModel):
     hash: str
     author_name: str
     email: str
-    datetime: datetime
+    committed_at: datetime
     files_changed: int
     lines_inserted: int
     lines_deleted: int

@@ -10,16 +10,12 @@ __maintainer__ = "KOLO, RORIWA"
 __status__ = "Prototype"  # Prototype, Development, Production
 
 import functools
-import os.path as p
-import shutil
-import logging
-import tempfile
-import git
 from datetime import datetime
 from database import createLocalSession, DatabaseSession, models as dbm
 from database.enums import GitPlatform
 from .gitprovider import getRepositoryList as get_remote_repositories, RepositoryInfo as RemoteRepositoryInformation
 from .output_analyzer import parseLog
+from .git_command import get_full_git_log, get_git_log_after_commit
 
 
 def update_all_workspaces():
@@ -53,95 +49,70 @@ def update_workspace(workspace_name: str, platform: GitPlatform):
 
 
 def repo_update(workspace: dbm.Workspace, remote_repository: RemoteRepositoryInformation, session: DatabaseSession):
-    repo_path = tempfile.mktemp(prefix="gitalytics")
-    try:
-        git_repository = git.Repo.clone_from(
-            remote_repository.clone_url,
-            to_path=repo_path,
-            filter="blob:none",
-            no_checkout=True
+    repository = session.query(dbm.Repository) \
+        .filter(dbm.Repository.name == remote_repository.repository_name,
+                dbm.Repository.workspace == workspace) \
+        .one()
+
+    log = get_git_log_after_commit(clone_url=remote_repository.clone_url, last_commit_hash=repository.last_commit_hash)
+    for commit in parseLog(log):
+        obj = dbm.Commit(
+            committed_at=commit.committed_at,
+            files_modified=commit.files_changed,
+            lines_added=commit.lines_inserted,
+            lines_removed=commit.lines_deleted,
+            repository_id=repository.id,
+            author_id=getOrCreateAuthorId(name=commit.author_name, email=commit.email, session=session),
         )
+        session.add(obj)
+    repository.last_commit_hash = commit.hash
+    session.commit()
 
-        repository = session.query(dbm.Repository) \
-            .filter(dbm.Repository.name == remote_repository.repository_name,
-                    dbm.Repository.workspace == workspace) \
-            .one()
-
-        # replace --after with the hash
-        log = git_repository.git.log('--shortstat', '--no-merges', '--format=%H;%aI;%an;%ae', "--after",
-                                     repository.last_refresh.isoformat())
-        for commit in parseLog(log):
-            obj = dbm.Commit(
-                committed_at=commit.datetime,
-                files_modified=commit.files_changed,
-                lines_added=commit.lines_inserted,
-                lines_removed=commit.lines_deleted,
-                repository_id=repository.id,
-                author_id=getOrCreateAuthorId(name=commit.author_name, email=commit.email),
-            )
-            session.add(obj)
-        session.commit()
-
-        repository.last_refresh = datetime.now()
-    finally:
-        if p.isdir(repo_path):
-            shutil.rmtree(repo_path)
+    repository.last_refresh = datetime.now()
 
 
 def repo_init(workspace: dbm.Workspace, remote_repository: RemoteRepositoryInformation, session: DatabaseSession):
-    repo_path = tempfile.mktemp(prefix="gitalytics")
-    try:
-        repository = git.Repo.clone_from(
-            remote_repository.clone_url,
-            to_path=repo_path,
-            no_checkout=True
-        )
+    repository = dbm.Repository(
+        name=remote_repository.repository_name,
+        workspace_id=workspace.id,
+    )
 
-        log = repository.git.log('--shortstat', '--no-merges', '--format=%H;%aI;%an;%ae')
-
-        repository = dbm.Repository(
-            name=remote_repository.repository_name,
-            workspace_id=workspace.id,
-        )
+    log = get_full_git_log(clone_url=remote_repository.clone_url)
+    if log is None:
         session.add(repository)
         session.commit()
-        session.refresh(repository)
+        return
 
-        for commit in parseLog(log):
-            obj = dbm.Commit(
-                committed_at=commit.datetime,
-                files_modified=commit.files_changed,
-                lines_added=commit.lines_inserted,
-                lines_removed=commit.lines_deleted,
-                repository_id=repository.id,
-                author_id=getOrCreateAuthorId(name=commit.author_name, email=commit.email),
-            )
-            session.add(obj)
-        session.commit()
-
-        repository.last_refresh = datetime.now()
-        session.commit()
-    finally:
-        if p.isdir(repo_path):
-            shutil.rmtree(repo_path)
+    for commit in parseLog(log):
+        obj = dbm.Commit(
+            committed_at=commit.committed_at,
+            files_modified=commit.files_changed,
+            lines_added=commit.lines_inserted,
+            lines_removed=commit.lines_deleted,
+            repository=repository,
+            author_id=getOrCreateAuthorId(name=commit.author_name, email=commit.email, session=session),
+        )
+        session.add(obj)
+    repository.last_commit_hash = commit.hash
+    session.add(repository)
+    session.commit()
 
 
 @functools.lru_cache(maxsize=50)
-def getOrCreateAuthorId(name: str, email: str) -> int:
-    with createLocalSession() as session:
-        author = session.query(dbm.Author) \
-            .filter(dbm.Author.name == name,
-                    dbm.Author.email == email) \
-            .one_or_none()
+def getOrCreateAuthorId(name: str, email: str, session: DatabaseSession) -> int:
+    author = session.query(dbm.Author) \
+        .filter(dbm.Author.name == name,
+                dbm.Author.email == email) \
+        .one_or_none()
 
-        if author:
-            return author.id
-
-        author = dbm.Author(
-            name=name,
-            email=email
-        )
-        session.add(author)
-        session.commit()
-        session.refresh(author)
+    if author:
         return author.id
+
+    author = dbm.Author(
+        name=name,
+        email=email
+    )
+    session.add(author)
+    session.commit()
+    session.refresh(author)
+    return author.id
