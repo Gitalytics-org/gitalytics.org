@@ -3,4 +3,5 @@
 r"""
 
 """
-from .analyzer import update_all_workspaces, update_workspace
+from .update_workspace import update_workspace
+from .update_all_workspaces import update_all_workspaces

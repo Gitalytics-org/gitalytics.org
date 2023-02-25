@@ -14,9 +14,9 @@ def get_full_git_log(clone_url: str) -> str|None:
             )
 
         try:
-            log = git_repository.git.log('--shortstat', '--reverse', '--format=%H;%aI;%an;%ae')
+            return git_repository.git.log('--shortstat', '--reverse', '--format=%H;%aI;%an;%ae')
         except git.exc.GitCommandError as git_error:
-            if type(git_error.stderr) is not str:
+            if not isinstance(git_error.stderr, str):
                 raise git_error
             if re.search(r"fatal: your current branch '.+' does not have any commits yet", git_error.stderr):
                 return None
@@ -24,5 +24,3 @@ def get_full_git_log(clone_url: str) -> str|None:
     finally:
         if os.path.isdir(repo_path):
             shutil.rmtree(repo_path)
-    
-    return log
