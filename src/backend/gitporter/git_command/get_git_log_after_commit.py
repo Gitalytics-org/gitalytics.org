@@ -15,9 +15,9 @@ def get_git_log_after_commit(clone_url: str, last_commit_hash: str|None) -> str:
         )
         try: 
             if last_commit_hash is None:
-                log: str = git_repository.git.log('--shortstat', '--no-merges', '--format=%H;%aI;%an;%ae')
+                log: str = git_repository.git.log('--shortstat', '--reverse', '--format=%H;%aI;%an;%ae')
             else:
-                log: str = git_repository.git.log('--shortstat', '--no-merges', '--format=%H;%aI;%an;%ae', f"{last_commit_hash}..HEAD")
+                log: str = git_repository.git.log('--shortstat', '--reverse', '--format=%H;%aI;%an;%ae', f"{last_commit_hash}..HEAD")
             if log.strip() == "":
                 return None
             return log

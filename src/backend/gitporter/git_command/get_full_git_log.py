@@ -14,7 +14,7 @@ def get_full_git_log(clone_url: str) -> str|None:
             )
 
         try:
-            log = git_repository.git.log('--shortstat', '--no-merges', '--format=%H;%aI;%an;%ae')
+            log = git_repository.git.log('--shortstat', '--reverse', '--format=%H;%aI;%an;%ae')
         except git.exc.GitCommandError as git_error:
             if type(git_error.stderr) is not str:
                 raise git_error
