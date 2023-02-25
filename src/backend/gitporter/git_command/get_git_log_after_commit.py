@@ -14,12 +14,14 @@ def get_git_log_after_commit(clone_url: str, last_commit_hash: str|None) -> str:
             no_checkout=True
         )
         try: 
-            if last_commit_hash is None:
-                log: str = git_repository.git.log('--shortstat', '--reverse', '--format=%H;%aI;%an;%ae')
-            else:
-                log: str = git_repository.git.log('--shortstat', '--reverse', '--format=%H;%aI;%an;%ae', f"{last_commit_hash}..HEAD")
+            git_log_args = ["--shortstat", "--reverse", "--format=%H;%aI;%an;%ae"]
+            if last_commit_hash is not None:
+                git_log_args.append(f"{last_commit_hash}..HEAD")
+            
+            log: str = git_repository.git.log(*git_log_args)
             if log.strip() == "":
                 return None
+            
             return log
         except git.exc.GitCommandError as git_error:
             if type(git_error.stderr) is not str:
@@ -30,5 +32,3 @@ def get_git_log_after_commit(clone_url: str, last_commit_hash: str|None) -> str:
     finally:
         if os.path.isdir(repo_path):
             shutil.rmtree(repo_path)
-    
-    return log
