@@ -1,20 +1,24 @@
 import AvgCommitsPerDay from "./per-day";
+import AvgCommitsPerHour from "./per-hour";
 import AvgCommitsPerMonth from "./per-month";
 import AvgCommitsPerWeek from "./per-week";
 import AvgCommitsPerWeekday from "./per-weekday";
 
 export default function CombinedAvgCommitsGraph() {
     return <div className="grid grid-cols-2 grid-rows-2 gap-5">
-        <div className="overflow-hidden">
+        <div>
+            <AvgCommitsPerHour />
+        </div>
+        <div>
             <AvgCommitsPerWeekday />
         </div>
-        <div className="overflow-hidden">
+        <div>
             <AvgCommitsPerDay />
         </div>
-        <div className="overflow-hidden">
+        <div>
             <AvgCommitsPerWeek />
         </div>
-        <div className="overflow-hidden">
+        <div>
             <AvgCommitsPerMonth />
         </div>
     </div>;

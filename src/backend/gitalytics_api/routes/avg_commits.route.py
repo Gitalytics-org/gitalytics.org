@@ -22,6 +22,20 @@ def getCommitCountSubquery(connection: sql.orm.Session):
         .subquery()
 
 
+@router.get("/avg-commits-per-hour")
+async def getAvgPerHour():
+    with createLocalSession() as connection:
+        subquery = getCommitCountSubquery(connection=connection)
+
+        stats = connection \
+            .query((sql.func.sum(subquery.c.count) / 24).label("avg"),
+                   sql.func.extract("hour", subquery.c.date).label("hour")) \
+            .group_by(sql.func.extract("hour", subquery.c.date)) \
+            .all()
+
+    return {row.hour: row.avg for row in stats}
+
+
 @router.get("/avg-commits-per-weekday")
 async def getAvgPerWeekday():
     r"""

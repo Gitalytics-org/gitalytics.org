@@ -8,6 +8,9 @@ export default  function GraphLandingPage() {
         <Link to="/app/avg-commits">
             Average Commits
         </Link>
+        <Link to="/app/avg-commits-per-hour">
+            Average Commits per Hour
+        </Link>
         <Link to="/app/avg-commits-per-weekday">
             Average Commits per Weekday
         </Link>

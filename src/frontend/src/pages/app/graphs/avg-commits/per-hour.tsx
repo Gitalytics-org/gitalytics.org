@@ -7,14 +7,14 @@ import colorLib from "@kurkle/color";
 
 type AvgCommitsPerWeekdayResponse = Record<number, number>
 
-const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const HOURS_PER_DAY = 24;
 const ZERO = 0;
 
 
-export default function AvgCommitsPerWeekday() {
+export default function AvgCommitsPerHour() {
     const query = useQuery<AvgCommitsPerWeekdayResponse>(
-        ["avg-commits-per-weekday"],
-        () => axios.get("/avg-commits-per-weekday").then(response => response.data),
+        ["avg-commits-per-hour"],
+        () => axios.get("/avg-commits-per-hour").then(response => response.data),
     );
     if (query.isLoading) {
         return <>Loading...</>;
@@ -23,15 +23,15 @@ export default function AvgCommitsPerWeekday() {
         return <>Error...</>;
     }
 
-    const weekdays = ZeroToNArray(WEEKDAYS.length);
+    const hours = ZeroToNArray(HOURS_PER_DAY);
     const maxValue = Math.max(...Object.values(query.data!));
 
     return <PolarArea data={{
-        labels: WEEKDAYS,
+        labels: hours.map(h => `${h} o Clock`),
         datasets: [{
-            label: "Avg Commits per Weekday",
-            data: weekdays.map(i => query.data![i] ?? ZERO),
-            backgroundColor: weekdays.map(
+            label: "Avg Commits per Hour",
+            data: hours.map(i => query.data![i] ?? ZERO),
+            backgroundColor: hours.map(
                 i => colorLib("#F05133")
                     .alpha((query.data![i] ?? ZERO) / maxValue)
                     .rgbString(),
@@ -42,7 +42,7 @@ export default function AvgCommitsPerWeekday() {
         plugins: {
             title: {
                 display: true,
-                text: "Avg Commits per Weekday",
+                text: "Avg Commits per Hour",
             },
             legend: {
                 display: false,

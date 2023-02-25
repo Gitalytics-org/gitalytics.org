@@ -22,11 +22,13 @@ export default function AvgCommitsPerWeek() {
         return <>Error...</>;
     }
 
+    const weeks = OneToNArray(WEEKS_PER_YEAR);
+
     return <Bar data={{
-        labels: Array.from(Array(WEEKS_PER_YEAR).keys()),
+        labels: weeks,
         datasets: [{
             label: "Avg Commits per Week",
-            data: OneToNArray(WEEKS_PER_YEAR).map(i => query.data![i] ?? ZERO),
+            data: weeks.map(i => query.data![i] ?? ZERO),
             backgroundColor: "#F05133",
         }],
     }} options={{
@@ -41,7 +43,7 @@ export default function AvgCommitsPerWeek() {
             },
         },
         interaction: {
-            intersect: false,
+            intersect: true,
         },
     }} width="100%" height="100%" className="w-full max-h-screen" />;
 }

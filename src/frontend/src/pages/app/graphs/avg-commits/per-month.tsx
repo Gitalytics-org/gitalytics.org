@@ -43,10 +43,18 @@ export default function AvgCommitsPerMonth() {
         interaction: {
             intersect: false,
         },
+        elements: {
+            line: {
+                tension: 0.25,
+            },
+        },
         scales: {
             r: {
                 ticks: {
                     display: false,
+                },
+                grid: {
+                    color: "white",
                 },
             },
         },
