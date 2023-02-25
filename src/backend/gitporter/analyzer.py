@@ -13,7 +13,7 @@ import functools
 from database import createLocalSession, DatabaseSession, models as dbm
 from database.enums import GitPlatform
 from .gitprovider import getRepositoryList as get_remote_repositories, RepositoryInfo as RemoteRepositoryInformation
-from .git_command import get_full_git_log, get_git_log_after_commit, parseLog
+from .git_command import get_full_git_log, get_git_log_after_commit, parse_git_log
 
 
 def update_all_workspaces():
@@ -55,7 +55,7 @@ def update_repository(workspace: dbm.Workspace, remote_repository: RemoteReposit
     if log is None:
         return
     
-    for commit in parseLog(log):
+    for commit in parse_git_log(log):
         obj = dbm.Commit(
             committed_at=commit.committed_at,
             files_modified=commit.files_changed,
@@ -81,7 +81,7 @@ def initialize_repository(workspace: dbm.Workspace, remote_repository: RemoteRep
         session.commit()
         return
 
-    for commit in parseLog(log):
+    for commit in parse_git_log(log):
         obj = dbm.Commit(
             committed_at=commit.committed_at,
             files_modified=commit.files_changed,
