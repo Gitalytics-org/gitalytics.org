@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useQuery } from "react-query";
-import { Radar } from "react-chartjs-2";
+import { PolarArea } from "react-chartjs-2";
 import { ZeroToNArray } from "../../utils";
+import colorLib, { Color } from "@kurkle/color";
 
 
 type AvgCommitsPerWeekdayResponse = Record<number, number>
@@ -22,11 +23,19 @@ export default function AvgCommitsPerWeekday() {
         return <>Error...</>;
     }
 
-    return <Radar data={{
+    const weekdays = ZeroToNArray(WEEKDAYS.length);
+    const maxValue = Math.max(...Object.values(query.data!));
+
+    return <PolarArea data={{
         labels: WEEKDAYS,
         datasets: [{
             label: "Avg Commits per Weekday",
-            data: ZeroToNArray(WEEKDAYS.length).map(i => query.data![i] ?? ZERO),
+            data: weekdays.map(i => query.data![i] ?? ZERO),
+            backgroundColor: weekdays.map(
+                i => colorLib("#F05133")
+                    .alpha((query.data![i] ?? ZERO) / maxValue)
+                    .rgbString(),
+            ),
         }],
     }} options={{
         // maintainAspectRatio: false,
@@ -42,5 +51,12 @@ export default function AvgCommitsPerWeekday() {
         interaction: {
             intersect: false,
         },
-    }} width="100%" height="100%" className="w-full" />;
+        scales: {
+            r: {
+                ticks: {
+                    display: false,
+                },
+            },
+        },
+    }} width="100%" height="100%" className="w-full max-h-screen" />;
 }

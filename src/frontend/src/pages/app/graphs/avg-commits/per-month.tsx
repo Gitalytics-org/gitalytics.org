@@ -27,6 +27,7 @@ export default function AvgCommitsPerMonth() {
         datasets: [{
             label: "Avg Commits per Month",
             data: OneToNArray(MONTHS.length).map(i => query.data![i] ?? ZERO),
+            borderColor: "#F05133",
         }],
     }} options={{
         // maintainAspectRatio: false,
@@ -41,6 +42,13 @@ export default function AvgCommitsPerMonth() {
         },
         interaction: {
             intersect: false,
+        },
+        scales: {
+            r: {
+                ticks: {
+                    display: false,
+                },
+            },
         },
     }} width="100%" height="100%" className="w-full" />;
 }

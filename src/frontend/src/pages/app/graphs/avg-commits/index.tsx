@@ -4,7 +4,7 @@ import AvgCommitsPerWeek from "./per-week";
 import AvgCommitsPerWeekday from "./per-weekday";
 
 export default function CombinedAvgCommitsGraph() {
-    return <div className="grid grid-cols-2 grid-rows-2">
+    return <div className="grid grid-cols-2 grid-rows-2 gap-5">
         <div className="overflow-hidden">
             <AvgCommitsPerWeekday />
         </div>

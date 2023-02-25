@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useQuery } from "react-query";
-import { Radar } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import { OneToNArray } from "../../utils";
 
 
@@ -22,11 +22,12 @@ export default function AvgCommitsPerWeek() {
         return <>Error...</>;
     }
 
-    return <Radar data={{
+    return <Bar data={{
         labels: Array.from(Array(WEEKS_PER_YEAR).keys()),
         datasets: [{
             label: "Avg Commits per Week",
             data: OneToNArray(WEEKS_PER_YEAR).map(i => query.data![i] ?? ZERO),
+            backgroundColor: "#F05133",
         }],
     }} options={{
         // maintainAspectRatio: false,
@@ -42,5 +43,5 @@ export default function AvgCommitsPerWeek() {
         interaction: {
             intersect: false,
         },
-    }} width="100%" height="100%" className="w-full" />;
+    }} width="100%" height="100%" className="w-full max-h-screen" />;
 }
