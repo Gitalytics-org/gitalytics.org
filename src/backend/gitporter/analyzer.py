@@ -13,8 +13,7 @@ import functools
 from database import createLocalSession, DatabaseSession, models as dbm
 from database.enums import GitPlatform
 from .gitprovider import getRepositoryList as get_remote_repositories, RepositoryInfo as RemoteRepositoryInformation
-from .output_analyzer import parseLog
-from .git_command import get_full_git_log, get_git_log_after_commit
+from .git_command import get_full_git_log, get_git_log_after_commit, parseLog
 
 
 def update_all_workspaces():
