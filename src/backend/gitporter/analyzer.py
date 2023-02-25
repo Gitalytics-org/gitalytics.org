@@ -9,11 +9,11 @@ __version__ = '.'.join(str(_) for _ in __version_info__)
 __maintainer__ = "KOLO, RORIWA"
 __status__ = "Prototype"  # Prototype, Development, Production
 
-import functools
 from database import createLocalSession, DatabaseSession, models as dbm
 from database.enums import GitPlatform
 from .gitprovider import get_remote_repositories, RemoteRepositoryInformation
 from .git_command import get_full_git_log, get_git_log_after_commit, parse_git_log
+from .get_or_create_author import get_or_create_author
 
 
 def update_all_workspaces():
@@ -94,21 +94,3 @@ def initialize_repository(workspace: dbm.Workspace, remote_repository: RemoteRep
     repository.last_commit_hash = commit.hash
     session.add(repository)
     session.commit()
-
-
-@functools.lru_cache(maxsize=50)
-def get_or_create_author(name: str, email: str, session: DatabaseSession) -> dbm.Author:
-    author: dbm.Author|None = session.query(dbm.Author) \
-        .filter(dbm.Author.name == name,
-                dbm.Author.email == email) \
-        .one_or_none()
-
-    if author is not None:
-        return author
-
-    author = dbm.Author(
-        name=name,
-        email=email
-    )
-    session.add(author)
-    return author
