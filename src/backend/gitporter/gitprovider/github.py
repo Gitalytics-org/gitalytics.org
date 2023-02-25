@@ -6,15 +6,15 @@ f"https://api.github.com/orgs/{workspace}/repos" #TODO: organisation urls github
 """
 import typing as t
 import httpx
-from .common import RepositoryInfo
+from .common import RemoteRepositoryInformation
 
 
-def getRepositoryList(workspace: str) -> t.List[RepositoryInfo]:
+def get_remote_repositories(workspace: str) -> t.List[RemoteRepositoryInformation]:
     response = httpx.get(f"https://api.github.com/users/{workspace}/repos")
     response.raise_for_status()
-    data: t.List[GithubRepoListResponse] = response.json()
+    github_repositories: t.List[GithubRepoListResponse] = response.json()
 
-    return [RepositoryInfo(repository_name=repo['name'], clone_url=repo['clone_url']) for repo in data]
+    return [RemoteRepositoryInformation(repository_name=repo['name'], clone_url=repo['clone_url']) for repo in github_repositories]
 
 
 class GithubRepoListResponse(t.TypedDict):
