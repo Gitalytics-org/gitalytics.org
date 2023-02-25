@@ -35,6 +35,6 @@ class ParsedCommit(pydantic.BaseModel):
         return value or 0
 
 
-def parseLog(log: str) -> typing.Iterator[ParsedCommit]:
+def parse_git_log(log: str) -> typing.Iterator[ParsedCommit]:
     for match in re.finditer(REGEX, log):
         yield ParsedCommit(**match.groupdict())
