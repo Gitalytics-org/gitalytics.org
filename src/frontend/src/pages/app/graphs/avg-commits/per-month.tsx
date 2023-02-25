@@ -10,7 +10,7 @@ const MONTHS = ["January", "February", "March", "April", "May", "June", "July", 
 const ZERO = 0;
 
 
-export default function AvgCommitsPerDay() {
+export default function AvgCommitsPerMonth() {
     const query = useQuery<AvgCommitsPerMonthResponse>(
         ["avg-commits-per-month"],
         () => axios.get("/avg-commits-per-month").then(response => response.data),

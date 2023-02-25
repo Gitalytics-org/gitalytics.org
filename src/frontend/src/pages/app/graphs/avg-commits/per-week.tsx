@@ -10,7 +10,7 @@ const WEEKS_PER_YEAR = 52;
 const ZERO = 0;
 
 
-export default function AvgCommitsPerDay() {
+export default function AvgCommitsPerWeek() {
     const query = useQuery<AvgCommitsPerWeekResponse>(
         ["avg-commits-per-week"],
         () => axios.get("/avg-commits-per-week").then(response => response.data),
