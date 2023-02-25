@@ -34,7 +34,7 @@ async def getAvgPerWeekday():
 
         # 'dow' == day-of-week
         stats = connection \
-            .query((subquery.c.count / 7).label("avg"),
+            .query((sql.func.sum(subquery.c.count) / 7).label("avg"),
                    sql.func.extract("dow", subquery.c.date).label("weekday")) \
             .group_by(sql.func.extract("dow", subquery.c.date)) \
             .all()
@@ -50,7 +50,7 @@ async def getAvgPerWeekday():
         subquery = getCommitCountSubquery(connection=connection)
 
         stats = connection \
-            .query((subquery.c.count / 31).label("avg"),
+            .query((sql.func.sum(subquery.c.count) / 31).label("avg"),
                    sql.func.extract("day", subquery.c.date).label("day")) \
             .group_by(sql.func.extract("day", subquery.c.date)) \
             .all()
@@ -64,7 +64,7 @@ async def getAvgPerWeekday():
         subquery = getCommitCountSubquery(connection=connection)
 
         stats = connection \
-            .query((subquery.c.count / 52).label("avg"),
+            .query((sql.func.sum(subquery.c.count) / 52).label("avg"),
                    sql.func.extract("week", subquery.c.date).label("week")) \
             .group_by(sql.func.extract("week", subquery.c.date)) \
             .all()
@@ -78,7 +78,7 @@ async def getAvgPerWeekday():
         subquery = getCommitCountSubquery(connection=connection)
 
         stats = connection \
-            .query((subquery.c.count / 12).label("avg"),
+            .query((sql.func.sum(subquery.c.count) / 12).label("avg"),
                    sql.func.extract("month", subquery.c.date).label("month")) \
             .group_by(sql.func.extract("month", subquery.c.date)) \
             .all()
