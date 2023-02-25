@@ -2,7 +2,7 @@ import axios from "axios";
 import { useQuery } from "react-query";
 import { PolarArea } from "react-chartjs-2";
 import { ZeroToNArray } from "../../utils";
-import colorLib, { Color } from "@kurkle/color";
+import colorLib from "@kurkle/color";
 
 
 type AvgCommitsPerWeekdayResponse = Record<number, number>
