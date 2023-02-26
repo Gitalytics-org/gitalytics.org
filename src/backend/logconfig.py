@@ -23,7 +23,7 @@ class WatchFilesFilter(logging.Filter):
 
 
 debugHandler = logging.handlers.TimedRotatingFileHandler(
-    filename=os.path.join(LOGGING_PATH, "backend-debug.log"),
+    filename=os.path.join(LOGGING_PATH, "backend.log"),
     when="midnight",
     backupCount=4,
     delay=True,

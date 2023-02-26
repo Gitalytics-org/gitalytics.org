@@ -72,6 +72,6 @@ gpUpdateWorkspaceParser.add_argument('-w', '--workspace-name', required=True, he
 
 if __name__ == '__main__':
     args = vars(parser.parse_args())
-    logging.warning("Starting main.py")
-    logging.info(f"starting args: {args}")
+    logging.warning("Starting main.py")  # logging.warning to also show in warning.log that a new run was initiated
+    logging.info(f"Starting with args: {args}")
     sys.exit(args.pop('function')(**args))

@@ -46,7 +46,7 @@ for fp in glob.glob("**/*.route.py", root_dir=p.join(ROOT, "routes"), recursive=
         logging.critical(f"Failed to load {fp}", exc_info=exception)
         raise
     else:
-        logging.info(f"loaded: {fp}")
+        logging.info(f"Successfully loaded: {fp}")
 
 logging.info("Successfully loaded all routes")
 
