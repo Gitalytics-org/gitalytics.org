@@ -4,7 +4,7 @@ r"""
 
 """
 import httpx
-from database import createLocalSession, models as dbm
+from database import createLocalConnection, models as dbm
 from database.enums import GitPlatform
 from gitalytics_api.common import HttpxBearerAuth, add_error_logging
 from gitporter import update_workspace
@@ -14,7 +14,7 @@ from gitporter import update_workspace
 def initialize_session(session: dbm.Session):
     workspace_name = getWorkspaceName(session=session)
 
-    with createLocalSession() as connection:
+    with createLocalConnection() as connection:
         workspace = connection \
             .query(dbm.Workspace) \
             .filter(dbm.Workspace.platform == session.platform, dbm.Workspace.name == workspace_name) \

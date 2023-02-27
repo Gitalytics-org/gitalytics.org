@@ -6,7 +6,7 @@ r"""
 import fastapi
 import pydantic
 from database import models as dbm
-from database.db import createLocalSession
+from database.db import createLocalConnection
 import sqlalchemy as sql
 
 
@@ -22,7 +22,7 @@ async def get_commits_per_day(workspace_id: int, year: int):
     r"""
     get commits per day in the workspace from a specific year
     """
-    with createLocalSession() as connection:
+    with createLocalConnection() as connection:
         commits_per_day = connection.query(sql.func.date(dbm.Commit.committed_at), sql.func.count()) \
             .group_by(sql.func.date(dbm.Commit.committed_at)) \
             .join(dbm.Repository.commits) \

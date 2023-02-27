@@ -12,7 +12,7 @@ import httpx
 import fastapi
 import pydantic
 from cryptography.fernet import Fernet
-from database import createLocalSession, models as dbm
+from database import createLocalConnection, models as dbm
 
 
 class Settings(pydantic.BaseSettings):
@@ -40,7 +40,7 @@ def SessionToken(request: fastapi.Request) -> dbm.Session:
         raise fastapi.HTTPException(fastapi.status.HTTP_401_UNAUTHORIZED)
     session_id: int = json.loads(fernet.decrypt(token.encode()).decode())
 
-    with createLocalSession() as connection:
+    with createLocalConnection() as connection:
         session = connection \
             .query(dbm.Session) \
             .filter(dbm.Session.id == session_id) \

@@ -7,7 +7,7 @@ import typing
 import fastapi
 import pydantic
 from database.models import Workspace
-from database.db import createLocalSession
+from database.db import createLocalConnection
 
 
 router = fastapi.APIRouter()
@@ -30,7 +30,7 @@ async def create_workspace():
     r"""
     list all workspaces in the database
     """
-    with createLocalSession() as session:
+    with createLocalConnection() as session:
         workspaces = session.query(Workspace).all()
 
     return {"workspaces": workspaces}

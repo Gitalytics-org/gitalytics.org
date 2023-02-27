@@ -12,6 +12,7 @@ datetime = "*"
 python-dotenv = "*"
 httpx = "*"
 gitpython = "*"
+aiosqlite = "*"
 
 [dev-packages]
 

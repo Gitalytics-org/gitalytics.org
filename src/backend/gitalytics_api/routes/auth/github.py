@@ -10,7 +10,7 @@ import fastapi
 import pydantic
 import httpx
 from gitalytics_api.common import SessionStorage, SessionToken
-from database import createLocalSession, models as dbm
+from database import createLocalConnection, models as dbm
 from database.enums import GitPlatform
 from .session_initializer import initialize_session
 
@@ -102,7 +102,7 @@ async def verify(code: str, tasks: fastapi.BackgroundTasks, storage: SessionStor
     except pydantic.ValidationError:
         raise fastapi.HTTPException(fastapi.status.HTTP_400_BAD_REQUEST, detail=data.get("error_description"))
 
-    with createLocalSession() as connection:
+    with createLocalConnection() as connection:
 
         session = connection \
             .query(dbm.Session) \

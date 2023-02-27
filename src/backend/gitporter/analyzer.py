@@ -16,7 +16,7 @@ import logging
 import tempfile
 import git
 from datetime import datetime
-from database import createLocalSession, DatabaseSession, models as dbm
+from database import createLocalConnection, DatabaseSession, models as dbm
 from database.enums import GitPlatform
 from .gitprovider_stuff import getRepositoryList, RepositoryInfo
 from .output_analyzer import parseLog
@@ -26,7 +26,7 @@ def update_all_workspaces():
     r"""
     TODO: ignore workspaces with sessions older than 30 days
     """
-    with createLocalSession() as session:
+    with createLocalConnection() as session:
         for workspace in session.query(dbm.Workspace):
             try:
                 update_workspace(workspace_name=workspace.name, workspace_platform=workspace.platform)
@@ -36,7 +36,7 @@ def update_all_workspaces():
 
 def update_workspace(workspace_name: str, platform: GitPlatform):
     repositories_infos = getRepositoryList(platform=platform, workspace=workspace_name)
-    with createLocalSession() as session:
+    with createLocalConnection() as session:
         workspace = session.query(dbm.Workspace) \
             .filter(dbm.Workspace.name == workspace_name,
                     dbm.Workspace.platform == platform) \
@@ -131,7 +131,7 @@ def repo_init(workspace: dbm.Workspace, repository_info: RepositoryInfo, session
 
 @functools.lru_cache(maxsize=50)
 def getOrCreateAuthorId(name: str, email: str) -> int:
-    with createLocalSession() as session:
+    with createLocalConnection() as session:
         author = session.query(dbm.Author) \
             .filter(dbm.Author.name == name,
                     dbm.Author.email == email) \
