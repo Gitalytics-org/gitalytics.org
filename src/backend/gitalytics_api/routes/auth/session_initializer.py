@@ -26,7 +26,7 @@ def initialize_session(session: dbm.Session):
     update_workspace(workspace_name=workspace_name, platform=session.platform)
 
 
-def getWorkspaceName(session: dbm.Session):
+def getWorkspaceName(session: dbm.Session) -> str:
     match session.platform:
         case GitPlatform.GITHUB:
             return getWorkspaceNameGitHub(session.access_token)
