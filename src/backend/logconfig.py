@@ -45,8 +45,10 @@ warningHandler.setLevel(logging.WARNING)  # WARNING and up
 consoleLoggingHandler = logging.StreamHandler()
 consoleLoggingHandler.addFilter(WatchFilesFilter())
 
+FORMAT = "{asctime} | {levelname:.3} | {processName}/{threadName} | {module:20} | {funcName:20} | {lineno:3} | {message}"  # noqa: E501
+
 logging.basicConfig(
-    format="{asctime} | {levelname:.3} | {name:20} | {funcName:20} | {message}",
+    format=FORMAT,
     style="{",
     level=logging.DEBUG,  # minimum LEVEL (is overwritten by the handlers)
     handlers=[
