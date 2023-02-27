@@ -3,10 +3,10 @@
 r"""
 
 """
-import sys
+import os
+import os.path as p
 import glob
 import logging
-import os.path as p
 import importlib.util
 import fastapi.middleware.cors
 import fastapi.staticfiles
@@ -30,23 +30,17 @@ app.add_middleware(
 
 logging.info("Loading routes")
 
-for fp in glob.glob("**/*.route.py", root_dir=p.join(ROOT, "routes"), recursive=True):
-    MODULE_NAME = "routes." + fp.split(".", 1)[0].replace(p.pathsep, ".")
-    MODULE_PATH = p.join(ROOT, "routes", fp)
-    logging.info(f"Attempt to load: {fp} ({MODULE_NAME})")
-    spec = importlib.util.spec_from_file_location(MODULE_NAME, MODULE_PATH)
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[spec.name] = module
+for fp in glob.glob("**/*.py", root_dir=p.join(ROOT, "routes"), recursive=True):
+    MODULE_NAME = '.'.join(["", "routes", *(p.normpath(fp.removesuffix(".py")).split(os.sep))])
+    logging.info(f"Loading: {MODULE_NAME}")
     try:
-        logging.debug("execute module and include router")
-        spec.loader.exec_module(module)
-        app.include_router(module.router, prefix="/api")
+        module = importlib.import_module(MODULE_NAME, package=__package__)
     except Exception as exception:
-        del sys.modules[spec.name]
-        logging.critical(f"Failed to load {fp}", exc_info=exception)
+        logging.critical(f"Failed to load route: {MODULE_NAME}", exc_info=exception)
         raise
-    else:
-        logging.info(f"Successfully loaded: {fp}")
+    if hasattr(module, "router") and isinstance(module.router, fastapi.APIRouter):
+        logging.debug(f"Include router from {MODULE_NAME}")
+        app.include_router(module.router, prefix="/api")
 
 logging.info("Successfully loaded all routes")
 

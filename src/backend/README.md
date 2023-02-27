@@ -38,7 +38,8 @@ logging-files are in `./backend-logs/*`
 
 # further information
 
-> all files in `routes` (`src/backend/api/routes/`) that end with `.route.py` are automatically imported and must have the following structure
+> all python-files in `routes` (`src/backend/gitalytics_api/routes/`) are automatically imported.
+> if they have a `fastapi.APIRouter` variable called router it's included
 ```python
 # -*- coding=utf-8 -*-
 r"""
