@@ -34,14 +34,14 @@ class Author(IdMixin, TimestampsMixin, BaseModel):
         return self._name
     @name.setter
     def name(self, value: str):
-        self._name = value.encode('utf-8', 'surrogateescape')
+        self._name = value.encode("utf-8", "surrogateescape")
     _email: Mapped[str] = mapped_column(sql.String, nullable=False)
     @hybrid_property
     def email(self):
         return self._email
     @email.setter
     def email(self, value: str):
-        self._email = value.encode('utf-8', 'surrogateescape')
+        self._email = value.encode("utf-8", "surrogateescape")
 
 
 class Repository(IdMixin, TimestampsMixin, BaseModel):

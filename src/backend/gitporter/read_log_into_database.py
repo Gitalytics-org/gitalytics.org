@@ -19,8 +19,8 @@ def read_log_into_database(log: str, repository: dbm.Repository, session: Databa
 @functools.lru_cache(maxsize=50)
 def get_or_create_author(name: str, email: str, session: DatabaseSession) -> dbm.Author:
     author: dbm.Author|None = session.query(dbm.Author) \
-        .filter(dbm.Author.name == name.encode('utf-8', 'surrogateescape'),
-                dbm.Author.email == email.encode('utf-8', 'surrogateescape')) \
+        .filter(dbm.Author.name == name.encode("utf-8", "surrogateescape"),
+                dbm.Author.email == email.encode("utf-8", "surrogateescape")) \
         .one_or_none()
 
     if author is not None:
