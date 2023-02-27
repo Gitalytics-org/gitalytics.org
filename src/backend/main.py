@@ -4,6 +4,7 @@ r"""
 
 """
 import sys
+import os
 import argparse
 from __version__ import __version__
 import logconfig  # noqa
@@ -17,8 +18,13 @@ def create_database():
 
 
 def generate_key():
+    import dotenv
     from cryptography.fernet import Fernet
-    print(Fernet.generate_key().decode())
+
+    dotenv_file = dotenv.find_dotenv()
+    dotenv.set_key(dotenv_file, "COOKIE_KEY", Fernet.generate_key().decode())
+    print("Successfully generated new COOKIE_KEY ✅")
+
 
 
 def run_server(host: str, port: int, reload: bool, workers: int):
