@@ -12,6 +12,7 @@ import httpx
 from gitalytics_api.common import SessionStorage, SessionToken
 from database import createLocalSession, models as dbm
 from database.enums import GitPlatform
+from .session_initializer import initialize_session
 
 
 class AuthSettings(pydantic.BaseSettings):
@@ -72,9 +73,9 @@ async def login_redirect():
             responses={
                 fastapi.status.HTTP_400_BAD_REQUEST: {}
             })
-async def verify(code: str, storage: SessionStorage = fastapi.Depends(SessionStorage)):
+async def verify(code: str, tasks: fastapi.BackgroundTasks, storage: SessionStorage = fastapi.Depends(SessionStorage)):
     r"""
-    callback endpoint from Github
+    callback endpoint from GitHub
     """
     # https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${requestToken}
 
@@ -117,5 +118,7 @@ async def verify(code: str, storage: SessionStorage = fastapi.Depends(SessionSto
             connection.commit()
             connection.refresh(session)
         storage.set("session-id", session.id)
+
+    tasks.add_task(initialize_session, session=session)
 
     return storage.toRedirectResponse(url="/#/app")
