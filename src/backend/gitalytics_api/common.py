@@ -3,8 +3,11 @@
 r"""
 
 """
+import inspect
 import json
+import logging
 import typing as t
+import functools
 import httpx
 import fastapi
 import pydantic
@@ -95,3 +98,27 @@ class HttpxBearerAuth(httpx.Auth):
     def auth_flow(self, request: httpx.Request) -> t.Generator[httpx.Request, httpx.Response, None]:
         request.headers["Authorization"] = self._auth_header
         yield request
+
+
+def add_error_logging(*, reraise_exception: bool):
+    def decorator(function):
+        if inspect.iscoroutine(function):
+            @functools.wraps(function)
+            async def wrapper(*args, **kwargs):
+                try:
+                    return await function(*args, **kwargs)
+                except Exception as exception:
+                    logging.exception(f"{function} raised an {exception.__class__.__name__}", exc_info=exception)
+                    if reraise_exception:
+                        raise
+        else:
+            @functools.wraps(function)
+            def wrapper(*args, **kwargs):
+                try:
+                    return function(*args, **kwargs)
+                except Exception as exception:
+                    logging.exception(f"{function} raised an {exception.__class__.__name__}", exc_info=exception)
+                    if reraise_exception:
+                        raise
+        return wrapper
+    return decorator
