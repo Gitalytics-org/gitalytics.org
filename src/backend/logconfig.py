@@ -22,26 +22,38 @@ class WatchFilesFilter(logging.Filter):
         return not record.name.startswith("watchfiles")
 
 
-fileLoggingHandler = logging.handlers.RotatingFileHandler(
-    filename=os.path.join(
-        LOGGING_PATH,
-        f"gitalytics.log"
-    ),
-    maxBytes=1024 * 1024 * 10,  # roughly 10mb
-    backupCount=5,
+debugHandler = logging.handlers.TimedRotatingFileHandler(
+    filename=os.path.join(LOGGING_PATH, "backend.log"),
+    when="midnight",
+    backupCount=4,
     delay=True,
+    utc=True,
 )
-fileLoggingHandler.addFilter(WatchFilesFilter())
+debugHandler.addFilter(WatchFilesFilter())
+debugHandler.setLevel(logging.DEBUG if __debug__ else logging.INFO)  # DEBUG/INFO and up
+
+warningHandler = logging.handlers.TimedRotatingFileHandler(
+    filename=os.path.join(LOGGING_PATH, "backend-warning.log"),
+    when="midnight",
+    backupCount=7,
+    delay=True,
+    utc=True,
+)
+warningHandler.addFilter(WatchFilesFilter())
+warningHandler.setLevel(logging.WARNING)  # WARNING and up
 
 consoleLoggingHandler = logging.StreamHandler()
 consoleLoggingHandler.addFilter(WatchFilesFilter())
 
+FORMAT = "{asctime} | {levelname:.3} | {processName}/{threadName} | {module:20} | {funcName:20} | {lineno:3} | {message}"  # noqa: E501
+
 logging.basicConfig(
-    format="{asctime} | {levelname:.3} | {name:20} | {funcName:20} | {message}",
+    format=FORMAT,
     style="{",
-    level=logging.DEBUG,
+    level=logging.DEBUG,  # minimum LEVEL (is overwritten by the handlers)
     handlers=[
-        fileLoggingHandler,
-        consoleLoggingHandler
+        debugHandler,
+        warningHandler,
+        consoleLoggingHandler if __debug__ else logging.NullHandler()
     ],
 )

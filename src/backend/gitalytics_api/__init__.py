@@ -28,6 +28,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+logging.info("Loading routes")
+
 for fp in glob.glob("**/*.py", root_dir=p.join(ROOT, "routes"), recursive=True):
     MODULE_NAME = '.'.join(["", "routes", *(p.normpath(fp.removesuffix(".py")).split(os.sep))])
     logging.info(f"Loading: {MODULE_NAME}")
@@ -39,6 +41,8 @@ for fp in glob.glob("**/*.py", root_dir=p.join(ROOT, "routes"), recursive=True):
     if hasattr(module, "router") and isinstance(module.router, fastapi.APIRouter):
         logging.debug(f"Include router from {MODULE_NAME}")
         app.include_router(module.router, prefix="/api")
+
+logging.info("Successfully loaded all routes")
 
 # only now mount (order is important!)
 app.mount(

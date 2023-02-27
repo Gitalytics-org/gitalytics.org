@@ -5,6 +5,7 @@ r"""
 """
 import sys
 import argparse
+import logging
 from __version__ import __version__
 import logconfig  # noqa
 import gitporter
@@ -23,7 +24,7 @@ def generate_key():
 
 def run_server(host: str, port: int, reload: bool, workers: int):
     import uvicorn
-    uvicorn.run("gitalytics_api:app", host=host, port=port, reload=reload, workers=workers)
+    uvicorn.run("gitalytics_api:app", host=host, port=port, reload=reload, workers=workers, log_config=None)
 
 
 # master parser
@@ -71,4 +72,6 @@ gpUpdateWorkspaceParser.add_argument('-w', '--workspace-name', required=True, he
 
 if __name__ == '__main__':
     args = vars(parser.parse_args())
+    logging.warning("Starting main.py")  # logging.warning to also show in warning.log that a new run was initiated
+    logging.info(f"Starting with args: {args}")
     sys.exit(args.pop('function')(**args))
