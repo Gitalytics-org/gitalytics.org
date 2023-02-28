@@ -39,4 +39,4 @@ def getWorkspaceNameGitHub(access_token: str) -> str:
     response = httpx.get(f"https://api.github.com/user", auth=HttpxBearerAuth(access_token))
     response.raise_for_status()
     data = response.json()
-    return data["user"]
+    return data["login"]
