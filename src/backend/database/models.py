@@ -6,6 +6,7 @@ This file contanis all SQLAlchemy ORM Database models
 
 import sqlalchemy as sql
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.ext.hybrid import hybrid_property
 from .db import BaseModel
 from .model_components import IdMixin, BigIdMixin, TimestampsMixin, CreatedAtMixin
 from .enums import GitPlatform
@@ -24,16 +25,30 @@ class Workspace(IdMixin, TimestampsMixin, BaseModel):
 class Author(IdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "author"
 
-    name: Mapped[str] = mapped_column(sql.String, nullable=False)
-    email: Mapped[str] = mapped_column(sql.String, nullable=False)
     commits: Mapped[Set["Commit"]] = relationship(back_populates="author")
+
+    # Encoding surrogate characters is required, since sqlalchemy cannot handle them. Example from linux kernel repo logs: '\udcdf'
+    _name: Mapped[str] = mapped_column(sql.String, nullable=False)
+    @hybrid_property
+    def name(self):
+        return self._name
+    @name.setter
+    def name(self, value: str):
+        self._name = value.encode("utf-8", "surrogateescape")
+    _email: Mapped[str] = mapped_column(sql.String, nullable=False)
+    @hybrid_property
+    def email(self):
+        return self._email
+    @email.setter
+    def email(self, value: str):
+        self._email = value.encode("utf-8", "surrogateescape")
 
 
 class Repository(IdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "repository"
 
     name: Mapped[str] = mapped_column(sql.String, nullable=False)
-    last_refresh: Mapped[datetime] = mapped_column(sql.DateTime, nullable=True)
+    last_commit_hash: Mapped[str] = mapped_column(sql.String, nullable=True)
     commits: Mapped[Set["Commit"]] = relationship(back_populates="repository")
     workspace_id: Mapped[int] = mapped_column(sql.ForeignKey("workspace.id"), nullable=False)
     workspace: Mapped["Workspace"] = relationship(back_populates="repositories")
