@@ -16,7 +16,6 @@ from database import createLocalSession, models as dbm
 
 
 class Settings(pydantic.BaseSettings):
-    # required: base64.urlsafe_b64encode(os.urandom(32))  # equal to Fernet.generate_key()
     COOKIE_KEY: str
 
 
