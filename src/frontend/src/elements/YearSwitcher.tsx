@@ -15,7 +15,7 @@ function useYearManipulation(): [number, (y: number) => void] {
         setSearchParams((prev) => {
             prev.set("year", `${year}`);
             return prev;
-        });
+        }, { replace: false });
     }
 
     const years = searchParams.getAll("year");

@@ -17,9 +17,10 @@ function useYearManipulation(): [number[], (y: number[]) => void] {
     function setYears(years: number[]) {
         setSearchParams((prev) => {
             prev.delete("year");
-            years.sort((a, b) => a-b).forEach(y => prev.append("year", `${y}`));
+            years.sort((a, b) => a-b)
+                .forEach(y => prev.append("year", `${y}`));
             return prev;
-        });
+        }, { replace: false });
     }
 
     const years = searchParams.getAll("year").map(y => parseInt(y));
