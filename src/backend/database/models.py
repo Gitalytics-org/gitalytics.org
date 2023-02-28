@@ -13,6 +13,12 @@ from .enums import GitPlatform
 from datetime import datetime
 from typing import Set
 
+repository_access = sql.Table(
+    "repository_access",
+    BaseModel.metadata,
+    sql.Column("session_id", sql.ForeignKey("session.id")),
+    sql.Column("repository_id", sql.ForeignKey("repository.id")),
+)
 
 class Workspace(IdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "workspace"
@@ -73,11 +79,4 @@ class Session(IdMixin, TimestampsMixin, BaseModel):
     access_token: Mapped[str] = mapped_column(sql.String, nullable=False)
     refresh_token: Mapped[str] = mapped_column(sql.String, nullable=True)
     platform: Mapped[GitPlatform] = mapped_column(sql.Enum(GitPlatform), nullable=False)
-    # workspaces: Mapped[Set["Workspace"]] = relationship(secondary="access_workspace")
-
-# workspace_access = sql.Table(
-#     "workspace_access",
-#     BaseModel.metadata,
-#     sql.Column("session", sql.ForeignKey("session.id")),
-#     sql.Column("workspace", sql.ForeignKey("workspace.id")),
-# )
+    repositories: Mapped[Set["Repository"]] = relationship(secondary="repository_access")
