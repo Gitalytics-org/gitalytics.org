@@ -12,23 +12,23 @@ from database import createLocalSession, models as dbm
 router = fastapi.APIRouter()
 
 
-def getCommitCountSubquery(connection: sql.orm.Session):
+def getCommitCountSubquery(connection: sql.orm.Session, year: int):
     return connection \
         .query(sql.func.count().label("count"),
                dbm.Commit.committed_at.label("date")) \
-        .group_by(sql.func.extract("year", dbm.Commit.committed_at),
-                  sql.func.extract("month", dbm.Commit.committed_at),
+        .filter(sql.func.extract("year", dbm.Commit.committed_at) == year) \
+        .group_by(sql.func.extract("month", dbm.Commit.committed_at),
                   sql.func.extract("day", dbm.Commit.committed_at)) \
         .subquery()
 
 
-@router.get("/avg-commits-per-hour")
-async def getAvgPerHour():
+@router.get("/commits-per-hour/{year}")
+async def getAvgPerHour(year: int):
     with createLocalSession() as connection:
-        subquery = getCommitCountSubquery(connection=connection)
+        subquery = getCommitCountSubquery(connection=connection, year=year)
 
         stats = connection \
-            .query((sql.func.sum(subquery.c.count) / 24).label("avg"),
+            .query(sql.func.sum(subquery.c.count).label("avg"),
                    sql.func.extract("hour", subquery.c.date).label("hour")) \
             .group_by(sql.func.extract("hour", subquery.c.date)) \
             .all()
@@ -36,19 +36,19 @@ async def getAvgPerHour():
     return {row.hour: row.avg for row in stats}
 
 
-@router.get("/avg-commits-per-weekday")
-async def getAvgPerWeekday():
+@router.get("/commits-per-weekday/{year}")
+async def getAvgPerWeekday(year: int):
     r"""
     please note:
         weekday of 0 means sunday
     """
 
     with createLocalSession() as connection:
-        subquery = getCommitCountSubquery(connection=connection)
+        subquery = getCommitCountSubquery(connection=connection, year=year)
 
         # 'dow' == day-of-week
         stats = connection \
-            .query((sql.func.sum(subquery.c.count) / 7).label("avg"),
+            .query(sql.func.sum(subquery.c.count).label("avg"),
                    sql.func.extract("dow", subquery.c.date).label("weekday")) \
             .group_by(sql.func.extract("dow", subquery.c.date)) \
             .all()
@@ -58,13 +58,13 @@ async def getAvgPerWeekday():
     return {row.weekday: row.avg for row in stats}
 
 
-@router.get("/avg-commits-per-day")
-async def getAvgPerWeekday():
+@router.get("/commits-per-day/{year}")
+async def getAvgPerWeekday(year: int):
     with createLocalSession() as connection:
-        subquery = getCommitCountSubquery(connection=connection)
+        subquery = getCommitCountSubquery(connection=connection, year=year)
 
         stats = connection \
-            .query((sql.func.sum(subquery.c.count) / 31).label("avg"),
+            .query(sql.func.sum(subquery.c.count).label("avg"),
                    sql.func.extract("day", subquery.c.date).label("day")) \
             .group_by(sql.func.extract("day", subquery.c.date)) \
             .all()
@@ -72,13 +72,13 @@ async def getAvgPerWeekday():
     return {row.day: row.avg for row in stats}
 
 
-@router.get("/avg-commits-per-week")
-async def getAvgPerWeekday():
+@router.get("/commits-per-week/{year}")
+async def getAvgPerWeekday(year: int):
     with createLocalSession() as connection:
-        subquery = getCommitCountSubquery(connection=connection)
+        subquery = getCommitCountSubquery(connection=connection, year=year)
 
         stats = connection \
-            .query((sql.func.sum(subquery.c.count) / 52).label("avg"),
+            .query(sql.func.sum(subquery.c.count).label("avg"),
                    sql.func.extract("week", subquery.c.date).label("week")) \
             .group_by(sql.func.extract("week", subquery.c.date)) \
             .all()
@@ -86,13 +86,13 @@ async def getAvgPerWeekday():
     return {row.week: row.avg for row in stats}
 
 
-@router.get("/avg-commits-per-month")
-async def getAvgPerWeekday():
+@router.get("/commits-per-month/{year}")
+async def getAvgPerWeekday(year: int):
     with createLocalSession() as connection:
-        subquery = getCommitCountSubquery(connection=connection)
+        subquery = getCommitCountSubquery(connection=connection, year=year)
 
         stats = connection \
-            .query((sql.func.sum(subquery.c.count) / 12).label("avg"),
+            .query(sql.func.sum(subquery.c.count).label("avg"),
                    sql.func.extract("month", subquery.c.date).label("month")) \
             .group_by(sql.func.extract("month", subquery.c.date)) \
             .all()
