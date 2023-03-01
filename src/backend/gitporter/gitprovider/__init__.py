@@ -19,11 +19,7 @@ provider_dict = {
 }
 
 
-def get_remote_repositories(platform: GitPlatform, workspace: str) -> t.List[RemoteRepositoryInformation]:
-    module = provider_dict[platform]
-    return module.get_remote_repositories(workspace=workspace)
-
-    
-def get_workspace_names(session: dbm.Session) -> t.List[str]:
+def get_remote_repositories(session: dbm.Session) -> t.List[RemoteRepositoryInformation]:
     module = provider_dict[session.platform]
-    return module.get_workspace_names(session.access_token)
+    return module.get_remote_repositories(access_token=session.access_token)
+
