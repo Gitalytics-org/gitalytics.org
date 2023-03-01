@@ -37,7 +37,7 @@ function Switch({ currentMode, setMode }: SwitchProps) {
 
     return <div className="text-xs py-px flex justify-evenly gap-2 bg-secondary bg-opacity-20 rounded-lg overflow-hidden">
         {options.map(([mode, text]) => (
-            <button key={text} className="grow relative grid place-content-center" onClick={() => setMode(mode)}>
+            <button key={text} className="grow relative grid place-content-center" onClick={() => setMode(mode)} style={{cursor: mode === currentMode ? "default" : "pointer"}}>
                 <div className="bg-secondary bg-opacity-20 absolute inset-0" style={{visibility: mode === currentMode ? "initial" : "hidden"}} />
                 <div className="z-10">
                     {text}
