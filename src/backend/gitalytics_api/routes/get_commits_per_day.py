@@ -28,6 +28,7 @@ async def get_commits_per_day(workspace_id: int, year: int, session: dbm.Session
             .group_by(sql.func.date(dbm.Commit.committed_at)) \
             .join(dbm.Session.repositories) \
             .join(dbm.Repository.commits) \
+            .filter(session.id == dbm.Session.id) \
             .filter(dbm.Repository.workspace_id == workspace_id) \
             .filter(sql.func.extract('year', dbm.Commit.committed_at) == year) \
             .all()
