@@ -1,11 +1,10 @@
 from database import createLocalSession, models as dbm
+from .update_session_repositories import update_session_repositories
 
 def update_all_workspaces():
     r"""
     TODO: ignore workspaces with sessions older than 30 days
     """
-    print("Sorry, this function is not yet implemented")
-    with createLocalSession() as session:
-        for workspace in session.query(dbm.Workspace):
-            pass # TODO: update by going through sessions
-            # update_workspace(workspace_name=workspace.name, platform=workspace.platform)
+    with createLocalSession() as connection:
+        for session in connection.query(dbm.Session).all():
+            update_session_repositories(session_id=session.id)
