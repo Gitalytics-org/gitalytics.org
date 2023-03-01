@@ -1,10 +1,9 @@
 import { useSearchParams } from "react-router-dom";
 
-const ONE = 1;
 const STARTING_YEAR = 2000;
 
 function M2NArray(m: number, n: number) {
-    return Array.from(Array(n-m+ONE).keys()).map(v => v + m);
+    return Array.from(Array(n-m+1).keys()).map(v => v + m);
 }
 
 
@@ -20,7 +19,7 @@ function useYearManipulation(): [number[], (y: number[]) => void] {
             years.sort((a, b) => a-b)
                 .forEach(y => prev.append("year", `${y}`));
             return prev;
-        }, { replace: false });
+        }, { replace: true });
     }
 
     const years = searchParams.getAll("year").map(y => parseInt(y));

@@ -4,6 +4,7 @@ import useYearSelection from "~/hooks/useYearSelection";
 
 export default function TestPage() {
     const years = useYearSelection();
+    // [2020] => [2021] | [2020, 2023]
 
     return <div>
         <YearInputHandler />
