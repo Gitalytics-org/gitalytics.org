@@ -15,6 +15,9 @@ def add_error_logging(*, reraise_exception: bool, default_return=None):
     :param default_return: what to return in case of catching the exception
     :param reraise_exception: whether to catch the exception or let it through
     """
+    if reraise_exception and default_return is not None:
+        import warnings
+        warnings.warn("if your use reraise_exception your shouldn't use default_return")
 
     def decorator(function):
         if inspect.iscoroutine(function):
