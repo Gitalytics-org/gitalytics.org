@@ -9,10 +9,10 @@ import urllib.parse as urlparse
 import fastapi
 import pydantic
 import httpx
-from gitalytics_api.common import SessionStorage, SessionToken
+from gitalytics_api.common import SessionStorage
 from database import createLocalSession, models as dbm
 from database.enums import GitPlatform
-from gitporter.session_initializer import initialize_session
+from gitporter import initialize_session
 
 
 class AuthSettings(pydantic.BaseSettings):

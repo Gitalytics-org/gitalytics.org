@@ -5,7 +5,8 @@ r"""
 """
 import typing as t
 from database.enums import GitPlatform
-from .common import InfoCollectionError, RemoteRepositoryInformation
+from database import models as dbm
+from .common import RemoteRepositoryInformation
 from . import github
 from . import bitbucket
 from . import gitlab
@@ -20,7 +21,9 @@ provider_dict = {
 
 def get_remote_repositories(platform: GitPlatform, workspace: str) -> t.List[RemoteRepositoryInformation]:
     module = provider_dict[platform]
-    try:
-        return module.get_remote_repositories(workspace=workspace)
-    except Exception as exc:
-        raise InfoCollectionError(f"failed to collect info for {workspace=!r}", original=exc)
+    return module.get_remote_repositories(workspace=workspace)
+
+    
+def get_workspace_names(session: dbm.Session) -> t.List[str]:
+    module = provider_dict[session.platform]
+    return module.get_workspace_names(session.access_token)

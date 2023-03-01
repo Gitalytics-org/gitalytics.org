@@ -5,3 +5,4 @@ r"""
 """
 from .update_workspace import update_workspace
 from .update_all_workspaces import update_all_workspaces
+from .session_initializer import initialize_session
