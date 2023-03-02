@@ -8,7 +8,7 @@ import fastapi
 import pydantic
 import database.models as dbm
 from database.db import createLocalSession
-from gitalytics_api.common import SessionToken, EncryptedCookieStorage
+from gitalytics_api.cookies import SessionToken, EncryptedCookieStorage
 from gitalytics_api.enums import CookieKey
 
 

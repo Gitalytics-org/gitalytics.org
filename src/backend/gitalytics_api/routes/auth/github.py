@@ -9,7 +9,7 @@ import urllib.parse as urlparse
 import fastapi
 import pydantic
 import httpx
-from gitalytics_api.common import EncryptedCookieStorage
+from gitalytics_api.cookies import EncryptedCookieStorage
 from gitalytics_api.enums import CookieKey
 from database import createLocalSession, models as dbm
 from database.enums import GitPlatform

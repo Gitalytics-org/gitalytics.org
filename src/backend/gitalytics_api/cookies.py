@@ -4,35 +4,25 @@ r"""
 
 """
 import json
-import typing as t
-import functools
 import datetime
-import httpx
 import fastapi
-import pydantic
 from cryptography.fernet import Fernet
 from database import createLocalSession, models as dbm
 from .enums import CookieKey
-
-
-class Settings(pydantic.BaseSettings):
-    COOKIE_KEY: str
-
-
-settings = Settings()
+from .env_variables import env
 
 
 @fastapi.Depends
 def SessionToken(request: fastapi.Request) -> dbm.Session:
     r"""
     requires and loads the secret session-key from the cookies
-    important: no validation
+    important: filter by this session when accessing the Database
 
     @router.get("/")
     async def endpoint(token: dbm.Session = SessionToken):
         pass
     """
-    fernet = Fernet(settings.COOKIE_KEY)
+    fernet = Fernet(env.COOKIE_KEY)
     try:
         token = request.cookies[CookieKey.SESSION_ID.value]
     except KeyError:
@@ -68,7 +58,7 @@ class EncryptedCookieStorage:
     """
 
     def __init__(self, request: fastapi.Request, response: fastapi.Response):
-        self._fernet = Fernet(settings.COOKIE_KEY)
+        self._fernet = Fernet(env.COOKIE_KEY)
         self._request = request
         self._response = response
 
@@ -95,17 +85,3 @@ class EncryptedCookieStorage:
 
     def delete(self, key: CookieKey):
         self._response.delete_cookie(key.value, secure=True, httponly=True)
-
-
-class HttpxBearerAuth(httpx.Auth):
-    """
-    Allows the 'auth' argument to be passed as a (username, password) pair,
-    and uses HTTP Basic authentication.
-    """
-
-    def __init__(self, bearer: str):
-        self._auth_header = f"Bearer {bearer}"
-
-    def auth_flow(self, request: httpx.Request) -> t.Generator[httpx.Request, httpx.Response, None]:
-        request.headers["Authorization"] = self._auth_header
-        yield request

@@ -4,7 +4,7 @@ r"""
 
 """
 import fastapi
-from gitalytics_api.common import EncryptedCookieStorage
+from gitalytics_api.cookies import EncryptedCookieStorage
 from gitalytics_api.enums import CookieKey
 
 
