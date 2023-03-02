@@ -4,13 +4,41 @@
     <meta charset="UTF-8">
     <link rel="icon" type="image/svg+xml" href="/gitalytics.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/404style.css" rel="stylesheet">
+    <link rel="stylesheet" href="404style.css">
     <title>Page Not Found</title>
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            place-content: center;
+            background-color: black;
+            color: white;
+            margin: 0px;
+            position: relative;
+        }
+        .centered {
+            text-align: center;
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+            gap: 5vh;
+        }
+        .centered > h1 {
+            font-size: 7vw;
+        }
+        .centered > a {
+            display: inline-block;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
 </head>
-<body class="w-screen h-screen bg-secondary text-primary grid place-content-center">
-    <div class="text-center select-none">
-        <h1 class="text-[5vw]">404 - Page not found</h1>
-        <a class="text-blue-600 hover:underline text-[min(2vw,20px)]" href="/">Go back Home</a>
+<body>
+    <div class="centered">
+        <h1 class="sign"><span>404 - Page not found</span></h1>
+        <a href="/" class="glowing-btn"><span class="glowing-txt">GO H<span class="faulty-letter">O</span>ME</span></a>
     </div>
 </body>
 </html>
