@@ -5,6 +5,8 @@ r"""
 """
 import json
 import typing as t
+import functools
+import datetime
 import httpx
 import fastapi
 import pydantic
@@ -26,7 +28,7 @@ def SessionToken(request: fastapi.Request) -> dbm.Session:
     important: no validation
 
     @router.get("/")
-    async def endpoint(token: SessionKey):
+    async def endpoint(token: dbm.Session = SessionToken):
         pass
     """
     fernet = Fernet(settings.COOKIE_KEY)
@@ -42,8 +44,14 @@ def SessionToken(request: fastapi.Request) -> dbm.Session:
             .filter(dbm.Session.id == session_id) \
             .one_or_none()
 
-    if not session:
-        raise fastapi.HTTPException(fastapi.status.HTTP_401_UNAUTHORIZED)
+        if session is None:
+            # maybe redirect to /#/login ('cause seems like session expired)
+            raise fastapi.HTTPException(fastapi.status.HTTP_401_UNAUTHORIZED)
+
+        today = datetime.date.today()
+        if session.last_seen < today:
+            session.last_seen = today
+            connection.commit()
 
     return session
 
