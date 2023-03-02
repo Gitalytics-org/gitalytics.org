@@ -4,16 +4,16 @@ import { Bar } from "react-chartjs-2";
 import { OneToNArray } from "../../utils";
 
 
-type AvgCommitsPerDayResponse = Record<number, number>
+type CommitsPerWeekResponse = Record<number, number>
 
-const DAYS_PER_MONTH = 31;
+const WEEKS_PER_YEAR = 52;
 const ZERO = 0;
 
 
-export default function AvgCommitsPerDay() {
-    const query = useQuery<AvgCommitsPerDayResponse>(
-        ["avg-commits-per-day"],
-        () => axios.get("/avg-commits-per-day").then(response => response.data),
+export default function CommitsPerWeek() {
+    const query = useQuery<CommitsPerWeekResponse>(
+        ["commits-per-week"],
+        () => axios.get("/commits-per-week").then(response => response.data),
     );
     if (query.isLoading) {
         return <>Loading...</>;
@@ -22,13 +22,13 @@ export default function AvgCommitsPerDay() {
         return <>Error...</>;
     }
 
-    const days = OneToNArray(DAYS_PER_MONTH);
+    const weeks = OneToNArray(WEEKS_PER_YEAR);
 
     return <Bar data={{
-        labels: days,
+        labels: weeks,
         datasets: [{
-            label: "Avg Commits per Day",
-            data: days.map(i => query.data![i] ?? ZERO),
+            label: "Avg Commits per Week",
+            data: weeks.map(i => query.data![i] ?? ZERO),
             backgroundColor: "#F05133",
         }],
     }} options={{
@@ -36,14 +36,14 @@ export default function AvgCommitsPerDay() {
         plugins: {
             title: {
                 display: true,
-                text: "Avg Commits per Day",
+                text: "Avg Commits per Week",
             },
             legend: {
                 display: false,
             },
         },
         interaction: {
-            intersect: false,
+            intersect: true,
         },
     }} width="100%" height="100%" className="w-full max-h-screen" />;
 }

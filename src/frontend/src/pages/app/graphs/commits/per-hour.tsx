@@ -5,16 +5,16 @@ import { ZeroToNArray } from "../../utils";
 import colorLib from "@kurkle/color";
 
 
-type AvgCommitsPerWeekdayResponse = Record<number, number>
+type CommitsPerWeekdayResponse = Record<number, number>
 
 const HOURS_PER_DAY = 24;
 const ZERO = 0;
 
 
-export default function AvgCommitsPerHour() {
-    const query = useQuery<AvgCommitsPerWeekdayResponse>(
-        ["avg-commits-per-hour"],
-        () => axios.get("/avg-commits-per-hour").then(response => response.data),
+export default function CommitsPerHour() {
+    const query = useQuery<CommitsPerWeekdayResponse>(
+        ["commits-per-hour"],
+        () => axios.get("/commits-per-hour").then(response => response.data),
     );
     if (query.isLoading) {
         return <>Loading...</>;

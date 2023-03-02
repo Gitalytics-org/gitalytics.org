@@ -4,16 +4,16 @@ import { Radar } from "react-chartjs-2";
 import { OneToNArray } from "../../utils";
 
 
-type AvgCommitsPerMonthResponse = Record<number, number>
+type CommitsPerMonthResponse = Record<number, number>
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const ZERO = 0;
 
 
-export default function AvgCommitsPerMonth() {
-    const query = useQuery<AvgCommitsPerMonthResponse>(
-        ["avg-commits-per-month"],
-        () => axios.get("/avg-commits-per-month").then(response => response.data),
+export default function CommitsPerMonth() {
+    const query = useQuery<CommitsPerMonthResponse>(
+        ["commits-per-month"],
+        () => axios.get("/commits-per-month").then(response => response.data),
     );
     if (query.isLoading) {
         return <>Loading...</>;
