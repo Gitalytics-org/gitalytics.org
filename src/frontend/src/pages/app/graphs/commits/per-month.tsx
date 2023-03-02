@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useQuery } from "react-query";
 import { Radar } from "react-chartjs-2";
-import { OneToNArray } from "../../utils";
+import { One2NArray } from "../../utils";
+import YearInputHandler from "~/elements/YearInputHandler";
 
 
 type CommitsPerMonthResponse = Record<number, number>
@@ -9,8 +10,16 @@ type CommitsPerMonthResponse = Record<number, number>
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const ZERO = 0;
 
+export default function CommitsPerMonthWrapper() {
+    return <div className="flex flex-col h-screen">
+        <YearInputHandler />
+        <div className="grow">
+            <CommitsPerMonth />
+        </div>
+    </div>;
+}
 
-export default function CommitsPerMonth() {
+export function CommitsPerMonth() {
     const query = useQuery<CommitsPerMonthResponse>(
         ["commits-per-month"],
         () => axios.get("/commits-per-month").then(response => response.data),
@@ -26,7 +35,7 @@ export default function CommitsPerMonth() {
         labels: MONTHS,
         datasets: [{
             label: "Avg Commits per Month",
-            data: OneToNArray(MONTHS.length).map(i => query.data![i] ?? ZERO),
+            data: One2NArray(MONTHS.length).map(i => query.data![i] ?? ZERO),
             borderColor: "#F05133",
         }],
     }} options={{

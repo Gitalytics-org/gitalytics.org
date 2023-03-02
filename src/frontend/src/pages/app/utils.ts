@@ -1,8 +1,6 @@
-export function ZeroToNArray(length: number): number[] {
-    return Array.from(Array(length).keys());
+export function M2NArray(m: number, n: number): number[] {
+    return Array.from(Array(n-m+1).keys()).map(v => v + m);
 }
 
-const OFFSET1 = 1;
-export function OneToNArray(length: number): number[] {
-    return Array.from(Array(length + OFFSET1).keys()).slice(OFFSET1);
-}
+export const Zero2NArray = (length: number) => M2NArray(0, length);
+export const One2NArray = (length: number) => M2NArray(1, length);

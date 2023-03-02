@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useQuery } from "react-query";
 import { Bar } from "react-chartjs-2";
-import { OneToNArray } from "../../utils";
+import { One2NArray } from "../../utils";
+import YearInputHandler from "~/elements/YearInputHandler";
 
 
 type CommitsPerWeekResponse = Record<number, number>
@@ -9,8 +10,16 @@ type CommitsPerWeekResponse = Record<number, number>
 const WEEKS_PER_YEAR = 52;
 const ZERO = 0;
 
+export default function CommitsPerWeekWrapper() {
+    return <div className="flex flex-col h-screen">
+        <YearInputHandler />
+        <div className="grow">
+            <CommitsPerWeek />
+        </div>
+    </div>;
+}
 
-export default function CommitsPerWeek() {
+export function CommitsPerWeek() {
     const query = useQuery<CommitsPerWeekResponse>(
         ["commits-per-week"],
         () => axios.get("/commits-per-week").then(response => response.data),
@@ -22,7 +31,7 @@ export default function CommitsPerWeek() {
         return <>Error...</>;
     }
 
-    const weeks = OneToNArray(WEEKS_PER_YEAR);
+    const weeks = One2NArray(WEEKS_PER_YEAR);
 
     return <Bar data={{
         labels: weeks,

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import YearSelectionInput from "./YearSelection";
 import YearSwitcherInput from "./YearSwitcher";
 
@@ -13,13 +14,15 @@ const modeMap = {
 };
 
 export default function YearInputHandler() {
-    const [mode, setMode] = useState<YearInputModes>(YearInputModes.switcher);
+    const location = useLocation();
+    const defaultMode = (new URLSearchParams(location.search).getAll("year").length <= 1) ? YearInputModes.switcher : YearInputModes.selection;
+    const [mode, setMode] = useState<YearInputModes>(defaultMode);
 
     const InputComponent = modeMap[mode];
 
     return <div className="flex flex-col gap-1 p-1">
         <Switch currentMode={mode} setMode={setMode} />
-        <InputComponent />
+        <InputComponent key={mode} />
     </div>;
 }
 

@@ -12,6 +12,8 @@ axios.defaults.withCredentials = !isProduction;
 axios.defaults.timeout = 30_000;  // 30s
 
 ChartJS.register(...registerables);
+// even if typescript says that 'colors' does not exist. it does!
+ChartJS.defaults.plugins.colors.forceOverride = true;
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -21,6 +23,7 @@ const queryClient = new QueryClient({
             refetchOnMount: false,
             refetchOnReconnect: true,
             refetchOnWindowFocus: false,
+            retry: false,
         },
     },
 });

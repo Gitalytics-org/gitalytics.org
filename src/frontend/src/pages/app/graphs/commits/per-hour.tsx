@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useQuery } from "react-query";
 import { PolarArea } from "react-chartjs-2";
-import { ZeroToNArray } from "../../utils";
+import { Zero2NArray } from "../../utils";
 import colorLib from "@kurkle/color";
+import YearInputHandler from "~/elements/YearInputHandler";
 
 
 type CommitsPerWeekdayResponse = Record<number, number>
@@ -10,8 +11,16 @@ type CommitsPerWeekdayResponse = Record<number, number>
 const HOURS_PER_DAY = 24;
 const ZERO = 0;
 
+export default function CommitsPerHourWrapper() {
+    return <div className="flex flex-col h-screen">
+        <YearInputHandler />
+        <div className="grow">
+            <CommitsPerHour />
+        </div>
+    </div>;
+}
 
-export default function CommitsPerHour() {
+export function CommitsPerHour() {
     const query = useQuery<CommitsPerWeekdayResponse>(
         ["commits-per-hour"],
         () => axios.get("/commits-per-hour").then(response => response.data),
@@ -23,7 +32,7 @@ export default function CommitsPerHour() {
         return <>Error...</>;
     }
 
-    const hours = ZeroToNArray(HOURS_PER_DAY);
+    const hours = Zero2NArray(HOURS_PER_DAY);
     const maxValue = Math.max(...Object.values(query.data!));
 
     return <PolarArea data={{

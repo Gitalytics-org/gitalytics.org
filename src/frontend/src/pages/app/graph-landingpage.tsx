@@ -5,22 +5,22 @@ export default  function GraphLandingPage() {
         <div className="m-auto select-none">
             <h1 className="text-[5vw]">Available Graphs</h1>
         </div>
-        <Link to="/app/avg-commits">
+        <Link to="/app/commits">
             Average Commits
         </Link>
-        <Link to="/app/avg-commits-per-hour">
+        <Link to="/app/commits-per-hour">
             Average Commits per Hour
         </Link>
-        <Link to="/app/avg-commits-per-weekday">
+        <Link to="/app/commits-per-weekday">
             Average Commits per Weekday
         </Link>
-        <Link to="/app/avg-commits-per-day">
+        <Link to="/app/commits-per-day">
             Average Commits per Day
         </Link>
-        <Link to="/app/avg-commits-per-week">
+        <Link to="/app/commits-per-week">
             Average Commits per Week
         </Link>
-        <Link to="/app/avg-commits-per-month">
+        <Link to="/app/commits-per-month">
             Average Commits per Month
         </Link>
     </div>;

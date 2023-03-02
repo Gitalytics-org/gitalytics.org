@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useQuery } from "react-query";
 import { PolarArea } from "react-chartjs-2";
-import { ZeroToNArray } from "../../utils";
+import { Zero2NArray } from "../../utils";
 import colorLib from "@kurkle/color";
+import YearInputHandler from "~/elements/YearInputHandler";
 
 
 type CommitsPerWeekdayResponse = Record<number, number>
@@ -10,11 +11,19 @@ type CommitsPerWeekdayResponse = Record<number, number>
 const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const ZERO = 0;
 
+export default function CommitsPerWeekdayWrapper() {
+    return <div className="flex flex-col h-screen">
+        <YearInputHandler />
+        <div className="grow">
+            <CommitsPerWeekday />
+        </div>
+    </div>;
+}
 
-export default function CommitsPerWeekday() {
+export function CommitsPerWeekday() {
     const query = useQuery<CommitsPerWeekdayResponse>(
-        ["avg-commits-per-weekday"],
-        () => axios.get("/avg-commits-per-weekday").then(response => response.data),
+        ["commits-per-weekday"],
+        () => axios.get("/commits-per-weekday").then(response => response.data),
     );
     if (query.isLoading) {
         return <>Loading...</>;
@@ -23,7 +32,7 @@ export default function CommitsPerWeekday() {
         return <>Error...</>;
     }
 
-    const weekdays = ZeroToNArray(WEEKDAYS.length);
+    const weekdays = Zero2NArray(WEEKDAYS.length);
     const maxValue = Math.max(...Object.values(query.data!));
 
     return <PolarArea data={{
