@@ -10,6 +10,7 @@ type CommitsPerDayResponse = Record<number, number>
 type QueryReturn = [number, CommitsPerDayResponse]
 
 const DAYS_PER_MONTH = 31;
+const DAYS = One2NArray(DAYS_PER_MONTH);
 
 
 export default function CommitsPerDayWrapper() {
@@ -25,7 +26,7 @@ export default function CommitsPerDayWrapper() {
 export function CommitsPerDay() {
     const years = useYearSelection();
 
-    const queries = useQueries<QueryReturn[]>(
+    const queries = useQueries(
         years.map(year => ({
             queryKey: ["commits-per-day", year],
             queryFn: () => axios
@@ -34,17 +35,15 @@ export function CommitsPerDay() {
         })),
     );
 
-    const days = One2NArray(DAYS_PER_MONTH);
-
     return <Bar data={{
-        labels: days,
-        datasets: (queries as Array<UseQueryResult<QueryReturn>>).map(result => {
+        labels: DAYS,
+        datasets: queries.map(result => {
             if (result.isLoading) return {label: "loading...", data: []};
             if (!result.isSuccess) return {label: "failed", data: []};
             const [year, data] = result.data;
             return {
                 label: `${year}`,
-                data: days.map(d => data[d] ?? 0),
+                data: DAYS.map(day => data[day] ?? 0),
             };
         }),
     }} options={{

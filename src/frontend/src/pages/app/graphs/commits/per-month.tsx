@@ -1,14 +1,16 @@
 import axios from "axios";
-import { useQuery } from "react-query";
+import { useQueries, useQuery } from "react-query";
 import { Radar } from "react-chartjs-2";
 import { One2NArray } from "../../utils";
 import YearInputHandler from "~/elements/YearInputHandler";
+import useYearSelection from "~/hooks/useYearSelection";
 
 
 type CommitsPerMonthResponse = Record<number, number>
+type QueryReturn = [number, CommitsPerMonthResponse]
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const ZERO = 0;
+const months = One2NArray(MONTHS.length);
 
 export default function CommitsPerMonthWrapper() {
     return <div className="flex flex-col h-screen">
@@ -20,36 +22,38 @@ export default function CommitsPerMonthWrapper() {
 }
 
 export function CommitsPerMonth() {
-    const query = useQuery<CommitsPerMonthResponse>(
-        ["commits-per-month"],
-        () => axios.get("/commits-per-month").then(response => response.data),
+    const years = useYearSelection();
+
+    const queries = useQueries(
+        years.map(year => ({
+            queryKey: ["commits-per-month", year],
+            queryFn: () => axios
+                .get<CommitsPerMonthResponse>(`/commits-per-month/${year}`)
+                .then<QueryReturn>(response => [year, response.data]),
+        })),
     );
-    if (query.isLoading) {
-        return <>Loading...</>;
-    }
-    if (query.isError) {
-        return <>Error...</>;
-    }
 
     return <Radar data={{
         labels: MONTHS,
-        datasets: [{
-            label: "Avg Commits per Month",
-            data: One2NArray(MONTHS.length).map(i => query.data![i] ?? ZERO),
-            borderColor: "#F05133",
-        }],
+        datasets: queries.map(result => {
+            if (result.isLoading) return {label: "loading...", data: []};
+            if (!result.isSuccess) return {label: "failed", data: []};
+            const [year, data] = result.data;
+            return {
+                label: `${year}`,
+                data: months.map(month => data[month] ?? 0),
+            };
+        }),
     }} options={{
-        // maintainAspectRatio: false,
+        maintainAspectRatio: false,
         plugins: {
             title: {
                 display: true,
                 text: "Avg Commits per Month",
             },
-            legend: {
-                display: false,
-            },
         },
         interaction: {
+            axis: "r",
             intersect: false,
         },
         elements: {
@@ -67,5 +71,5 @@ export function CommitsPerMonth() {
                 },
             },
         },
-    }} width="100%" height="100%" className="w-full" />;
+    }} width="100%" height="100%" />;
 }

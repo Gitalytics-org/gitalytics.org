@@ -1,14 +1,16 @@
 import axios from "axios";
-import { useQuery } from "react-query";
+import { useQueries, useQuery } from "react-query";
 import { Bar } from "react-chartjs-2";
 import { One2NArray } from "../../utils";
 import YearInputHandler from "~/elements/YearInputHandler";
+import useYearSelection from "~/hooks/useYearSelection";
 
 
 type CommitsPerWeekResponse = Record<number, number>
+type QueryReturn = [number, CommitsPerWeekResponse]
 
 const WEEKS_PER_YEAR = 52;
-const ZERO = 0;
+const WEEKS = One2NArray(WEEKS_PER_YEAR);
 
 export default function CommitsPerWeekWrapper() {
     return <div className="flex flex-col h-screen">
@@ -20,39 +22,39 @@ export default function CommitsPerWeekWrapper() {
 }
 
 export function CommitsPerWeek() {
-    const query = useQuery<CommitsPerWeekResponse>(
-        ["commits-per-week"],
-        () => axios.get("/commits-per-week").then(response => response.data),
-    );
-    if (query.isLoading) {
-        return <>Loading...</>;
-    }
-    if (query.isError) {
-        return <>Error...</>;
-    }
+    const years = useYearSelection();
 
-    const weeks = One2NArray(WEEKS_PER_YEAR);
+    const queries = useQueries(
+        years.map(year => ({
+            queryKey: ["commits-per-week", year],
+            queryFn: () => axios
+                .get<CommitsPerWeekResponse>(`/commits-per-week/${year}`)
+                .then<QueryReturn>(response => [year, response.data]),
+        })),
+    );
 
     return <Bar data={{
-        labels: weeks,
-        datasets: [{
-            label: "Avg Commits per Week",
-            data: weeks.map(i => query.data![i] ?? ZERO),
-            backgroundColor: "#F05133",
-        }],
+        labels: WEEKS,
+        datasets: queries.map(result => {
+            if (result.isLoading) return {label: "loading...", data: []};
+            if (!result.isSuccess) return {label: "failed", data: []};
+            const [year, data] = result.data;
+            return {
+                label: `${year}`,
+                data: WEEKS.map(week => data[week] ?? 0),
+            };
+        }),
     }} options={{
-        // maintainAspectRatio: false,
+        maintainAspectRatio: false,
         plugins: {
             title: {
                 display: true,
                 text: "Avg Commits per Week",
             },
-            legend: {
-                display: false,
-            },
         },
         interaction: {
-            intersect: true,
+            axis: "x",
+            intersect: false,
         },
-    }} width="100%" height="100%" className="w-full max-h-screen" />;
+    }} width="100%" height="100%" />;
 }

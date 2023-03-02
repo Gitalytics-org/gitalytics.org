@@ -1,15 +1,16 @@
 import axios from "axios";
-import { useQuery } from "react-query";
+import { useQueries } from "react-query";
 import { PolarArea } from "react-chartjs-2";
 import { Zero2NArray } from "../../utils";
-import colorLib from "@kurkle/color";
 import YearInputHandler from "~/elements/YearInputHandler";
+import useYearSelection from "~/hooks/useYearSelection";
 
 
 type CommitsPerWeekdayResponse = Record<number, number>
+type QueryReturn = [number, CommitsPerWeekdayResponse]
 
 const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-const ZERO = 0;
+const weekdays = Zero2NArray(WEEKDAYS.length-1);
 
 export default function CommitsPerWeekdayWrapper() {
     return <div className="flex flex-col h-screen">
@@ -21,33 +22,30 @@ export default function CommitsPerWeekdayWrapper() {
 }
 
 export function CommitsPerWeekday() {
-    const query = useQuery<CommitsPerWeekdayResponse>(
-        ["commits-per-weekday"],
-        () => axios.get("/commits-per-weekday").then(response => response.data),
-    );
-    if (query.isLoading) {
-        return <>Loading...</>;
-    }
-    if (query.isError) {
-        return <>Error...</>;
-    }
+    const years = useYearSelection();
 
-    const weekdays = Zero2NArray(WEEKDAYS.length);
-    const maxValue = Math.max(...Object.values(query.data!));
+    const queries = useQueries(
+        years.map(year => ({
+            queryKey: ["commits-per-weekday", year],
+            queryFn: () => axios
+                .get<CommitsPerWeekdayResponse>(`/commits-per-weekday/${year}`)
+                .then<QueryReturn>(response => [year, response.data]),
+        })),
+    );
 
     return <PolarArea data={{
         labels: WEEKDAYS,
-        datasets: [{
-            label: "Avg Commits per Weekday",
-            data: weekdays.map(i => query.data![i] ?? ZERO),
-            backgroundColor: weekdays.map(
-                i => colorLib("#F05133")
-                    .alpha((query.data![i] ?? ZERO) / maxValue)
-                    .rgbString(),
-            ),
-        }],
+        datasets: queries.map(result => {
+            if (result.isLoading) return {label: "loading...", data: []};
+            if (!result.isSuccess) return {label: "failed", data: []};
+            const [year, data] = result.data;
+            return {
+                label: `${year}`,
+                data: weekdays.map(weekday => data[weekday] ?? 0),
+            };
+        }),
     }} options={{
-        // maintainAspectRatio: false,
+        maintainAspectRatio: false,
         plugins: {
             title: {
                 display: true,
@@ -58,6 +56,7 @@ export function CommitsPerWeekday() {
             },
         },
         interaction: {
+            axis: "r",
             intersect: false,
         },
         scales: {
@@ -70,5 +69,5 @@ export function CommitsPerWeekday() {
                 },
             },
         },
-    }} width="100%" height="100%" className="w-full max-h-screen" />;
+    }} width="100%" height="100%" />;
 }
