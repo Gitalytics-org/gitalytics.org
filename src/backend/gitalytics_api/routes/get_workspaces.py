@@ -26,7 +26,6 @@ class ResponseModel(pydantic.BaseModel):
     other_workspaces: t.List[Workspace]
 
 
-
 @router.get("/get-workspaces", response_model=ResponseModel)
 async def get_workspaces(session: dbm.Session = session_from_cookies, cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage):
     r"""

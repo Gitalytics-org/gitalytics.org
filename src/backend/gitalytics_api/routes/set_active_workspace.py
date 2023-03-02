@@ -20,9 +20,9 @@ class ResponseModel(pydantic.BaseModel):
 
 
 @router.put("/set-active-workspace", response_model=ResponseModel)
-async def get_workspaces(workspace_name: str, cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage, session: dbm.Session = session_from_cookies):
+async def set_active_workspace(workspace_name: str, cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage, session: dbm.Session = session_from_cookies):
     r"""
-    list all workspaces for the current user (session)
+    sets the active workspace for a user's session
     """
     with createLocalSession() as connection:
         workspace: t.List[dbm.Workspace] = connection.query(dbm.Workspace) \
