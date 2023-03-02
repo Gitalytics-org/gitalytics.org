@@ -10,7 +10,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from .db import BaseModel
 from .model_components import IdMixin, BigIdMixin, TimestampsMixin, CreatedAtMixin
 from .enums import GitPlatform
-from datetime import datetime
+from datetime import datetime, date
 from typing import Set
 
 repository_access = sql.Table(
@@ -82,3 +82,4 @@ class Session(IdMixin, TimestampsMixin, BaseModel):
     refresh_token: Mapped[str] = mapped_column(sql.String, nullable=True)
     platform: Mapped[GitPlatform] = mapped_column(sql.Enum(GitPlatform), nullable=False)
     repositories: Mapped[Set["Repository"]] = relationship(secondary="repository_access")
+    last_seen: Mapped[date] = mapped_column(sql.Date(), server_default=sql.func.current_date())
