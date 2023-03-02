@@ -37,7 +37,7 @@
     "camelcase": "warn",
     "eqeqeq": "warn",
     "no-alert": "error",
-    "no-magic-numbers": "warn",
+    "no-magic-numbers": ["warn", { "ignore": [-1, 0, 1] }],
     "no-nested-ternary": "warn",
     "no-throw-literal": "warn",
     "no-var": "warn",

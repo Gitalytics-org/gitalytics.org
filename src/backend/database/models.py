@@ -6,12 +6,19 @@ This file contanis all SQLAlchemy ORM Database models
 
 import sqlalchemy as sql
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.ext.hybrid import hybrid_property
 from .db import BaseModel
 from .model_components import IdMixin, BigIdMixin, TimestampsMixin, CreatedAtMixin
 from .enums import GitPlatform
-from datetime import datetime
+from datetime import datetime, date
 from typing import Set
 
+repository_access = sql.Table(
+    "repository_access",
+    BaseModel.metadata,
+    sql.Column("session_id", sql.ForeignKey("session.id")),
+    sql.Column("repository_id", sql.ForeignKey("repository.id")),
+)
 
 class Workspace(IdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "workspace"
@@ -24,16 +31,30 @@ class Workspace(IdMixin, TimestampsMixin, BaseModel):
 class Author(IdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "author"
 
-    name: Mapped[str] = mapped_column(sql.String, nullable=False)
-    email: Mapped[str] = mapped_column(sql.String, nullable=False)
     commits: Mapped[Set["Commit"]] = relationship(back_populates="author")
+
+    # Encoding surrogate characters is required, since sqlalchemy cannot handle them. Example from linux kernel repo logs: '\udcdf'
+    _name: Mapped[str] = mapped_column(sql.String, nullable=False)
+    @hybrid_property
+    def name(self):
+        return self._name
+    @name.setter
+    def name(self, value: str):
+        self._name = value.encode("utf-8", "surrogateescape")
+    _email: Mapped[str] = mapped_column(sql.String, nullable=False)
+    @hybrid_property
+    def email(self):
+        return self._email
+    @email.setter
+    def email(self, value: str):
+        self._email = value.encode("utf-8", "surrogateescape")
 
 
 class Repository(IdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "repository"
 
     name: Mapped[str] = mapped_column(sql.String, nullable=False)
-    last_refresh: Mapped[datetime] = mapped_column(sql.DateTime, nullable=True)
+    last_commit_hash: Mapped[str] = mapped_column(sql.String, nullable=True)
     commits: Mapped[Set["Commit"]] = relationship(back_populates="repository")
     workspace_id: Mapped[int] = mapped_column(sql.ForeignKey("workspace.id"), nullable=False)
     workspace: Mapped["Workspace"] = relationship(back_populates="repositories")
@@ -58,11 +79,5 @@ class Session(IdMixin, TimestampsMixin, BaseModel):
     access_token: Mapped[str] = mapped_column(sql.String, nullable=False)
     refresh_token: Mapped[str] = mapped_column(sql.String, nullable=True)
     platform: Mapped[GitPlatform] = mapped_column(sql.Enum(GitPlatform), nullable=False)
-    # workspaces: Mapped[Set["Workspace"]] = relationship(secondary="access_workspace")
-
-# workspace_access = sql.Table(
-#     "workspace_access",
-#     BaseModel.metadata,
-#     sql.Column("session", sql.ForeignKey("session.id")),
-#     sql.Column("workspace", sql.ForeignKey("workspace.id")),
-# )
+    repositories: Mapped[Set["Repository"]] = relationship(secondary="repository_access")
+    last_seen: Mapped[date] = mapped_column(sql.Date(), server_default=sql.func.current_date())

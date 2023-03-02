@@ -1,5 +1,6 @@
 gitalytics.db
 gitalytics_api/web-ui/
+backend-logs/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

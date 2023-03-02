@@ -4,7 +4,6 @@ r"""
 
 """
 import sys
-import os
 import argparse
 import logging
 from __version__ import __version__
@@ -69,12 +68,12 @@ gpUpdateAllParser = gitPorterSubparsers.add_parser("update-all", formatter_class
 gpUpdateAllParser.set_defaults(function=gitporter.update_all_workspaces)
 
 # gitporter update-workspace
-gpUpdateWorkspaceParser = gitPorterSubparsers.add_parser("update-workspace",
+gpUpdateWorkspaceParser = gitPorterSubparsers.add_parser("update-session-repos",
                                                          formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-gpUpdateWorkspaceParser.set_defaults(function=gitporter.update_workspace)
-gpUpdateWorkspaceParser.add_argument('-p', '--platform', required=True, help="name of the workspace to update",
-                                     choices=GitPlatform, type=lambda p: GitPlatform[p.upper()])
-gpUpdateWorkspaceParser.add_argument('-w', '--workspace-name', required=True, help="git provider")
+gpUpdateWorkspaceParser.set_defaults(function=gitporter.update_session_repositories)
+gpUpdateWorkspaceParser.add_argument('-s', '--session-id', required=True, 
+                                     help="session id, for wich the repos should be updated",
+                                     type=int)
 
 if __name__ == '__main__':
     args = vars(parser.parse_args())

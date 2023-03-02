@@ -12,7 +12,7 @@ SQLALCHEMY_DATABASE_URL = "sqlite:///./gitalytics.db"
 
 engine = sql.create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False},
-    echo=True,  # set to False for less output
+    echo=False,  # set to False for less output
 )
 
 

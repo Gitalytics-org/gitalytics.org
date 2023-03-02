@@ -3,11 +3,10 @@
 r"""
 
 """
-import inspect
 import json
-import logging
 import typing as t
 import functools
+import datetime
 import httpx
 import fastapi
 import pydantic
@@ -16,7 +15,6 @@ from database import createLocalSession, models as dbm
 
 
 class Settings(pydantic.BaseSettings):
-    # required: base64.urlsafe_b64encode(os.urandom(32))  # equal to Fernet.generate_key()
     COOKIE_KEY: str
 
 
@@ -30,7 +28,7 @@ def SessionToken(request: fastapi.Request) -> dbm.Session:
     important: no validation
 
     @router.get("/")
-    async def endpoint(token: SessionKey):
+    async def endpoint(token: dbm.Session = SessionToken):
         pass
     """
     fernet = Fernet(settings.COOKIE_KEY)
@@ -46,8 +44,14 @@ def SessionToken(request: fastapi.Request) -> dbm.Session:
             .filter(dbm.Session.id == session_id) \
             .one_or_none()
 
-    if not session:
-        raise fastapi.HTTPException(fastapi.status.HTTP_401_UNAUTHORIZED)
+        if session is None:
+            # maybe redirect to /#/login ('cause seems like session expired)
+            raise fastapi.HTTPException(fastapi.status.HTTP_401_UNAUTHORIZED)
+
+        today = datetime.date.today()
+        if session.last_seen < today:
+            session.last_seen = today
+            connection.commit()
 
     return session
 
@@ -98,27 +102,3 @@ class HttpxBearerAuth(httpx.Auth):
     def auth_flow(self, request: httpx.Request) -> t.Generator[httpx.Request, httpx.Response, None]:
         request.headers["Authorization"] = self._auth_header
         yield request
-
-
-def add_error_logging(*, reraise_exception: bool):
-    def decorator(function):
-        if inspect.iscoroutine(function):
-            @functools.wraps(function)
-            async def wrapper(*args, **kwargs):
-                try:
-                    return await function(*args, **kwargs)
-                except Exception as exception:
-                    logging.exception(f"{function} raised an {exception.__class__.__name__}", exc_info=exception)
-                    if reraise_exception:
-                        raise
-        else:
-            @functools.wraps(function)
-            def wrapper(*args, **kwargs):
-                try:
-                    return function(*args, **kwargs)
-                except Exception as exception:
-                    logging.exception(f"{function} raised an {exception.__class__.__name__}", exc_info=exception)
-                    if reraise_exception:
-                        raise
-        return wrapper
-    return decorator
