@@ -17,15 +17,24 @@ router = fastapi.APIRouter()
 
 class ResponseModel(pydantic.BaseModel):
     status: str = "success"
-    message: str | None = None
-
 
 
 @router.put("/set-active-workspace", response_model=ResponseModel)
-async def get_workspaces(workspace_name: str, cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage):
+async def get_workspaces(workspace_name: str, cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage, session: dbm.Session = session_from_cookies):
     r"""
     list all workspaces for the current user (session)
     """
+    with createLocalSession() as connection:
+        workspace: t.List[dbm.Workspace] = connection.query(dbm.Workspace) \
+            .select_from(dbm.Session) \
+            .join(dbm.Repository, dbm.Session.repositories) \
+            .join(dbm.Workspace) \
+            .filter(dbm.Session.id == session.id) \
+            .filter(dbm.Workspace.name == workspace_name) \
+            .one_or_none()
     
-    cookie_storage.set(key=CookieKey.ACTIVE_WORKSPACE_NAME, value=workspace_name)
+    if workspace is None:
+        raise fastapi.HTTPException(fastapi.status.HTTP_406_NOT_ACCEPTABLE)
+    
+    cookie_storage.set(key=CookieKey.ACTIVE_WORKSPACE_ID, value=workspace.id)
     return
