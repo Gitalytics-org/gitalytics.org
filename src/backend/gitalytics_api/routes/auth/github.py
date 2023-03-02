@@ -9,10 +9,10 @@ import urllib.parse as urlparse
 import fastapi
 import pydantic
 import httpx
-from gitalytics_api.common import SessionStorage, SessionToken
+from gitalytics_api.common import SessionStorage
 from database import createLocalSession, models as dbm
 from database.enums import GitPlatform
-from .session_initializer import initialize_session
+from gitporter import update_session_repositories
 
 
 class AuthSettings(pydantic.BaseSettings):
@@ -25,7 +25,8 @@ class AuthSettings(pydantic.BaseSettings):
 
 SCOPES = [
     "read:user",
-    "repo:status",
+    "repo",
+    "read:org",
 ]
 
 
@@ -119,6 +120,6 @@ async def verify(code: str, tasks: fastapi.BackgroundTasks, storage: SessionStor
             connection.refresh(session)
         storage.set("session-id", session.id)
 
-    tasks.add_task(initialize_session, session=session)
+    tasks.add_task(update_session_repositories, session_id=session.id)
 
     return storage.toRedirectResponse(url="/#/app")
