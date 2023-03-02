@@ -8,7 +8,7 @@ import fastapi
 import pydantic
 import database.models as dbm
 from database.db import createLocalSession
-from gitalytics_api.cookies import SessionToken, EncryptedCookieStorage
+from gitalytics_api.cookies import session_from_cookies, EncryptedCookieStorage
 from gitalytics_api.enums import CookieKey
 
 
@@ -29,7 +29,7 @@ class ResponseModel(pydantic.BaseModel):
 
 
 @router.get("/get-workspaces", response_model=ResponseModel)
-async def get_workspaces(session: dbm.Session = SessionToken, cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage):
+async def get_workspaces(session: dbm.Session = session_from_cookies, cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage):
     r"""
     list all workspaces for the current user (session)
     """

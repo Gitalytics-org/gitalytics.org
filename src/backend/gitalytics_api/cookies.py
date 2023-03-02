@@ -13,41 +13,6 @@ from .env_variables import env
 
 
 @fastapi.Depends
-def SessionToken(request: fastapi.Request) -> dbm.Session:
-    r"""
-    requires and loads the secret session-key from the cookies
-    important: filter by this session when accessing the Database
-
-    @router.get("/")
-    async def endpoint(token: dbm.Session = SessionToken):
-        pass
-    """
-    fernet = Fernet(env.COOKIE_KEY)
-    try:
-        token = request.cookies[CookieKey.SESSION_ID.value]
-    except KeyError:
-        raise fastapi.HTTPException(fastapi.status.HTTP_401_UNAUTHORIZED)
-    session_id: int = json.loads(fernet.decrypt(token.encode()).decode())
-
-    with createLocalSession() as connection:
-        session = connection \
-            .query(dbm.Session) \
-            .filter(dbm.Session.id == session_id) \
-            .one_or_none()
-
-        if session is None:
-            # maybe redirect to /#/login ('cause seems like session expired)
-            raise fastapi.HTTPException(fastapi.status.HTTP_401_UNAUTHORIZED)
-
-        today = datetime.date.today()
-        if session.last_seen < today:
-            session.last_seen = today
-            connection.commit()
-
-    return session
-
-
-@fastapi.Depends
 class EncryptedCookieStorage:
     r"""
     usage:
@@ -85,3 +50,36 @@ class EncryptedCookieStorage:
 
     def delete(self, key: CookieKey):
         self._response.delete_cookie(key.value, secure=True, httponly=True)
+
+
+@fastapi.Depends
+def session_from_cookies(cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage) -> dbm.Session:
+    r"""
+    requires and loads the secret session-key from the cookies
+    important: filter by this session when accessing the Database
+
+    @router.get("/")
+    async def endpoint(token: dbm.Session = session_from_cookies):
+        pass
+    """
+    try:
+        session_id = cookie_storage.get(CookieKey.SESSION_ID)
+    except KeyError:
+        raise fastapi.HTTPException(fastapi.status.HTTP_401_UNAUTHORIZED)
+
+    with createLocalSession() as connection:
+        session = connection \
+            .query(dbm.Session) \
+            .filter(dbm.Session.id == session_id) \
+            .one_or_none()
+
+        if session is None:
+            # maybe redirect to /#/login ('cause seems like session expired) (TODO: implement in frontend)
+            raise fastapi.HTTPException(fastapi.status.HTTP_401_UNAUTHORIZED)
+
+        today = datetime.date.today()
+        if session.last_seen < today:
+            session.last_seen = today
+            connection.commit()
+
+    return session

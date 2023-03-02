@@ -54,7 +54,7 @@ async def login_redirect():
     redirects to the Github login-page
     """
     # try:
-    #     SessionToken.dependency(request=request)
+    #     session_from_cookies.dependency(request=request)
     # except fastapi.HTTPException:
     #     pass  # not existing or wrong token
     # else:
