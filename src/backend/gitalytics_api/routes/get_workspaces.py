@@ -6,8 +6,7 @@ r"""
 import typing as t
 import fastapi
 import pydantic
-import database.models as dbm
-from database.db import createLocalSession
+from database import createLocalSession, models as dbm
 from gitalytics_api.cookies import session_from_cookies, EncryptedCookieStorage
 from gitalytics_api.enums import CookieKey
 
