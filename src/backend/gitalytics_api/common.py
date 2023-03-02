@@ -10,6 +10,7 @@ import fastapi
 import pydantic
 from cryptography.fernet import Fernet
 from database import createLocalSession, models as dbm
+from .enums import CookieKey
 
 
 class Settings(pydantic.BaseSettings):
@@ -31,7 +32,7 @@ def SessionToken(request: fastapi.Request) -> dbm.Session:
     """
     fernet = Fernet(settings.COOKIE_KEY)
     try:
-        token = request.cookies["session-id"]
+        token = request.cookies[CookieKey.SESSION_ID.value]
     except KeyError:
         raise fastapi.HTTPException(fastapi.status.HTTP_401_UNAUTHORIZED)
     session_id: int = json.loads(fernet.decrypt(token.encode()).decode())
@@ -48,10 +49,13 @@ def SessionToken(request: fastapi.Request) -> dbm.Session:
     return session
 
 
-class SessionStorage:
+@fastapi.Depends
+class EncryptedCookieStorage:
     r"""
+    usage:
+
     @router.get("/")
-    async def endpoint(, session: SessionStorage = Depends(SessionStorage)):
+    async def endpoint(, cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage):
         pass
     """
 
@@ -60,12 +64,15 @@ class SessionStorage:
         self._request = request
         self._response = response
 
-    def toRedirectResponse(self, url: str):
+    def to_redirect_response(self, url: str):
         return fastapi.responses.RedirectResponse(url, headers=self._response.headers)
+    
+    def contains(self, key: CookieKey) -> bool:
+        return key.value in self._request.cookies
 
-    def get(self, key: str, *, default=...):
+    def get(self, key: CookieKey, *, default=...):
         try:
-            token: str = self._request.cookies[key]
+            token: str = self._request.cookies[key.value]
         except KeyError:
             if isinstance(default, type(Ellipsis)):
                 raise
@@ -73,13 +80,13 @@ class SessionStorage:
         else:
             return json.loads(self._fernet.decrypt(token.encode()).decode())
 
-    def set(self, key: str, value):
+    def set(self, key: CookieKey, value):
         value = json.dumps(value)
         token = self._fernet.encrypt(value.encode())
-        self._response.set_cookie(key, token.decode(), max_age=2592000000, secure=True, httponly=True)
+        self._response.set_cookie(key.value, token.decode(), max_age=2592000000, secure=True, httponly=True)
 
-    def delete(self, key: str):
-        self._response.delete_cookie(key, secure=True, httponly=True)
+    def delete(self, key: CookieKey):
+        self._response.delete_cookie(key.value, secure=True, httponly=True)
 
 
 class HttpxBearerAuth(httpx.Auth):

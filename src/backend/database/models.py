@@ -16,14 +16,16 @@ from typing import Set
 repository_access = sql.Table(
     "repository_access",
     BaseModel.metadata,
-    sql.Column("session_id", sql.ForeignKey("session.id")),
-    sql.Column("repository_id", sql.ForeignKey("repository.id")),
+    sql.Column("session_id", sql.ForeignKey("session.id"), nullable=False),
+    sql.Column("repository_id", sql.ForeignKey("repository.id"), nullable=False),
+    sql.PrimaryKeyConstraint("session_id", "repository_id"),
 )
 
 class Workspace(IdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "workspace"
 
     name: Mapped[str] = mapped_column(sql.String, nullable=False)
+    logo_url: Mapped[str] = mapped_column(sql.String, nullable=True)
     platform: Mapped[GitPlatform] = mapped_column(sql.Enum(GitPlatform), nullable=False)
     repositories: Mapped[Set["Repository"]] = relationship(back_populates="workspace")
 

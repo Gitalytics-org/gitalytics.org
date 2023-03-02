@@ -9,7 +9,8 @@ import urllib.parse as urlparse
 import fastapi
 import pydantic
 import httpx
-from gitalytics_api.common import SessionStorage
+from gitalytics_api.common import EncryptedCookieStorage
+from gitalytics_api.enums import CookieKey
 from database import createLocalSession, models as dbm
 from database.enums import GitPlatform
 from gitporter import update_session_repositories
@@ -74,7 +75,7 @@ async def login_redirect():
             responses={
                 fastapi.status.HTTP_400_BAD_REQUEST: {}
             })
-async def verify(code: str, tasks: fastapi.BackgroundTasks, storage: SessionStorage = fastapi.Depends(SessionStorage)):
+async def verify(code: str, tasks: fastapi.BackgroundTasks, cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage):
     r"""
     callback endpoint from GitHub
     """
@@ -118,8 +119,8 @@ async def verify(code: str, tasks: fastapi.BackgroundTasks, storage: SessionStor
             connection.add(session)
             connection.commit()
             connection.refresh(session)
-        storage.set("session-id", session.id)
+        cookie_storage.set(CookieKey.SESSION_ID, session.id)
 
     tasks.add_task(update_session_repositories, session_id=session.id)
 
-    return storage.toRedirectResponse(url="/#/app")
+    return cookie_storage.to_redirect_response(url="/#/app")
