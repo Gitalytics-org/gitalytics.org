@@ -2,6 +2,7 @@ import functools
 from database import DatabaseSession, models as dbm
 from .git_command import parse_git_log
 
+
 def read_log_into_database(log: str, repository: dbm.Repository, session: DatabaseSession):
     for parsed_commit in parse_git_log(log):
         commit = dbm.Commit(
