@@ -22,4 +22,3 @@ provider_dict = {
 def get_remote_repositories(session: dbm.Session) -> t.List[RemoteRepositoryInformation]:
     module = provider_dict[session.platform]
     return module.get_remote_repositories(access_token=session.access_token)
-

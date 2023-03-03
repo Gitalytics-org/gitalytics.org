@@ -4,14 +4,15 @@ import os
 import shutil
 import re
 
-def get_full_git_log(clone_url: str) -> str|None:
+
+def get_full_git_log(clone_url: str) -> str | None:
     repo_path = tempfile.mktemp(prefix="gitalytics")
-    try: 
+    try:
         git_repository = git.Repo.clone_from(
-                clone_url,
-                to_path=repo_path,
-                no_checkout=True
-            )
+            clone_url,
+            to_path=repo_path,
+            no_checkout=True
+        )
 
         try:
             return git_repository.git.log('--shortstat', '--reverse', '--format=%H;%aI;%an;%ae')

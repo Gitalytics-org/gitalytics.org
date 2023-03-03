@@ -29,7 +29,7 @@ class EncryptedCookieStorage:
 
     def to_redirect_response(self, url: str):
         return fastapi.responses.RedirectResponse(url, headers=self._response.headers)
-    
+
     def contains(self, key: CookieKey) -> bool:
         return key.value in self._request.cookies
 

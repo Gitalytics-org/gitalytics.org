@@ -13,6 +13,7 @@ from .enums import GitPlatform
 from datetime import datetime, date
 from typing import Set
 
+
 repository_access = sql.Table(
     "repository_access",
     BaseModel.metadata,
@@ -20,6 +21,7 @@ repository_access = sql.Table(
     sql.Column("repository_id", sql.ForeignKey("repository.id"), nullable=False),
     sql.PrimaryKeyConstraint("session_id", "repository_id"),
 )
+
 
 class Workspace(IdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "workspace"
@@ -37,16 +39,21 @@ class Author(IdMixin, TimestampsMixin, BaseModel):
 
     # Encoding surrogate characters is required, since sqlalchemy cannot handle them. Example from linux kernel repo logs: '\udcdf'
     _name: Mapped[str] = mapped_column(sql.String, nullable=False)
+
     @hybrid_property
     def name(self):
         return self._name
+
     @name.setter
     def name(self, value: str):
         self._name = value.encode("utf-8", "surrogateescape")
+
     _email: Mapped[str] = mapped_column(sql.String, nullable=False)
+
     @hybrid_property
     def email(self):
         return self._email
+
     @email.setter
     def email(self, value: str):
         self._email = value.encode("utf-8", "surrogateescape")
