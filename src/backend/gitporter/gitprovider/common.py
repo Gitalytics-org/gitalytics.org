@@ -9,8 +9,9 @@ import dataclasses
 @dataclasses.dataclass
 class RemoteRepositoryInformation:
     repository_name: str
-    workspace_name: str
     clone_url: str
+    workspace_name: str
+    workspace_logo_url: str
 
 
 class InfoCollectionError(RuntimeError):

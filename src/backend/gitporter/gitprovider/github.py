@@ -34,8 +34,9 @@ def get_remote_repositories(access_token: str) -> t.List[RemoteRepositoryInforma
         result.append(
             RemoteRepositoryInformation(
                 repository_name=github_item["name"],
+                clone_url=github_item["clone_url"].replace("https://", f"https://{access_token}@"),
                 workspace_name=github_item["owner"]["login"],
-                clone_url=github_item["clone_url"].replace("https://", f"https://{access_token}@")
+                workspace_logo_url=github_item["owner"]["avatar_url"],
             )
         )
 

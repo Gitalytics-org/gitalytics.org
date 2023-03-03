@@ -24,6 +24,7 @@ class Workspace(IdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "workspace"
 
     name: Mapped[str] = mapped_column(sql.String, nullable=False)
+    logo_url: Mapped[str] = mapped_column(sql.String, nullable=True)
     platform: Mapped[GitPlatform] = mapped_column(sql.Enum(GitPlatform), nullable=False)
     repositories: Mapped[Set["Repository"]] = relationship(back_populates="workspace")
 
