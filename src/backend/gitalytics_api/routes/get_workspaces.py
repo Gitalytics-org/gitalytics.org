@@ -42,8 +42,8 @@ async def get_workspaces(session: dbm.Session = session_from_cookies, cookie_sto
     if len(workspaces) == 0:
         raise fastapi.HTTPException(fastapi.status.HTTP_425_TOO_EARLY)
     
-    if cookie_storage.contains(CookieKey.ACTIVE_WORKSPACE_ID):
-        active_workspace_id = cookie_storage.get(CookieKey.ACTIVE_WORKSPACE_ID)
+    if CookieKey.ACTIVE_WORKSPACE_ID in cookie_storage:
+        active_workspace_id = cookie_storage[CookieKey.ACTIVE_WORKSPACE_ID]
         for i, workspace in enumerate(workspaces):
             if workspace.id == active_workspace_id:
                 other_workspaces = workspaces.copy()
@@ -53,7 +53,7 @@ async def get_workspaces(session: dbm.Session = session_from_cookies, cookie_sto
                     "other_workspaces": other_workspaces,
                 }
     
-    cookie_storage.set(key=CookieKey.ACTIVE_WORKSPACE_ID, value=workspaces[0].id)
+    cookie_storage[CookieKey.ACTIVE_WORKSPACE_ID] = workspaces[0].id
 
     return {
         "active_workspace": workspaces[0],
