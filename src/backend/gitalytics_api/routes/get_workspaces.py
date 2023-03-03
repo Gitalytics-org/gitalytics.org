@@ -7,6 +7,7 @@ import typing as t
 import fastapi
 import pydantic
 from database import createLocalSession, models as dbm
+from database.enums import GitPlatform
 from gitalytics_api.cookies import session_from_cookies, EncryptedCookieStorage
 from gitalytics_api.enums import CookieKey
 
@@ -17,6 +18,7 @@ router = fastapi.APIRouter()
 class Workspace(pydantic.BaseModel):
     name: str
     logo_url: str | None
+    platform: GitPlatform
 
     class Config:
         orm_mode = True
