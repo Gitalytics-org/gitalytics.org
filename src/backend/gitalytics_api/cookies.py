@@ -33,20 +33,21 @@ class EncryptedCookieStorage:
     def contains(self, key: CookieKey) -> bool:
         return key.value in self._request.cookies
 
-    def get(self, key: CookieKey, *, default=...):
+    def __getitem__(self, key: CookieKey):
+        token: str = self._request.cookies[key.value]
+        dumped: str = self._fernet.decrypt(token.encode()).decode()
+        return json.loads(dumped)
+
+    def get(self, key: CookieKey, *, default=None):
         try:
-            token: str = self._request.cookies[key.value]
+            return self[key]
         except KeyError:
-            if isinstance(default, type(Ellipsis)):
-                raise
             return default
-        else:
-            return json.loads(self._fernet.decrypt(token.encode()).decode())
 
     def set(self, key: CookieKey, value):
-        value = json.dumps(value)
-        token = self._fernet.encrypt(value.encode())
-        self._response.set_cookie(key.value, token.decode(), max_age=2592000000, secure=True, httponly=True)
+        dumped = json.dumps(value)
+        token = self._fernet.encrypt(dumped.encode()).decode()
+        self._response.set_cookie(key.value, token, max_age=2592000000, secure=True, httponly=True)
 
     def delete(self, key: CookieKey):
         self._response.delete_cookie(key.value, secure=True, httponly=True)
@@ -63,7 +64,7 @@ def session_from_cookies(cookie_storage: EncryptedCookieStorage = EncryptedCooki
         pass
     """
     try:
-        session_id = cookie_storage.get(CookieKey.SESSION_ID)
+        session_id = cookie_storage[CookieKey.SESSION_ID]
     except KeyError:
         raise fastapi.HTTPException(fastapi.status.HTTP_401_UNAUTHORIZED)
 
