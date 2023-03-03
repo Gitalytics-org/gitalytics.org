@@ -4,7 +4,8 @@ import os
 import shutil
 import re
 
-def get_git_log_after_commit(clone_url: str, last_commit_hash: str|None) -> str:
+
+def get_git_log_after_commit(clone_url: str, last_commit_hash: str | None) -> str:
     repo_path = tempfile.mktemp(prefix="gitalytics")
     try:
         git_repository = git.Repo.clone_from(
@@ -13,15 +14,15 @@ def get_git_log_after_commit(clone_url: str, last_commit_hash: str|None) -> str:
             filter="blob:none",
             no_checkout=True
         )
-        try: 
+        try:
             git_log_args = ["--shortstat", "--reverse", "--format=%H;%aI;%an;%ae"]
             if last_commit_hash is not None:
                 git_log_args.append(f"{last_commit_hash}..HEAD")
-            
+
             log: str = git_repository.git.log(*git_log_args)
             if log.strip() == "":
                 return None
-            
+
             return log
         except git.exc.GitCommandError as git_error:
             if type(git_error.stderr) is not str:

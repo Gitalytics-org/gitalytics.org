@@ -1,6 +1,7 @@
 import httpx
 import typing as t
 
+
 class HttpxBearerAuth(httpx.Auth):
     """
     Allows the 'auth' argument to be passed as a (username, password) pair,

@@ -9,7 +9,6 @@ import logging
 from __version__ import __version__
 import logconfig  # noqa
 import gitporter
-from database.enums import GitPlatform
 
 
 def create_database():
@@ -24,7 +23,6 @@ def generate_key():
     dotenv_file = dotenv.find_dotenv()
     dotenv.set_key(dotenv_file, "COOKIE_KEY", Fernet.generate_key().decode())
     print("Successfully generated new COOKIE_KEY ✅")
-
 
 
 def run_server(host: str, port: int, reload: bool, workers: int):
@@ -71,7 +69,7 @@ gpUpdateAllParser.set_defaults(function=gitporter.update_all_workspaces)
 gpUpdateWorkspaceParser = gitPorterSubparsers.add_parser("update-session-repos",
                                                          formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 gpUpdateWorkspaceParser.set_defaults(function=gitporter.update_session_repositories)
-gpUpdateWorkspaceParser.add_argument('-s', '--session-id', required=True, 
+gpUpdateWorkspaceParser.add_argument('-s', '--session-id', required=True,
                                      help="session id, for wich the repos should be updated",
                                      type=int)
 

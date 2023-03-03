@@ -8,6 +8,7 @@ import fastapi.middleware.cors
 import fastapi.staticfiles
 from __version__ import __version__
 
+
 ROOT = p.dirname(__file__)
 
 app = fastapi.FastAPI(
@@ -23,7 +24,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 if __debug__:
     @app.middleware("http")
     async def add_process_time_header(request: fastapi.Request, call_next):
@@ -32,7 +32,6 @@ if __debug__:
         process_time = time.perf_counter() - start_time
         response.headers["X-Process-Time"] = str(process_time)
         return response
-
 
 logging.info("Loading routes")
 

@@ -20,7 +20,8 @@ class ResponseModel(pydantic.BaseModel):
 
 
 @router.put("/set-active-workspace", response_model=ResponseModel)
-async def set_active_workspace(workspace_name: str, cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage, session: dbm.Session = session_from_cookies):
+async def set_active_workspace(workspace_name: str, cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage,
+                               session: dbm.Session = session_from_cookies):
     r"""
     sets the active workspace for a user's session
     """
@@ -32,9 +33,10 @@ async def set_active_workspace(workspace_name: str, cookie_storage: EncryptedCoo
             .filter(dbm.Session.id == session.id) \
             .filter(dbm.Workspace.name == workspace_name) \
             .one_or_none()
-    
+
     if workspace is None:
         raise fastapi.HTTPException(fastapi.status.HTTP_406_NOT_ACCEPTABLE)
     
-    cookie_storage.set(key=CookieKey.ACTIVE_WORKSPACE_ID, value=workspace.id)
+    cookie_storage[CookieKey.ACTIVE_WORKSPACE_ID] = workspace.id
+    
     return {}
