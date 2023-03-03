@@ -14,6 +14,7 @@ def update_repository(session: dbm.Session, remote_repository: RemoteRepositoryI
         workspace = dbm.Workspace(
             name=remote_repository.workspace_name,
             platform=session.platform,
+            logo_url=remote_repository.workspace_logo_url,
         )
         database_connection.add(workspace)
     
