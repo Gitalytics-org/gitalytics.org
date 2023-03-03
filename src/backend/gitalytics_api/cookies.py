@@ -34,9 +34,14 @@ class EncryptedCookieStorage:
         return key.value in self._request.cookies
 
     def __getitem__(self, key: CookieKey):
-        token: str = self._request.cookies[key.value]
-        dumped: str = self._fernet.decrypt(token.encode()).decode()
-        return json.loads(dumped)
+        encrypted: str = self._request.cookies[key.value]
+        json_string: str = self._fernet.decrypt(encrypted.encode()).decode()
+        return json.loads(json_string)
+
+    # still open if it should be implemented
+    # def __setitem__(self, key: CookieKey, value): ...
+    # def __delitem__(self, key: CookieKey): ...
+    # def __contains__(self, item: CookieKey): ...
 
     def get(self, key: CookieKey, *, default=None):
         try:
@@ -45,9 +50,9 @@ class EncryptedCookieStorage:
             return default
 
     def set(self, key: CookieKey, value):
-        dumped = json.dumps(value)
-        token = self._fernet.encrypt(dumped.encode()).decode()
-        self._response.set_cookie(key.value, token, max_age=2592000000, secure=True, httponly=True)
+        json_string = json.dumps(value)
+        encrypted = self._fernet.encrypt(json_string.encode()).decode()
+        self._response.set_cookie(key.value, encrypted, max_age=2592000000, secure=True, httponly=True)
 
     def delete(self, key: CookieKey):
         self._response.delete_cookie(key.value, secure=True, httponly=True)
