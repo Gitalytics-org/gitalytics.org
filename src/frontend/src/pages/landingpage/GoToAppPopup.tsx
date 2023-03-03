@@ -1,12 +1,34 @@
 import { Link } from "react-router-dom";
 import GraphIconSrc from "@assets/graph-icon.png";
-import useUser from "~/hooks/useUser";
+import axios from "axios";
+import { useQuery } from "react-query";
+
+
+// const request = axios.create({
+//     baseURL: "/api",
+//     withCredentials: true,
+//     timeout: 10_000,  // 10s
+// });
+// request.interceptors.request.use((ka) => {
+//     console.log(ka)
+//     return ka;
+// });
+// request.interceptors.response.use(response => {
+//     console.log(response);
+//     return response;
+// }, error => {
+//     console.log(error);
+//     return error;
+// });
 
 
 export default function GoToAppPopup() {
-    const user = useUser();
+    const query = useQuery(
+        ["raw", "me"],
+        () => axios.get("/raw/me"),
+    );
 
-    if (!user) {
+    if (!query.isSuccess) {
         return null;
     }
 

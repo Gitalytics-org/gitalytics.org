@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useQueries, useQuery } from "react-query";
+import { useQueries } from "react-query";
 import { Bar } from "react-chartjs-2";
 import { One2NArray } from "../../utils";
 import YearInputHandler from "~/elements/YearInputHandler";

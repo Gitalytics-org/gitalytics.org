@@ -10,7 +10,6 @@ interface UserMeType {
     blog: string
 }
 
-
 export default function useUser() {
     const query = useQuery<UserMeType>(
         ["raw", "me"],

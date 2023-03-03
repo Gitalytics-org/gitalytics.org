@@ -1,7 +1,6 @@
 import type { PropsWithChildren } from "react";
-import { baseUrl } from "~/common";
 
 
 export default function BackendLink(props: PropsWithChildren<JSX.IntrinsicElements["a"]>) {
-    return <a {...props} href={`${baseUrl}${props.href}`}>{props.children}</a>;
+    return <a {...props}>{props.children}</a>;
 }
