@@ -6,7 +6,7 @@ import LandingPage from "~/pages/landingpage";
 import LoginPage from "~/pages/login";
 import TermsPage from "~/pages/terms";
 import NotFound from "~/pages/not-found";
-import TestPage from "./pages/test";
+import TestingPage from "./pages/testing";
 
 
 export default function App() {
@@ -20,7 +20,7 @@ export default function App() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/terms" element={<TermsPage />} />
-            <Route path="/testing" element={<TestPage />} />
+            <Route path="/testing" element={<TestingPage />} />
             <Route path="*" element={<NotFound />} />
         </Routes>
     </div>;

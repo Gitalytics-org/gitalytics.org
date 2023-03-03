@@ -1,13 +1,16 @@
 import AppIconSrc from "@assets/gitalytics_orange_dropshadow.svg";
 import GitIconSrc from "@assets/Github_Logo_Black.svg";
+import { Link } from "react-router-dom";
 
 
 export default function AppIcon() {
-    return <div className="flex select-none gap-2 group items-center">
-        <img src={AppIconSrc} alt="" className="w-12 h-12 " />
-        <a href="https://github.com/konstantinlob/gitalytics.org#readme" target="_blank" rel="noreferrer"  className="whitespace-nowrap hover:underline grow">
+    return <>
+        <img src={AppIconSrc} alt="" className="w-12 h-12" />
+        <Link to="/"  className="whitespace-nowrap">
             gitalytics.org
-            <img src={GitIconSrc} alt="" className="h-6 dark:invert inline pl-2" />
+        </Link>
+        <a href="https://github.com/konstantinlob/gitalytics.org#readme" target="_blank" rel="noreferrer"  className="cursor-pointer">
+            <img src={GitIconSrc} alt="" className="h-6 dark:invert" />
         </a>
-    </div>;
+    </>;
 }

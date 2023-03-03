@@ -28,7 +28,7 @@ export function CommitsPerHour() {
         years.map(year => ({
             queryKey: ["commits-per-hour", year],
             queryFn: () => axios
-                .get<CommitsPerWeekdayResponse>(`/commits-per-hour/${year}`)
+                .get<CommitsPerWeekdayResponse>("/commits-per-hour", { params: { year } })
                 .then<QueryReturn>(response => [year, response.data]),
         })),
     );

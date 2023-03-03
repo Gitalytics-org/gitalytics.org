@@ -7,10 +7,10 @@ import { DarkModeContext } from "~/components/RootDarkModeProvider";
 export default function DarkLightToggle() {
     const darkMode = useContext(DarkModeContext);
 
-    return <button className="flex gap-2 select-none items-center" onClick={darkMode.toggle}>
+    return <>
         <img src={darkMode.is ? DarkSrc : LightSrc} alt="" className="w-10 h-10 m-1 dark:invert" />
-        <span className="whitespace-nowrap">
+        <button className="whitespace-nowrap col-span-2 w-full text-left" onClick={darkMode.toggle}>
             {darkMode.is ? "Dark-Mode" : "Light-Mode"}
-        </span>
-    </button>;
+        </button>
+    </>;
 }

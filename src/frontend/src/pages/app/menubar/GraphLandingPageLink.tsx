@@ -3,10 +3,10 @@ import PreserveQueryLink from "~/elements/PreserveQueryLink";
 
 
 export default function GraphLandingPageLink() {
-    return <div className="flex select-none gap-2 group items-center">
+    return <>
         <img src={GraphIconSrc} alt="" className="w-12 h-12 dark:invert" />
-        <PreserveQueryLink to="/app" className="whitespace-nowrap grow">
+        <PreserveQueryLink to="/app" className="whitespace-nowrap col-span-2">
             Select Graph
         </PreserveQueryLink>
-    </div>;
+    </>;
 }

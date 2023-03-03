@@ -28,7 +28,7 @@ export function CommitsPerMonth() {
         years.map(year => ({
             queryKey: ["commits-per-month", year],
             queryFn: () => axios
-                .get<CommitsPerMonthResponse>(`/commits-per-month/${year}`)
+                .get<CommitsPerMonthResponse>("/commits-per-month", { params: { year } })
                 .then<QueryReturn>(response => [year, response.data]),
         })),
     );
