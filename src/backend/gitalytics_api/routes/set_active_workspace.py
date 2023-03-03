@@ -36,6 +36,7 @@ async def set_active_workspace(workspace_name: str, cookie_storage: EncryptedCoo
 
     if workspace is None:
         raise fastapi.HTTPException(fastapi.status.HTTP_406_NOT_ACCEPTABLE)
-
-    cookie_storage.set(key=CookieKey.ACTIVE_WORKSPACE_ID, value=workspace.id)
+    
+    cookie_storage[CookieKey.ACTIVE_WORKSPACE_ID] = workspace.id
+    
     return {}

@@ -120,7 +120,7 @@ async def verify(code: str, tasks: fastapi.BackgroundTasks,
             connection.add(session)
             connection.commit()
             connection.refresh(session)
-        cookie_storage.set(CookieKey.SESSION_ID, session.id)
+        cookie_storage[CookieKey.SESSION_ID] = session.id
 
     tasks.add_task(update_session_repositories, session_id=session.id)
 
