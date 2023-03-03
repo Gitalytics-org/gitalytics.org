@@ -8,8 +8,7 @@ def update_all_workspaces():
     TODO: ignore workspaces with sessions older than 30 days
     """
     with createLocalSession() as connection:
-        recent_sessions = connection.query(dbm.Session) \
-            .filter(dbm.Session.last_seen > (datetime.now() - timedelta(days=30))) \
-            .all()
-        for session in recent_sessions:
+        recent_sessions_query = connection.query(dbm.Session) \
+            .filter(dbm.Session.last_seen > (datetime.now() - timedelta(days=30)))
+        for session in recent_sessions_query:
             update_session_repositories(session_id=session.id)
