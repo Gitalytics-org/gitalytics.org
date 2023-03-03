@@ -2,6 +2,7 @@ import inspect
 import functools
 import logging
 
+
 def add_error_logging(*, reraise_exception: bool):
     def decorator(function):
         if inspect.iscoroutine(function):
@@ -23,4 +24,5 @@ def add_error_logging(*, reraise_exception: bool):
                     if reraise_exception:
                         raise
         return wrapper
+
     return decorator
