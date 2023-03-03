@@ -5,7 +5,7 @@ r"""
 """
 import fastapi
 import pydantic
-from gitalytics_api.common import SessionStorage
+from gitalytics_api.cookies import EncryptedCookieStorage, CookieKey
 
 
 router = fastapi.APIRouter()
@@ -16,7 +16,7 @@ class ResponseModel(pydantic.BaseModel):
 
 
 @router.get("/auth/am-i-logged-in", response_model=ResponseModel)
-async def amILoggedIn(storage: SessionStorage = fastapi.Depends(SessionStorage)):
+async def amILoggedIn(storage: EncryptedCookieStorage = EncryptedCookieStorage):
     return {
-        "answer": True if storage.get("session-id", default=None) else False
+        "answer": True if storage.contains(CookieKey.SESSION_ID) else False
     }
