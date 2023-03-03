@@ -1,16 +1,17 @@
 import { FAQList } from "./faqlist";
 import QuestionIconSrc from "./icons/question.svg";
 import AnswerIconSrc from "./icons/answer.svg";
+import { Fragment } from "react";
 
 
 export default function FAQSection() {
-    return <div className="flex flex-col gap-5" id="faq">
+    return <div className="flex flex-col gap-5">
         <h2 className="text-3xl font-bold select-none text-center">
             Frequently Asked Questions
         </h2>
-        <SeparatorLine />
-        {FAQList.map((faq, key) => <>
-            <div className="grid grid-cols-[auto,1fr] gap-2 w-full max-w-3xl mx-auto" key={key}>
+        {FAQList.map((faq, key) => <Fragment key={key}>
+            <SeparatorLine />
+            <div className="grid grid-cols-[auto,1fr] gap-2 w-full max-w-3xl mx-auto">
                 <QuestionIcon />
                 <h3 className="text-2xl font-bold">
                     {faq.question}
@@ -20,8 +21,7 @@ export default function FAQSection() {
                     {faq.answer}
                 </p>
             </div>
-            <SeparatorLine />
-        </>)}
+        </Fragment>)}
     </div>;
 }
 

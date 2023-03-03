@@ -21,13 +21,15 @@ class Workspace(pydantic.BaseModel):
     class Config:
         orm_mode = True
 
+
 class ResponseModel(pydantic.BaseModel):
     active_workspace: Workspace
     other_workspaces: t.List[Workspace]
 
 
 @router.get("/get-workspaces", response_model=ResponseModel)
-async def get_workspaces(session: dbm.Session = session_from_cookies, cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage):
+async def get_workspaces(session: dbm.Session = session_from_cookies,
+                         cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage):
     r"""
     list all workspaces for the current user (session)
     """
@@ -38,7 +40,7 @@ async def get_workspaces(session: dbm.Session = session_from_cookies, cookie_sto
             .join(dbm.Workspace) \
             .filter(dbm.Session.id == session.id) \
             .all()
-        
+
     if len(workspaces) == 0:
         raise fastapi.HTTPException(fastapi.status.HTTP_425_TOO_EARLY)
     

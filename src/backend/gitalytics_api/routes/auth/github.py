@@ -75,7 +75,8 @@ async def login_redirect():
             responses={
                 fastapi.status.HTTP_400_BAD_REQUEST: {}
             })
-async def verify(code: str, tasks: fastapi.BackgroundTasks, cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage):
+async def verify(code: str, tasks: fastapi.BackgroundTasks,
+                 cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage):
     r"""
     callback endpoint from GitHub
     """
