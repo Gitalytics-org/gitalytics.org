@@ -9,6 +9,7 @@ import urllib.parse as urlparse
 import fastapi
 import pydantic
 import httpx
+import threading
 from gitalytics_api.cookies import EncryptedCookieStorage
 from gitalytics_api.enums import CookieKey
 from database import createLocalSession, models as dbm
@@ -121,7 +122,8 @@ async def verify(code: str, tasks: fastapi.BackgroundTasks,
             connection.commit()
             connection.refresh(session)
         cookie_storage[CookieKey.SESSION_ID] = session.id
-
-    tasks.add_task(update_session_repositories, session_id=session.id)
+    
+    update_session_thread = threading.Thread(target=update_session_repositories, kwargs={"session_id": session.id})
+    tasks.add_task(update_session_thread.start)
 
     return cookie_storage.to_redirect_response(url="/#/app")
