@@ -7,7 +7,8 @@ import typing as t
 import fastapi
 import httpx
 import pydantic
-from gitalytics_api.common import SessionToken, HttpxBearerAuth
+from gitalytics_api.cookies import session_from_cookies
+from gitalytics_api.httpx_extention import HttpxBearerAuth
 from database import models as dbm
 
 
@@ -34,7 +35,7 @@ class MeResponseModel(pydantic.BaseModel):
             responses={
                 fastapi.status.HTTP_401_UNAUTHORIZED: {}
             })
-async def raw_me(session: dbm.Session = SessionToken):
+async def raw_me(session: dbm.Session = session_from_cookies):
     r"""
     get the information about the current user
     """
