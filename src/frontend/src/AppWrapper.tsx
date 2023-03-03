@@ -9,6 +9,12 @@ import RootDarkModeProvider from "~/components/RootDarkModeProvider";
 axios.defaults.baseURL = "/api";
 axios.defaults.withCredentials = true;
 axios.defaults.timeout = 15_000;  // 15s
+axios.interceptors.response.use(null, error => {
+    if (error.response?.status === axios.HttpStatusCode.Unauthorized) {
+        // important: change with different provider
+        window.location.assign("/#/login");
+    }
+});
 
 ChartJS.register(...registerables);
 // even if typescript says that 'colors' does not exist. it does!

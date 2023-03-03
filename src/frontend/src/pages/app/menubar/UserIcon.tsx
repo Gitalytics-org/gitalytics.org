@@ -1,7 +1,6 @@
 import GitIconSrc from "@assets/Github_Logo_Black.svg";
 import axios from "axios";
 import { useQuery } from "react-query";
-import { useNavigate } from "react-router-dom";
 
 
 interface UserMeType {
@@ -12,23 +11,12 @@ interface UserMeType {
     blog: string
 }
 
-const request = axios.create({
-    baseURL: "/api",
-    withCredentials: true,
-    timeout: 15_000,  // 15s
-});
-
 export default function UserIcon() {
-    const navigate = useNavigate();
-
     const query = useQuery(
         ["raw", "me"],
-        () => request
+        () => axios
             .get<UserMeType>("/raw/me")
-            .then(
-                response => response.data,
-                () => navigate("/login"),
-            ),
+            .then(response => response.data),
     );
 
     if (!query.isSuccess) {

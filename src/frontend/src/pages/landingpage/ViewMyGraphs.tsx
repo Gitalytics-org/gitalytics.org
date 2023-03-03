@@ -7,11 +7,10 @@ import { useQuery } from "react-query";
 export default function ViewMyGraphs() {
     const query = useQuery(
         ["is-logged-in"],
-        () => axios.get("/auth/am-i-logged-in"),
-        { refetchInterval: 10_000 },
+        () => axios.get("/auth/am-i-logged-in").then(response => response.data),
     );
 
-    if (!query.isSuccess) {
+    if (!query.isSuccess || !query.data.answer) {
         return null;
     }
 

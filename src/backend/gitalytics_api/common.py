@@ -45,7 +45,6 @@ def SessionToken(request: fastapi.Request) -> dbm.Session:
             .one_or_none()
 
         if session is None:
-            # maybe redirect to /#/login ('cause seems like session expired)
             raise fastapi.HTTPException(fastapi.status.HTTP_401_UNAUTHORIZED)
 
         today = datetime.date.today()

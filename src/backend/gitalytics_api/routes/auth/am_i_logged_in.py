@@ -3,19 +3,20 @@
 r"""
 
 """
-import typing as t
 import fastapi
 import pydantic
-from gitalytics_api.common import SessionToken
+from gitalytics_api.common import SessionStorage
 
 
 router = fastapi.APIRouter()
 
 
 class ResponseModel(pydantic.BaseModel):
-    status: t.Literal["success"] = "success"
+    answer: bool
 
 
 @router.get("/auth/am-i-logged-in", response_model=ResponseModel)
-async def amILoggedIn(_=SessionToken):
-    return {}
+async def amILoggedIn(storage: SessionStorage = fastapi.Depends(SessionStorage)):
+    return {
+        "answer": True if storage.get("session-id", default=None) else False
+    }
