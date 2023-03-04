@@ -1,0 +1,21 @@
+.terms h1 {
+    @apply text-2xl text-center;
+}
+.terms h1:not(:first-child) {
+    @apply mt-5;
+}
+.terms h2 {
+    @apply text-xl pl-10;
+}
+.terms h2:not(:first-child) {
+    @apply mt-2;
+}
+.terms a {
+    @apply text-blue-500 hover:underline;
+}
+.terms ul {
+    @apply list-disc;
+}
+.terms ul > li {
+    @apply mx-4;
+}
