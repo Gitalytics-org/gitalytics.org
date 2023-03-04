@@ -14,6 +14,13 @@ export const FAQList: Array<{question: string, answer: string | JSX.Element}> = 
         answer: "We use OAuth 2.0 to authenticate a user, saving you the hassle of creating a new account and a new vulnerability. Furthermore, Gitalytics only has read-only access to your GitHub/GitLab/BitBucket repositories.",
     },
     {
+        question: "What exactly is a workspace",
+        answer: <>
+            <b>On GitHub:</b> it means either your Account or an Organization that you are part of.<br/>
+            <b>On Bitbucket and GitLab:</b> it means literally a Workspace.
+        </>,
+    },
+    {
         question: "How can I delete all my Data here?",
         answer: <>
             you cant. lol <br/>
