@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import GitalyticsLogoSrc from "@assets/gitalytics_orange_dropshadow.svg";
+import GitalyticsLogoSrc from "@assets/gitalytics.svg";
 import DarkSrc from "@assets/dark.png";
 import LightSrc from "@assets/light.png";
 import { useContext } from "react";
@@ -7,7 +7,7 @@ import { DarkModeContext } from "./RootDarkModeProvider";
 
 
 export default function Footer() {
-    return <div className="relative flex flex-col justify-center from-transparent to-slate-300 dark:to-slate-700 bg-gradient-to-b">
+    return <div className="relative flex flex-col justify-center gap-1 py-1 from-transparent to-slate-300 dark:to-slate-700 bg-gradient-to-b">
         <SeparatorLine />
         <Links />
         <CopyRight />

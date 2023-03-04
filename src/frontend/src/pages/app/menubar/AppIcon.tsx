@@ -1,4 +1,4 @@
-import AppIconSrc from "@assets/gitalytics_orange_dropshadow.svg";
+import AppIconSrc from "@assets/gitalytics.svg";
 import GitIconSrc from "@assets/Github_Logo_Black.svg";
 import { Link } from "react-router-dom";
 
