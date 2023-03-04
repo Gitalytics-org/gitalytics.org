@@ -8,7 +8,7 @@ import {CommitsPerWeekday} from "./per-weekday";
 export default function CombinedCommitsGraph() {
     return <>
         <YearInputHandler />
-        <div className="grid grid-cols-2 gap-5 grid-rows-3 grow">
+        <div className="grid grid-cols-2 grid-rows-3 gap-5 grow">
             <div>
                 <CommitsPerHour />
             </div>

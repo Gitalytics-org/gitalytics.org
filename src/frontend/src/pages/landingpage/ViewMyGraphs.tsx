@@ -15,9 +15,9 @@ export default function ViewMyGraphs() {
     }
 
     return <div>
-        <Link to="/app" className="rounded-full bg-accent w-fit h-14 mx-auto flex gap-2 text-2xl p-1">
+        <Link to="/app" className="flex gap-2 p-1 mx-auto text-2xl rounded-full bg-accent w-fit h-14">
             <img className="h-full aspect-square" src={GraphIconSrc} alt="" />
-            <span className="whitespace-nowrap my-auto">Show Statistics</span>
+            <span className="my-auto whitespace-nowrap">Show Statistics</span>
             <img className="h-full aspect-square" src={GraphIconSrc} alt="" />
         </Link>
     </div>;

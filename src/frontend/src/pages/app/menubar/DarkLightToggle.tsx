@@ -9,7 +9,7 @@ export default function DarkLightToggle() {
 
     return <>
         <img src={darkMode.is ? DarkSrc : LightSrc} alt="" className="w-10 h-10 m-1 dark:invert" />
-        <button className="whitespace-nowrap col-span-2 w-full text-left" onClick={darkMode.toggle}>
+        <button className="w-full col-span-2 text-left whitespace-nowrap" onClick={darkMode.toggle}>
             {darkMode.is ? "Dark-Mode" : "Light-Mode"}
         </button>
     </>;

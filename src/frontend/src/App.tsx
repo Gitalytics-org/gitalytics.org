@@ -10,7 +10,7 @@ import TestingPage from "./pages/testing";
 
 
 export default function App() {
-    return <div className="bg-primary text-secondary transition-colors duration-500 min-h-screen">
+    return <div className="min-h-screen transition-colors duration-500 bg-primary text-secondary">
         <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />

@@ -4,11 +4,11 @@ import MutationOverlay from "./MutationOverlay";
 
 
 export default function AppPage() {
-    return <div className="bg-white text-black dark:bg-slate-800 dark:text-white transition-colors">
+    return <div className="text-black transition-colors bg-white dark:bg-slate-800 dark:text-white">
         <div className="group w-14 hover:w-[min(250px,100%)] transition-[width] backdrop-blur-sm bg-black bg-opacity-20 h-screen overflow-x-clip fixed top-0 left-0 p-1 z-20">
             <MenuBar />
         </div>
-        <div className="min-h-screen ml-14 relative flex flex-col">
+        <div className="relative flex flex-col min-h-screen ml-14">
             <Outlet />
         </div>
         <MutationOverlay />
