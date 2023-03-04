@@ -7,7 +7,7 @@ import { DarkModeContext } from "./RootDarkModeProvider";
 
 
 export default function Footer() {
-    return <div className="flex flex-col justify-center from-transparent to-slate-300 dark:to-slate-700 bg-gradient-to-b relative">
+    return <div className="flex flex-col justify-center from-transparent to-slate-300 dark:to-slate-900 bg-gradient-to-b relative">
         <SeparatorLine />
         <Links />
         <CopyRight />
@@ -16,7 +16,7 @@ export default function Footer() {
 }
 
 function SeparatorLine() {
-    return <div className="bg-secondary bg-opacity-50 h-1 rounded-md mx-5 my-2" />;
+    return <div className="bg-fgc bg-opacity-50 h-1 rounded-md mx-5 my-2" />;
 }
 
 function Links() {
@@ -46,13 +46,14 @@ function Links() {
 }
 
 function CopyRight() {
+    const Gitalytics = () => <Link to="https://github.com/konstantinlob/gitalytics.org" className="hover:underline">Gitalytics</Link>;
     const Github = () => <Link to="https://github.com" className="hover:underline">Github</Link>;
     const Bitbucket = () => <Link to="https://bitbucket.org/" className="hover:underline">Bitbucket</Link>;
     const Gitlab = () => <Link to="https://about.gitlab.com/" className="hover:underline">Gitlab</Link>;
 
     return <div>
         <p className="text-center">
-            Gitalytics is a tool to analyze all your Repositories from <Github />, <Bitbucket /> and <Gitlab />
+            <Gitalytics /> is a tool to analyze all your Repositories from <Github />, <Bitbucket /> and <Gitlab />
         </p>
         <img className="w-10 h-10 mx-auto" src={GitalyticsLogoSrc} alt="logo" />
     </div>;

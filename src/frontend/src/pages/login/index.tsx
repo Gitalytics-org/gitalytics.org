@@ -8,7 +8,7 @@ import GitlabIconSrc from "@assets/gitlab.png";
 export default function LoginPage() {
     return <>
         <div className="w-screen h-screen flex flex-col">
-            <h1 className="text-center text-[10vw] select-none">Login to <span className="text-gitalytics">Gitalytics</span></h1>
+            <h1 className="text-center text-[10vw] select-none">Login to <span className="text-accent">Gitalytics</span></h1>
             <p className="opacity-50 text-center select-none">Please log in with your git platform of choice</p>
             <div className="grow flex justify-around gap-20 px-5">
                 <AppLink className="my-auto" href="/api/auth/github/login">
