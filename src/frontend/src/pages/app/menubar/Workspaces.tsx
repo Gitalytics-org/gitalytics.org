@@ -1,4 +1,6 @@
-import GitIconSrc from "@assets/Github_Logo_Black.svg";
+import GitHubIconSrc from "@assets/github.png";
+import BitbucketIconSrc from "@assets/bitbucket-alt.png";
+import GitLabIconSrc from "@assets/gitlab-alt.png";
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
@@ -38,17 +40,45 @@ export default function Workspaces() {
     }
 
     const Workspace = (ws: Workspace) => <>
-        <img src={ws.logo_url} alt="" className="w-12 h-12 object-contain mix-blend-color-burn rounded-full" />
-        <button className="whitespace-nowrap w-full text-left" onClick={() => setWorkspace.mutate(ws.name)}>
+        <img src={ws.logo_url} alt="" className="object-contain w-12 h-12 rounded-full mix-blend-color-burn" />
+        <button className="w-full text-left whitespace-nowrap" onClick={() => setWorkspace.mutate(ws.name)}>
             {ws.name}
         </button>
         <a href={"https://github.com"} target="_blank" rel="noreferrer"  className="cursor-pointer">
-            <img src={GitIconSrc} alt="" className="h-6 dark:invert pl-2" />
+            <ProviderIcon provider="GITHUB" className="h-6 pl-2 dark:invert" />
         </a>
     </>;
 
+    const curWs = query.data!.active_workspace;
+
     return <>
-        <Workspace {...query.data!.active_workspace} />
-        {query.data?.other_workspaces.map(ws => <Workspace key={ws.name} {...ws} />)}
+        {/* active workspace */}
+        <img src={curWs.logo_url} alt="" className="object-contain w-12 h-12 rounded-full mix-blend-color-burn" />
+        <p className="w-full text-left select-none whitespace-nowrap">
+            {curWs.name}
+        </p>
+        <a href={"https://github.com"} target="_blank" rel="noreferrer"  className="cursor-pointer">
+            <ProviderIcon provider="GITHUB" className="h-6 pl-2 dark:invert" />
+        </a>
+        {/* small (optional) separator line */}
+        {query.data!.other_workspaces.length && <div className="invisible w-4/5 h-px col-span-3 mx-auto bg-opacity-50 rounded-full group-hover:visible bg-secondary" />}
+        {/* other workspaces */}
+        {query.data!.other_workspaces.map(ws => <Workspace key={ws.name} {...ws} />)}
     </>;
+}
+
+
+type Provider = "GITHUB" | "BITBUCKET" | "GITLAB"
+
+const providerIconMap: Record<string, string> = {
+    GITHUB: GitHubIconSrc,
+    BITBUCKET: BitbucketIconSrc,
+    GITLAB: GitLabIconSrc,
+};
+interface ProviderIconProps extends Omit<JSX.IntrinsicElements["img"], "src" | "alt"> {
+    provider: Provider
+}
+
+function ProviderIcon(props: ProviderIconProps) {
+    return <img {...props} src={providerIconMap[props.provider]} alt="" />;
 }
