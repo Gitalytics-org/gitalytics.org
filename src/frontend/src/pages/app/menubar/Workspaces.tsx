@@ -40,7 +40,7 @@ export default function Workspaces() {
     }
 
     const Workspace = (ws: Workspace) => <>
-        <img src={ws.logo_url} alt="" className="object-contain w-12 h-12 rounded-full mix-blend-color-burn" />
+        <img src={ws.logo_url} alt="" draggable={false} className="object-contain w-12 h-12 rounded-full mix-blend-color-burn" />
         <button className="w-full text-left whitespace-nowrap" onClick={() => setWorkspace.mutate(ws.name)}>
             {ws.name}
         </button>
@@ -53,7 +53,7 @@ export default function Workspaces() {
 
     return <>
         {/* active workspace */}
-        <img src={curWs.logo_url} alt="" className="object-contain w-12 h-12 rounded-full mix-blend-color-burn" />
+        <img src={curWs.logo_url} alt="" draggable={false} className="object-contain w-12 h-12 rounded-full mix-blend-color-burn" />
         <p className="w-full text-left select-none whitespace-nowrap">
             {curWs.name}
         </p>
@@ -80,5 +80,5 @@ interface ProviderIconProps extends Omit<JSX.IntrinsicElements["img"], "src" | "
 }
 
 function ProviderIcon(props: ProviderIconProps) {
-    return <img {...props} src={providerIconMap[props.provider]} alt="" />;
+    return <img {...props} src={providerIconMap[props.provider]} alt="" draggable={false} />;
 }
