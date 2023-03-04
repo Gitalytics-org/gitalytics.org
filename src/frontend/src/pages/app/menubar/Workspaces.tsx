@@ -63,7 +63,10 @@ export default function Workspaces() {
         {/* small (optional) separator line */}
         {query.data!.other_workspaces.length && <div className="invisible w-4/5 h-px col-span-3 mx-auto bg-opacity-50 rounded-full group-hover:visible bg-secondary" />}
         {/* other workspaces */}
-        {query.data!.other_workspaces.map(ws => <Workspace key={ws.name} {...ws} />)}
+        {query.data!.other_workspaces
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map(ws => <Workspace key={ws.name} {...ws} />)
+        }
     </>;
 }
 
