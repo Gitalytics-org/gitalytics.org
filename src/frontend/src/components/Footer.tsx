@@ -7,7 +7,7 @@ import { DarkModeContext } from "./RootDarkModeProvider";
 
 
 export default function Footer() {
-    return <div className="flex flex-col justify-center from-transparent to-slate-300 dark:to-slate-700 bg-gradient-to-b relative">
+    return <div className="relative flex flex-col justify-center from-transparent to-slate-300 dark:to-slate-700 bg-gradient-to-b">
         <SeparatorLine />
         <Links />
         <CopyRight />
@@ -16,13 +16,13 @@ export default function Footer() {
 }
 
 function SeparatorLine() {
-    return <div className="bg-secondary bg-opacity-50 h-1 rounded-md mx-5 my-2" />;
+    return <div className="h-1 mx-5 my-2 bg-opacity-50 rounded-md bg-secondary" />;
 }
 
 function Links() {
-    const Dot = () => <div className="w-1 h-1 rounded-full my-auto bg-accent" />;
+    const Dot = () => <div className="w-1 h-1 my-auto rounded-full bg-accent" />;
 
-    return <div className="flex gap-1 justify-center">
+    return <div className="flex justify-center gap-1">
         <Link to="/" className="hover:underline">
             Home
         </Link>
@@ -62,7 +62,7 @@ function CopyRight() {
 function DarkLightToggle() {
     const darkMode = useContext(DarkModeContext);
 
-    return <button className="absolute left-5 bottom-5 w-10 h-10 dark:invert rounded-full cursor-pointer" onClick={darkMode.toggle} title="toggle dark-mode">
+    return <button className="absolute w-10 h-10 rounded-full cursor-pointer left-5 bottom-5 dark:invert" onClick={darkMode.toggle} title="toggle dark-mode">
         <img src={darkMode.is ? DarkSrc : LightSrc} alt="" />
     </button>;
 }

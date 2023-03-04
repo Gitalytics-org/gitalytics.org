@@ -9,13 +9,13 @@ export default function WhatIsThis() {
             <img src={GitGraph} alt="git-graph" />
         </FadeInBox>
         <div className="grid">
-            <p className="text-center m-auto">
+            <p className="m-auto text-center">
                 See how many commits you had last year and all the years before
             </p>
         </div>
 
         <div className="grid">
-            <p className="text-center m-auto">
+            <p className="m-auto text-center">
                 View some other stuff
             </p>
         </div>
