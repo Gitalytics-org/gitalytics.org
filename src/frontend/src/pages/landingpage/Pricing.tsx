@@ -16,10 +16,10 @@ export default function Pricing() {
 
 function FreeTier() {
     const user = useUser();
-    const Element = (props: PropsWithChildren) => <div className="bg-secondary even:bg-opacity-5 odd:bg-opacity-10 p-1">{props.children}</div>;
+    const Element = (props: PropsWithChildren) => <div className="p-1 bg-secondary even:bg-opacity-5 odd:bg-opacity-10">{props.children}</div>;
 
     return <div className="border border-secondary min-w-[400px] text-center rounded-lg select-none">
-        <h2 className="text-3xl text-gitalytics p-1 bg-secondary bg-opacity-20 text-accent">
+        <h2 className="p-1 text-3xl text-gitalytics bg-secondary bg-opacity-20 text-accent">
             Free Tier
         </h2>
         <Element>
@@ -42,7 +42,7 @@ function FreeTier() {
             </InfoLetter>
         </Element>
         <Element>
-            <Link to={user ? "/app" : "/login"} className="w-3/4 mx-auto bg-accent bg-opacity-40 hover:bg-opacity-70 rounded-lg block py-1">
+            <Link to={user ? "/app" : "/login"} className="block w-3/4 py-1 mx-auto rounded-lg bg-accent bg-opacity-40 hover:bg-opacity-70">
                 Do it now
             </Link>
         </Element>
