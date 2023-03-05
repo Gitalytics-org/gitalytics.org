@@ -3,6 +3,7 @@
 r"""
 
 """
+import threading
 import typing as t
 import urllib.parse as urlparse
 # import secrets
@@ -122,6 +123,11 @@ async def verify(code: str, tasks: fastapi.BackgroundTasks,
             connection.refresh(session)
         cookie_storage[CookieKey.SESSION_ID] = session.id
 
-    tasks.add_task(update_session_repositories, session_id=session.id)
+    threading.Thread(
+        target=update_session_repositories,
+        name=f"update-session-repositories for {session.id=}",
+        kwargs=dict(session_id=session.id),
+        daemon=False,
+    ).start()
 
     return cookie_storage.to_redirect_response(url="/#/app")

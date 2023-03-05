@@ -18,5 +18,5 @@ class ResponseModel(pydantic.BaseModel):
 @router.get("/auth/am-i-logged-in", response_model=ResponseModel)
 async def am_i_logged_in(storage: EncryptedCookieStorage = EncryptedCookieStorage):
     return {
-        "answer": True if storage.contains(CookieKey.SESSION_ID) else False
+        "answer": True if CookieKey.SESSION_ID in storage else False
     }
