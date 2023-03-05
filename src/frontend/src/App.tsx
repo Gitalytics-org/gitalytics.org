@@ -9,7 +9,7 @@ import NotFound from "~/pages/not-found";
 
 
 export default function App() {
-    return <div className="min-h-screen transition-colors duration-500 bg-primary text-secondary">
+    return <div className="min-h-screen transition-colors duration-500 bg-bgc text-fgc">
         <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />

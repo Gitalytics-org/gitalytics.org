@@ -5,7 +5,7 @@ import { Fragment } from "react";
 
 
 export default function FAQSection() {
-    return <div className="flex flex-col gap-5">
+    return <div className="flex flex-col gap-5" id="faq">
         <h2 className="text-3xl font-bold text-center select-none">
             Frequently Asked Questions
         </h2>
