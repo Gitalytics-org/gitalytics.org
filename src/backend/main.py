@@ -25,9 +25,9 @@ def generate_key():
     print("Successfully generated new COOKIE_KEY ✅")
 
 
-def run_server(host: str, port: int, reload: bool, workers: int):
+def run_server(appname: str, host: str, port: int, reload: bool, workers: int):
     import uvicorn
-    uvicorn.run("gitalytics_api:app", host=host, port=port, reload=reload, workers=workers, log_config=None)
+    uvicorn.run(f"gitalytics_api:{appname}", host=host, port=port, reload=reload, workers=workers, log_config=None)
 
 
 # master parser
@@ -48,6 +48,8 @@ generateKeyParser.set_defaults(function=generate_key)
 # run-server
 runServerParser = subparsers.add_parser("run-server", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 runServerParser.set_defaults(function=run_server)
+runServerParser.add_argument("--api", action="store_const", dest="appname", const="api", default="app",
+                             help="disable static file service and only run the api")
 runServerParser.add_argument("--global", action="store_const", dest="host", const="0.0.0.0", default="127.0.0.1",
                              help="make this api available in the local network")
 runServerParser.add_argument("-p", "--port", type=int, default=8000,
