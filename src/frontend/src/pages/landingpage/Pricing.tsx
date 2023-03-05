@@ -6,7 +6,7 @@ import useUser from "~/hooks/useUser";
 
 
 export default function Pricing() {
-    return <div className="flex justify-around">
+    return <div className="flex justify-around" id="pricing">
         <FadeInBox>
             <FreeTier />
         </FadeInBox>
