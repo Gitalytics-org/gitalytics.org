@@ -35,11 +35,11 @@ function Switch({ currentMode, setMode }: SwitchProps) {
         [YearInputModes.switcher, "Simple"],
     ];
 
-    return <div className="flex gap-2 py-px overflow-hidden text-xs rounded-lg justify-evenly bg-secondary bg-opacity-20">
+    return <div className="flex gap-2 py-px overflow-hidden text-xs rounded-lg justify-evenly bg-fgc bg-opacity-20">
         {options.map(([mode, text]) => {
             const isCurrent = mode === currentMode;
             return <button key={text} className="relative grid grow place-content-center" onClick={() => setMode(mode)} style={{cursor: isCurrent ? "default" : "pointer"}}>
-                <div className="absolute inset-0 bg-secondary bg-opacity-20" style={{visibility: isCurrent ? "initial" : "hidden"}} />
+                <div className="absolute inset-0 bg-fgc bg-opacity-20" style={{visibility: isCurrent ? "initial" : "hidden"}} />
                 <div className="z-10">
                     {text}
                 </div>
