@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
 import GitalyticsLogoSrc from "@assets/gitalytics_orange_dropshadow.svg";
 import DarkSrc from "@assets/dark.png";
 import LightSrc from "@assets/light.png";
@@ -26,10 +27,10 @@ function Links() {
         <Link to="/" className="hover:underline">
             Home
         </Link>
-        {/* <Dot />
-        <Link to={{pathname: "/", hash: "faq"}} className="hover:underline">
+        <Dot />
+        <HashLink smooth to={{pathname: "/", hash: "faq"}} className="hover:underline">
             FAQ
-        </Link> */}
+        </HashLink>
         <Dot />
         <Link to="/about" className="hover:underline">
             About
