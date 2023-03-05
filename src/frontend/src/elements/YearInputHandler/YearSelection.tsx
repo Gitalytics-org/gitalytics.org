@@ -35,19 +35,19 @@ export default function YearSelectionInput() {
         .filter(e => !years.includes(e))
         .sort((a, b) => b-a);
 
-    return <div className="flex gap-1 select-none p-1 bg-secondary bg-opacity-10 rounded-lg">
+    return <div className="flex gap-1 p-1 rounded-lg select-none bg-secondary bg-opacity-10">
         {years
             .sort((a, b) => a-b)
-            .map(year => <div key={year} className="px-2 bg-secondary bg-opacity-10 rounded-md">
+            .map(year => <div key={year} className="px-2 rounded-md bg-secondary bg-opacity-10">
                 {year}
-                <button className="opacity-40 hover:opacity-100 pl-1" onClick={() => setYears(years.filter(e => e !== year))}>X</button>
+                <button className="pl-1 opacity-40 hover:opacity-100" onClick={() => setYears(years.filter(e => e !== year))}>X</button>
             </div>)
         }
         <div className="grow" />
         <div className="relative group">
             <div className="p-1 w-6 h-6 grid place-items-center bg-secondary text-primary rounded-full text-center align-middle leading-[100%]">+</div>
             <div className="flex-col gap-1 absolute top-[100%] right-0 py-1 px-2 bg-secondary bg-opacity-50 text-primary rounded-md hidden no-scrollbar group-hover:flex overflow-y-scroll max-h-40">
-                {inactive.map(year => <button key={year} className="even:bg-opacity-10 odd:bg-opacity-5 hover:bg-opacity-30 bg-black px-2 rounded-md" onClick={() => setYears(years.concat(year))}>
+                {inactive.map(year => <button key={year} className="px-2 bg-black rounded-md even:bg-opacity-10 odd:bg-opacity-5 hover:bg-opacity-30" onClick={() => setYears(years.concat(year))}>
                     {year}
                 </button>)}
                 {!inactive.length && <div className="opacity-50 whitespace-nowrap">

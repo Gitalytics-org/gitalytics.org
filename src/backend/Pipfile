@@ -12,6 +12,7 @@ datetime = "*"
 python-dotenv = "*"
 httpx = "*"
 gitpython = "*"
+orjson = "*"
 
 [dev-packages]
 
