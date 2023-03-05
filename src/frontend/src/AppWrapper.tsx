@@ -5,13 +5,13 @@ import { HashRouter as Router, useLocation } from "react-router-dom";
 import axios from "axios";
 import App from "~/App";
 import RootDarkModeProvider from "~/components/RootDarkModeProvider";
-import { HTTP_408_REQUEST_TIMEOUT, HTTP_504_GATEWAY_TIMEOUT } from "./httpStatusIndex";
+import * as status from "./httpStatusIndex";
 
 axios.defaults.baseURL = "/api";
 axios.defaults.withCredentials = true;
 axios.defaults.timeout = 15_000;  // 15s
 axios.interceptors.response.use(null, error => {
-    if (error.response?.status === axios.HttpStatusCode.Unauthorized) {
+    if (error.response?.status === status.HTTP_401_UNAUTHORIZED) {
         // important: change with different provider
         window.location.assign("/#/login");
     }
@@ -32,17 +32,13 @@ const queryClient = new QueryClient({
             refetchOnReconnect: true,
             refetchOnWindowFocus: false,
             retry: (failureCount, error) => {
-                if (error instanceof axios.AxiosError) {
-                    if (error.response?.status === axios.HttpStatusCode.TooEarly) return true;
-                }
+                if (!(error instanceof axios.AxiosError) || !error.response) return false;
+                if (error.response.status === axios.HttpStatusCode.TooEarly) return true;
                 if (failureCount >= MAX_RETRIES) return false;
-                if (error instanceof axios.AxiosError) {
-                    return [
-                        HTTP_504_GATEWAY_TIMEOUT,
-                        HTTP_408_REQUEST_TIMEOUT,
-                    ].includes(error.response?.status ?? 0);
-                }
-                return false;
+                return [
+                    status.HTTP_504_GATEWAY_TIMEOUT,
+                    status.HTTP_408_REQUEST_TIMEOUT,
+                ].includes(error.response.status);
             },
         },
     },

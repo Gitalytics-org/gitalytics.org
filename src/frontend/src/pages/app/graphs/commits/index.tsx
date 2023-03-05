@@ -1,5 +1,5 @@
 import YearInputHandler from "~/elements/YearInputHandler";
-import {CommitsPerDay} from "./per-day";
+import {CommitsPerDayInMonth} from "./per-day";
 import {CommitsPerHour} from "./per-hour";
 import {CommitsPerMonth} from "./per-month";
 import {CommitsPerWeek} from "./per-week";
@@ -16,7 +16,7 @@ export default function CombinedCommitsGraph() {
                 <CommitsPerWeekday />
             </div>
             <div>
-                <CommitsPerDay />
+                <CommitsPerDayInMonth />
             </div>
             <div>
                 <CommitsPerWeek />

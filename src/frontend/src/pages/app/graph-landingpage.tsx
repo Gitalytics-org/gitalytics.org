@@ -14,7 +14,7 @@ export default  function GraphLandingPage() {
         <PreserveQueryLink to="/app/commits-per-weekday">
             Average Commits per Weekday
         </PreserveQueryLink>
-        <PreserveQueryLink to="/app/commits-per-day">
+        <PreserveQueryLink to="/app/commits-per-day-in-month">
             Average Commits per Day
         </PreserveQueryLink>
         <PreserveQueryLink to="/app/commits-per-week">

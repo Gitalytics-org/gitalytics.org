@@ -14,7 +14,7 @@ router = fastapi.APIRouter()
 
 
 @fastapi.Depends
-def getDatabaseConnection():
+def get_database_connection():
     db = createLocalSession()
     try:
         yield db
@@ -23,8 +23,8 @@ def getDatabaseConnection():
 
 
 @fastapi.Depends
-def getCommitCountSubquery(
-        connection: sql.orm.Session = getDatabaseConnection,
+def get_commit_count_subquery(
+        connection: sql.orm.Session = get_database_connection,
         workspace_id: int = active_workspace_id,
         year: int = fastapi.Query()
 ):
@@ -42,22 +42,22 @@ def getCommitCountSubquery(
 
 @router.get("/commits-per-hour")
 async def get_commits_per_hour(
-        connection: sql.orm.Session = getDatabaseConnection,
-        subquery=getCommitCountSubquery
+        connection: sql.orm.Session = get_database_connection,
+        subquery=get_commit_count_subquery
 ):
     stats = connection \
-        .query(sql.func.sum(subquery.c.count).label("avg"),
+        .query(sql.func.sum(subquery.c.count).label("count"),
                sql.func.extract("hour", subquery.c.date).label("hour")) \
         .group_by(sql.func.extract("hour", subquery.c.date)) \
         .all()
 
-    return {row.hour: row.avg for row in stats}
+    return {row.hour: row.count for row in stats}
 
 
 @router.get("/commits-per-weekday")
 async def get_commits_per_weekday(
-        connection: sql.orm.Session = getDatabaseConnection,
-        subquery=getCommitCountSubquery
+        connection: sql.orm.Session = get_database_connection,
+        subquery=get_commit_count_subquery
 ):
     r"""
     please note:
@@ -65,53 +65,53 @@ async def get_commits_per_weekday(
     """
     # 'dow' == day-of-week
     stats = connection \
-        .query(sql.func.sum(subquery.c.count).label("avg"),
+        .query(sql.func.sum(subquery.c.count).label("count"),
                sql.func.extract("dow", subquery.c.date).label("weekday")) \
         .group_by(sql.func.extract("dow", subquery.c.date)) \
         .all()
 
     # could add to convert 0=sunday to 0=monday (wd - 1) % 7
     # but not because of https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getDay
-    return {row.weekday: row.avg for row in stats}
+    return {row.weekday: row.count for row in stats}
 
 
-@router.get("/commits-per-day")
-async def get_commits_per_day(
-        connection: sql.orm.Session = getDatabaseConnection,
-        subquery=getCommitCountSubquery
+@router.get("/commits-per-day-in-month")
+async def get_commits_per_day_in_month(
+        connection: sql.orm.Session = get_database_connection,
+        subquery=get_commit_count_subquery
 ):
     stats = connection \
-        .query(sql.func.sum(subquery.c.count).label("avg"),
+        .query(sql.func.sum(subquery.c.count).label("count"),
                sql.func.extract("day", subquery.c.date).label("day")) \
         .group_by(sql.func.extract("day", subquery.c.date)) \
         .all()
 
-    return {row.day: row.avg for row in stats}
+    return {row.day: row.count for row in stats}
 
 
 @router.get("/commits-per-week")
 async def get_commits_per_week(
-        connection: sql.orm.Session = getDatabaseConnection,
-        subquery=getCommitCountSubquery
+        connection: sql.orm.Session = get_database_connection,
+        subquery=get_commit_count_subquery
 ):
     stats = connection \
-        .query(sql.func.sum(subquery.c.count).label("avg"),
+        .query(sql.func.sum(subquery.c.count).label("count"),
                sql.func.extract("week", subquery.c.date).label("week")) \
         .group_by(sql.func.extract("week", subquery.c.date)) \
         .all()
 
-    return {row.week: row.avg for row in stats}
+    return {row.week: row.count for row in stats}
 
 
 @router.get("/commits-per-month")
 async def get_commits_per_month(
-        connection: sql.orm.Session = getDatabaseConnection,
-        subquery=getCommitCountSubquery
+        connection: sql.orm.Session = get_database_connection,
+        subquery=get_commit_count_subquery
 ):
     stats = connection \
-        .query(sql.func.sum(subquery.c.count).label("avg"),
+        .query(sql.func.sum(subquery.c.count).label("count"),
                sql.func.extract("month", subquery.c.date).label("month")) \
         .group_by(sql.func.extract("month", subquery.c.date)) \
         .all()
 
-    return {row.month: row.avg for row in stats}
+    return {row.month: row.count for row in stats}

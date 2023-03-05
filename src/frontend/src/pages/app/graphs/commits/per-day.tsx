@@ -6,31 +6,31 @@ import useYearSelection from "~/hooks/useYearSelection";
 import YearInputHandler from "~/elements/YearInputHandler";
 
 
-type CommitsPerDayResponse = Record<number, number>
-type QueryReturn = [number, CommitsPerDayResponse]
+type CommitsPerDayInMonthResponse = Record<number, number>
+type QueryReturn = [number, CommitsPerDayInMonthResponse]
 
 const DAYS_PER_MONTH = 31;
 const DAYS = One2NArray(DAYS_PER_MONTH);
 
 
-export default function CommitsPerDayWrapper() {
+export default function CommitsPerDayInMonthWrapper() {
     return <div className="flex flex-col h-screen">
         <YearInputHandler />
         <div className="grow">
-            <CommitsPerDay />
+            <CommitsPerDayInMonth />
         </div>
     </div>;
 }
 
 
-export function CommitsPerDay() {
+export function CommitsPerDayInMonth() {
     const years = useYearSelection();
 
     const queries = useQueries(
         years.map(year => ({
             queryKey: ["commits-per-day", year],
             queryFn: () => axios
-                .get<CommitsPerDayResponse>("/commits-per-day", { params: { year } })
+                .get<CommitsPerDayInMonthResponse>("/commits-per-day-in-month", { params: { year } })
                 .then<QueryReturn>(response => [year, response.data]),
         })),
     );

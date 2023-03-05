@@ -3,6 +3,7 @@ import BitbucketIconSrc from "@assets/bitbucket-alt.png";
 import GitLabIconSrc from "@assets/gitlab-alt.png";
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { Fragment } from "react";
 
 
 interface Workspace {
@@ -39,23 +40,13 @@ export default function Workspaces() {
         return <div className="col-span-3">Changing Workspace</div>;
     }
 
-    const Workspace = (ws: Workspace) => <>
-        <img src={ws.logo_url} alt="" draggable={false} className="object-contain w-12 h-12 rounded-full mix-blend-color-burn" />
-        <button className="w-full text-left whitespace-nowrap" onClick={() => setWorkspace.mutate(ws.name)}>
-            {ws.name}
-        </button>
-        <a href={"https://github.com"} target="_blank" rel="noreferrer"  className="cursor-pointer">
-            <ProviderIcon provider="GITHUB" className="h-6 pl-2 dark:invert" />
-        </a>
-    </>;
-
-    const curWs = query.data!.active_workspace;
+    const currentWorkspace = query.data!.active_workspace;
 
     return <>
         {/* active workspace */}
-        <img src={curWs.logo_url} alt="" draggable={false} className="object-contain w-12 h-12 rounded-full mix-blend-color-burn" />
+        <img src={currentWorkspace.logo_url} alt="" draggable={false} className="object-contain w-12 h-12 rounded-full mix-blend-color-burn" />
         <p className="w-full text-left select-none whitespace-nowrap">
-            {curWs.name}
+            {currentWorkspace.name}
         </p>
         <a href={"https://github.com"} target="_blank" rel="noreferrer"  className="cursor-pointer">
             <ProviderIcon provider="GITHUB" className="h-6 pl-2 dark:invert" />
@@ -65,11 +56,18 @@ export default function Workspaces() {
         {/* other workspaces */}
         {query.data!.other_workspaces
             .sort((a, b) => a.name.localeCompare(b.name))
-            .map(ws => <Workspace key={ws.name} {...ws} />)
+            .map(workspace => <Fragment key={workspace.name}>
+                <img src={workspace.logo_url} alt="" draggable={false} className="object-contain w-12 h-12 rounded-full mix-blend-color-burn" />
+                <button className="w-full text-left whitespace-nowrap" onClick={() => setWorkspace.mutate(workspace.name)}>
+                    {workspace.name}
+                </button>
+                <a href={"https://github.com"} target="_blank" rel="noreferrer"  className="cursor-pointer">
+                    <ProviderIcon provider="GITHUB" className="h-6 pl-2 dark:invert" />
+                </a>
+            </Fragment>)
         }
     </>;
 }
-
 
 type Provider = "GITHUB" | "BITBUCKET" | "GITLAB"
 
