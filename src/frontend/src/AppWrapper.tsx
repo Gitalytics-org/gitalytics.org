@@ -5,6 +5,7 @@ import { HashRouter as Router, useLocation } from "react-router-dom";
 import axios from "axios";
 import App from "~/App";
 import RootDarkModeProvider from "~/components/RootDarkModeProvider";
+import { HTTP_408_REQUEST_TIMEOUT, HTTP_504_GATEWAY_TIMEOUT } from "./httpStatusIndex";
 
 axios.defaults.baseURL = "/api";
 axios.defaults.withCredentials = true;
@@ -21,6 +22,7 @@ ChartJS.register(...registerables);
 // @ts-expect-error: fuck chartjs in combination with typescript
 ChartJS.defaults.plugins.colors.forceOverride = true;
 
+const MAX_RETRIES = 3;
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
@@ -29,7 +31,19 @@ const queryClient = new QueryClient({
             refetchOnMount: false,
             refetchOnReconnect: true,
             refetchOnWindowFocus: false,
-            retry: false,
+            retry: (failureCount, error) => {
+                if (error instanceof axios.AxiosError) {
+                    if (error.response?.status === axios.HttpStatusCode.TooEarly) return true;
+                }
+                if (failureCount >= MAX_RETRIES) return false;
+                if (error instanceof axios.AxiosError) {
+                    return [
+                        HTTP_504_GATEWAY_TIMEOUT,
+                        HTTP_408_REQUEST_TIMEOUT,
+                    ].includes(error.response?.status ?? 0);
+                }
+                return false;
+            },
         },
     },
 });
