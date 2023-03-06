@@ -47,7 +47,6 @@ class EncryptedCookieStorage:
         self._response.delete_cookie(key.value, secure=True, httponly=True)
 
 
-
 @fastapi.Depends
 def session_from_cookies(cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage) -> dbm.Session:
     r"""
@@ -76,3 +75,11 @@ def session_from_cookies(cookie_storage: EncryptedCookieStorage = EncryptedCooki
             connection.commit()
 
     return session
+
+
+@fastapi.Depends
+def active_workspace_id(cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage) -> str:
+    try:
+        return cookie_storage[CookieKey.ACTIVE_WORKSPACE_ID]
+    except KeyError:
+        raise fastapi.HTTPException(fastapi.status.HTTP_424_FAILED_DEPENDENCY, detail="no active workspace selected")
