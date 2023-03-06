@@ -65,7 +65,6 @@ function DarkLightToggle() {
     const darkMode = useContext(DarkModeContext);
 
     return <button className="absolute w-10 h-10 rounded-full cursor-pointer left-5 bottom-5 dark:invert" onClick={darkMode.toggle} title="toggle dark-mode">
-    return <button className="absolute w-10 h-10 rounded-full cursor-pointer left-5 bottom-5 dark:invert" onClick={darkMode.toggle} title="toggle dark-mode">
         <img src={darkMode.is ? DarkSrc : LightSrc} alt="" />
     </button>;
 }

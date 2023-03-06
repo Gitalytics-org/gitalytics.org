@@ -14,7 +14,6 @@ export default function Pricing() {
 
 
 function FreeTier() {
-    const user = useUser();
     const Element = (props: PropsWithChildren) => <div className="p-1 bg-fgc even:bg-opacity-5 odd:bg-opacity-10">{props.children}</div>;
 
     return <div className="border border-fgc min-w-[400px] text-center rounded-lg select-none">

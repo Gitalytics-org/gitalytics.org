@@ -54,7 +54,21 @@ export function CommitsPerDayInMonth() {
                 text: "Commits per Day",
             },
             legend: {
-                display: true,
+                display: false,
+            },
+        },
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: "Day of the Month",
+                },
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: "Commits",
+                },
             },
         },
         interaction: {

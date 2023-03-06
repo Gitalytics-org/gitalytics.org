@@ -51,6 +51,23 @@ export function CommitsPerWeek() {
                 display: true,
                 text: "Avg Commits per Week",
             },
+            legend: {
+                display: false,
+            },
+        },
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: "Week of the Year",
+                },
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: "Commits",
+                },
+            },
         },
         interaction: {
             axis: "x",

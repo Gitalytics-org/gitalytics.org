@@ -66,9 +66,9 @@ export function CommitsPerMonth() {
                 ticks: {
                     display: false,
                 },
-                grid: {
-                    color: "white",
-                },
+                // grid: {
+                //     color: "white",
+                // },
             },
         },
     }} width="100%" height="100%" />;
