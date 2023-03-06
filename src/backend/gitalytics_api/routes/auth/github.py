@@ -14,14 +14,7 @@ from gitalytics_api.enums import CookieKey
 from database import createLocalSession, models as dbm
 from database.enums import GitPlatform
 from gitporter import update_session_repositories
-
-
-class AuthSettings(pydantic.BaseSettings):
-    GITHUB_CLIENT_ID: str
-    GITHUB_CLIENT_SECRET: str
-
-    class Config:
-        env_file = ".env"
+from gitalytics_env import env
 
 
 SCOPES = [
@@ -43,7 +36,6 @@ class GithubErrorResponse(pydantic.BaseModel):
     error_uri: str
 
 
-settings = AuthSettings()
 router = fastapi.APIRouter(prefix="/auth/github")
 
 
@@ -61,7 +53,7 @@ async def login_redirect():
     #     return fastapi.responses.RedirectResponse(url="/#/app")
     # state = secrets.token_hex()
     params = dict(
-        client_id=settings.GITHUB_CLIENT_ID,
+        client_id=env.GITHUB_CLIENT_ID,
         scope=",".join(SCOPES),
         # state=state
     )
@@ -83,8 +75,8 @@ async def verify(code: str, tasks: fastapi.BackgroundTasks,
     # https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${requestToken}
 
     params = dict(
-        client_id=settings.GITHUB_CLIENT_ID,
-        client_secret=settings.GITHUB_CLIENT_SECRET,
+        client_id=env.GITHUB_CLIENT_ID,
+        client_secret=env.GITHUB_CLIENT_SECRET,
         code=code,
     )
     urlbase = "https://github.com/login/oauth/access_token"
