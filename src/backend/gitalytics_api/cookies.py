@@ -78,19 +78,22 @@ def session_from_cookies(cookie_storage: EncryptedCookieStorage = EncryptedCooki
 
 
 @fastapi.Depends
-def active_workspace_id(cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage) -> str:
-    try:
-        session_id = cookie_storage[CookieKey.SESSION_ID]
-    except KeyError:
-        raise fastapi.HTTPException(fastapi.status.HTTP_401_UNAUTHORIZED)
+def active_workspace_id(cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage) -> int:
     try:
         return cookie_storage[CookieKey.ACTIVE_WORKSPACE_ID]
     except KeyError:
         # raise fastapi.HTTPException(fastapi.status.HTTP_424_FAILED_DEPENDENCY, detail="no active workspace selected")
+        try:
+            session_id = cookie_storage[CookieKey.SESSION_ID]
+        except KeyError:
+            raise fastapi.HTTPException(fastapi.status.HTTP_401_UNAUTHORIZED)
         with createLocalSession() as connection:
-            return connection.query(dbm.Workspace.id) \
+            workspace_id: int = connection.query(dbm.Workspace.id) \
                 .select_from(dbm.Session) \
                 .join(dbm.Repository, dbm.Session.repositories) \
                 .join(dbm.Workspace) \
                 .filter(dbm.Session.id == session_id) \
-                .first()[0]
+                .limit(1) \
+                .scalar()
+            cookie_storage[CookieKey.ACTIVE_WORKSPACE_ID] = workspace_id
+            return workspace_id
