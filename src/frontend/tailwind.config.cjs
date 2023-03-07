@@ -10,8 +10,8 @@ module.exports = {
         // primary: "var(--primary-color)",
         // secondary: "var(--secondary-color)",
         // accent: "var(--accent-color)",
-        primary: "rgb(var(--primary-color) / <alpha-value>)",
-        secondary: "rgb(var(--secondary-color) / <alpha-value>)",
+        bgc: "rgb(var(--background-color) / <alpha-value>)",
+        fgc: "rgb(var(--foreground-color) / <alpha-value>)",
         accent: "rgb(var(--accent-color) / <alpha-value>)",
       }
     },

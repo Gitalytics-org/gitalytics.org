@@ -37,7 +37,7 @@ export default function YearSwitcherInput() {
     const hasPrevYear = year > STARTING_YEAR;
     const hasNextYear = year < getCurrentYear();
 
-    return <div className="flex select-none justify-evenly gap-5">
+    return <div className="flex gap-5 select-none justify-evenly">
         <button className="w-5 grow" onClick={() => setYear(year - 1)} style={{visibility: hasPrevYear ? "visible" : "hidden"}}>&lt;</button>
         <span>{year}</span>
         <button className="w-5 grow" onClick={() => setYear(year + 1)} style={{visibility: hasNextYear ? "visible" : "hidden"}}>&gt;</button>

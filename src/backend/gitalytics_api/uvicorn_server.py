@@ -1,3 +1,7 @@
+# -*- coding=utf-8 -*-
+r"""
+
+"""
 import os
 import os.path as p
 import glob
@@ -12,20 +16,32 @@ from __version__ import __version__
 ROOT = p.dirname(__file__)
 
 app = fastapi.FastAPI(
+    openapi_url=None,  # disabled swagger and redoc
+)
+api = fastapi.FastAPI(
+    debug=__debug__,
     title="gitalytics.org",
     description=__doc__,
     version=__version__,
+    terms_of_service="/#/terms",
+    contact=dict(
+        # name="gitalytics",
+        url="https://gitalytics.org/#/contact",
+        # email="support@gitalytics.org",
+    ),
+    openapi_url="/openapi.json" if __debug__ else None,  # disabled swagger and redoc in production
+    default_response_class=fastapi.responses.ORJSONResponse
 )
-app.add_middleware(
+api.add_middleware(
     fastapi.middleware.cors.CORSMiddleware,
-    allow_origins=["https://gitalytics.org", "http://localhost:5173"],
+    allow_origins=["https://gitalytics.org", "http://localhost:8000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 if __debug__:
-    @app.middleware("http")
+    @api.middleware("http")
     async def add_process_time_header(request: fastapi.Request, call_next):
         start_time = time.perf_counter()
         response = await call_next(request)
@@ -45,11 +61,11 @@ for fp in glob.glob("**/*.py", root_dir=p.join(ROOT, "routes"), recursive=True):
         raise
     if hasattr(module, "router") and isinstance(module.router, fastapi.APIRouter):
         logging.debug(f"Include router from {MODULE_NAME}")
-        app.include_router(module.router, prefix="/api")
+        api.include_router(module.router)
 
 logging.info("Successfully loaded all routes")
 
-# only now mount (order is important!)
+app.mount("/api", api, name="api")
 app.mount(
     "/",
     fastapi.staticfiles.StaticFiles(
