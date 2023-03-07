@@ -2,7 +2,6 @@ import type { PropsWithChildren } from "react";
 import { Link } from "react-router-dom";
 import FadeInBox from "~/elements/FadeInBox";
 import InfoLetter from "~/elements/InfoLetter";
-import useUser from "~/hooks/useUser";
 
 
 export default function Pricing() {
@@ -15,7 +14,6 @@ export default function Pricing() {
 
 
 function FreeTier() {
-    const user = useUser();
     const Element = (props: PropsWithChildren) => <div className="p-1 bg-fgc even:bg-opacity-5 odd:bg-opacity-10">{props.children}</div>;
 
     return <div className="border border-fgc min-w-[400px] text-center rounded-lg select-none">
@@ -42,7 +40,7 @@ function FreeTier() {
             </InfoLetter>
         </Element>
         <Element>
-            <Link to={user ? "/app" : "/login"} className="block w-3/4 py-1 mx-auto rounded-lg bg-accent bg-opacity-60 hover:bg-opacity-80 hover:w-4/5 transition-[width]">
+            <Link to="/login" className="block w-3/4 py-1 mx-auto rounded-lg bg-accent bg-opacity-60 hover:bg-opacity-80 hover:w-4/5 transition-[width]">
                 Do it now
             </Link>
         </Element>

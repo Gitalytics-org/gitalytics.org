@@ -1,12 +1,12 @@
 import LogoutIconSrc from "@assets/logout-icon.png";
-import AppLink from "~/elements/AppLink";
+import Anchor from "~/elements/BackendLink";
 
 
 export default function LogoutButton() {
-    return <div className="flex items-center gap-2 select-none group">
-        <img src={LogoutIconSrc} alt="" className="w-10 h-10 m-1 dark:invert" />
-        <AppLink href="/api/auth/logout" className="whitespace-nowrap grow">
+    return <>
+        <img src={LogoutIconSrc} alt="" draggable={false} className="w-10 h-10 m-1 dark:invert" />
+        <Anchor href="/api/auth/logout" className="col-span-2 whitespace-nowrap">
             Logout
-        </AppLink>
-    </div>;
+        </Anchor>
+    </>;
 }
