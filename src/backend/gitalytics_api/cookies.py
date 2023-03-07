@@ -71,7 +71,7 @@ def session_from_cookies(cookie_storage: EncryptedCookieStorage = EncryptedCooki
             raise fastapi.HTTPException(fastapi.status.HTTP_401_UNAUTHORIZED)
 
         today = datetime.date.today()
-        if session.last_seen.date() < today:
+        if session.last_seen < today:
             session.last_seen = today
             connection.commit()
 

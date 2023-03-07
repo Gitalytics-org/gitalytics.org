@@ -9,6 +9,7 @@ import urllib.parse as urlparse
 import fastapi
 import pydantic
 import httpx
+from datetime import datetime
 from gitalytics_api.cookies import EncryptedCookieStorage
 from gitalytics_api.enums import CookieKey
 from database import createLocalSession, models as dbm
@@ -107,7 +108,8 @@ async def verify(code: str, tasks: fastapi.BackgroundTasks,
             session = dbm.Session(
                 access_token=data.access_token,
                 refresh_token=None,
-                platform=GitPlatform.GITHUB
+                platform=GitPlatform.GITHUB,
+                last_seen=datetime.now().date(),
             )
             connection.add(session)
             connection.commit()
