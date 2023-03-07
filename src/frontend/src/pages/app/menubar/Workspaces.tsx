@@ -3,16 +3,21 @@ import BitbucketIconSrc from "@assets/bitbucket-alt.png";
 import GitLabIconSrc from "@assets/gitlab-alt.png";
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { Fragment } from "react";
 
 
-interface Workspace {
+enum Provider {
+    GITHUB = "GITHUB",
+    BITBUCKET = "BITBUCKET",
+    GITLAB = "GITLAB",
+}
+
+interface WorkspaceType {
     name: string
     logo_url: string
 }
 interface GetWorkspaceResponse {
-    active_workspace: Workspace
-    other_workspaces: Workspace[]
+    active_workspace: WorkspaceType
+    other_workspaces: WorkspaceType[]
 }
 
 export default function Workspaces() {
@@ -24,6 +29,7 @@ export default function Workspaces() {
             .then(response => response.data),
     );
     const setWorkspace = useMutation(
+        // eslint-disable-next-line camelcase
         (workspace_name: string) => axios.put("/set-active-workspace", null, { params: { workspace_name } }),
         { onSuccess: () => {
             queryClient.invalidateQueries();
@@ -40,41 +46,46 @@ export default function Workspaces() {
         return <div className="col-span-3">Changing Workspace</div>;
     }
 
-    const currentWorkspace = query.data!.active_workspace;
-
     return <>
-        {/* active workspace */}
-        <img src={currentWorkspace.logo_url} alt="" draggable={false} className="object-contain w-12 h-12 rounded-full mix-blend-color-burn" />
-        <p className="w-full text-left select-none whitespace-nowrap">
-            {currentWorkspace.name}
-        </p>
-        <a href={"https://github.com"} target="_blank" rel="noreferrer"  className="cursor-pointer">
-            <ProviderIcon provider="GITHUB" className="h-6 pl-2 dark:invert" />
-        </a>
-        {/* small (optional) separator line */}
-        {query.data!.other_workspaces.length > 0 && <div className="invisible w-4/5 h-px col-span-3 mx-auto bg-opacity-50 rounded-full group-hover:visible bg-secondary" />}
-        {/* other workspaces */}
+        <ActiveWorkspace {...query.data!.active_workspace} />
+        {query.data!.other_workspaces.length > 0 && <SeparatorLine />}
         {query.data!.other_workspaces
             .sort((a, b) => a.name.localeCompare(b.name))
-            .map(workspace => <Fragment key={workspace.name}>
-                <img src={workspace.logo_url} alt="" draggable={false} className="object-contain w-12 h-12 rounded-full mix-blend-color-burn" />
-                <button className="w-full text-left whitespace-nowrap" onClick={() => setWorkspace.mutate(workspace.name)}>
-                    {workspace.name}
-                </button>
-                <a href={"https://github.com"} target="_blank" rel="noreferrer"  className="cursor-pointer">
-                    <ProviderIcon provider="GITHUB" className="h-6 pl-2 dark:invert" />
-                </a>
-            </Fragment>)
+            .map(workspace => <OtherWorkspace key={workspace.name} {...workspace} switch={() => setWorkspace.mutate(workspace.name)} />)
         }
     </>;
 }
 
-type Provider = "GITHUB" | "BITBUCKET" | "GITLAB"
+function ActiveWorkspace(workspace: WorkspaceType) {
+    return <>
+        <img src={workspace.logo_url} alt="" draggable={false} className="object-contain w-12 h-12 rounded-full mix-blend-color-burn" />
+        <p className="w-full text-left select-none whitespace-nowrap">
+            {workspace.name}
+        </p>
+        <a href={"https://github.com"} target="_blank" rel="noreferrer"  className="cursor-pointer">
+            <ProviderIcon provider={Provider.GITHUB} className="h-6 pl-2 dark:invert" />
+        </a>
+    </>;
+}
+function SeparatorLine() {
+    return <div className="invisible w-4/5 h-px col-span-3 mx-auto bg-opacity-50 rounded-full group-hover:visible bg-secondary" />;
+}
+function OtherWorkspace(workspace: { switch: () => void } & WorkspaceType) {
+    return <>
+        <img src={workspace.logo_url} alt="" draggable={false} className="object-contain w-12 h-12 rounded-full mix-blend-color-burn" />
+        <button className="w-full text-left whitespace-nowrap" onClick={workspace.switch}>
+            {workspace.name}
+        </button>
+        <a href={"https://github.com"} target="_blank" rel="noreferrer"  className="cursor-pointer">
+            <ProviderIcon provider={Provider.GITHUB} className="h-6 pl-2 dark:invert" />
+        </a>
+    </>;
+}
 
 const providerIconMap: Record<string, string> = {
-    GITHUB: GitHubIconSrc,
-    BITBUCKET: BitbucketIconSrc,
-    GITLAB: GitLabIconSrc,
+    [Provider.GITHUB]: GitHubIconSrc,
+    [Provider.BITBUCKET]: BitbucketIconSrc,
+    [Provider.GITLAB]: GitLabIconSrc,
 };
 interface ProviderIconProps extends Omit<JSX.IntrinsicElements["img"], "src" | "alt"> {
     provider: Provider
