@@ -11,11 +11,11 @@ enum Provider {
     GITLAB = "GITLAB",
 }
 
-interface WorkspaceType {
+type WorkspaceType = {
     name: string
     logo_url: string
 }
-interface GetWorkspaceResponse {
+type GetWorkspaceResponse = {
     active_workspace: WorkspaceType
     other_workspaces: WorkspaceType[]
 }
@@ -47,16 +47,17 @@ export default function Workspaces() {
     }
 
     return <>
-        <ActiveWorkspace {...query.data!.active_workspace} />
+        <ActiveWorkspace workspace={query.data!.active_workspace} />
         {query.data!.other_workspaces.length > 0 && <SeparatorLine />}
         {query.data!.other_workspaces
             .sort((a, b) => a.name.localeCompare(b.name))
-            .map(workspace => <OtherWorkspace key={workspace.name} {...workspace} switch={() => setWorkspace.mutate(workspace.name)} />)
+            .map(workspace => <OtherWorkspace key={workspace.name} workspace={workspace} activate={() => setWorkspace.mutate(workspace.name)} />)
         }
     </>;
 }
 
-function ActiveWorkspace(workspace: WorkspaceType) {
+type ActiveWorkspaceProps = { workspace: WorkspaceType }
+function ActiveWorkspace({ workspace }: ActiveWorkspaceProps) {
     return <>
         <img src={workspace.logo_url} alt="" draggable={false} className="object-contain w-12 h-12 rounded-full mix-blend-color-burn" />
         <p className="w-full text-left select-none whitespace-nowrap">
@@ -67,13 +68,16 @@ function ActiveWorkspace(workspace: WorkspaceType) {
         </a>
     </>;
 }
+
 function SeparatorLine() {
     return <div className="invisible w-4/5 h-px col-span-3 mx-auto bg-opacity-50 rounded-full group-hover:visible bg-secondary" />;
 }
-function OtherWorkspace(workspace: { switch: () => void } & WorkspaceType) {
+
+type OtherWorkspaceProps = { workspace: WorkspaceType, activate: () => void }
+function OtherWorkspace({ workspace, activate }: OtherWorkspaceProps) {
     return <>
         <img src={workspace.logo_url} alt="" draggable={false} className="object-contain w-12 h-12 rounded-full mix-blend-color-burn" />
-        <button className="w-full text-left whitespace-nowrap" onClick={workspace.switch}>
+        <button className="w-full text-left whitespace-nowrap" onClick={activate}>
             {workspace.name}
         </button>
         <a href={"https://github.com"} target="_blank" rel="noreferrer"  className="cursor-pointer">
