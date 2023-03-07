@@ -82,7 +82,7 @@ class Commit(IdMixin, CreatedAtMixin, BaseModel):
     author: Mapped["Author"] = relationship(back_populates="commits")
 
 
-class Session(IdMixin, TimestampsMixin, BaseModel):
+class Session(BigIdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "session"
 
     access_token: Mapped[str] = mapped_column(sql.String(255), nullable=False)
