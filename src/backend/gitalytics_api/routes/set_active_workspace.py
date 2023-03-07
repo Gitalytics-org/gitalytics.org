@@ -26,7 +26,7 @@ async def set_active_workspace(workspace_name: str, cookie_storage: EncryptedCoo
     sets the active workspace for a user's session
     """
     with createLocalSession() as connection:
-        workspace: t.List[dbm.Workspace] = connection.query(dbm.Workspace) \
+        workspace: dbm.Workspace = connection.query(dbm.Workspace) \
             .select_from(dbm.Session) \
             .join(dbm.Repository, dbm.Session.repositories) \
             .join(dbm.Workspace) \

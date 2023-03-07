@@ -1,12 +1,16 @@
 import { Link } from "react-router-dom";
 import GraphIconSrc from "@assets/graph-icon.png";
-import useUser from "~/hooks/useUser";
+import axios from "axios";
+import { useQuery } from "react-query";
 
 
 export default function GoToAppPopup() {
-    const user = useUser();
+    const query = useQuery(
+        ["is-logged-in"],
+        () => axios.get("/auth/am-i-logged-in").then(response => response.data),
+    );
 
-    if (!user) {
+    if (!query.isSuccess || !query.data.answer) {
         return null;
     }
 

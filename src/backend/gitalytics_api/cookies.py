@@ -37,7 +37,13 @@ class EncryptedCookieStorage:
         encrypted: str = self._request.cookies[key.value]
         json_string: str = self._fernet.decrypt(encrypted.encode()).decode()
         return json.loads(json_string)
-    
+
+    # def get(self, key: CookieKey, *, default=None):
+    #     try:
+    #         return self[key]
+    #     except KeyError:
+    #         return default
+
     def __setitem__(self, key: CookieKey, value):
         json_string = json.dumps(value)
         encrypted = self._fernet.encrypt(json_string.encode()).decode()
@@ -45,7 +51,6 @@ class EncryptedCookieStorage:
 
     def __delitem__(self, key: CookieKey):
         self._response.delete_cookie(key.value, secure=True, httponly=True)
-
 
 
 @fastapi.Depends
@@ -76,3 +81,11 @@ def session_from_cookies(cookie_storage: EncryptedCookieStorage = EncryptedCooki
             connection.commit()
 
     return session
+
+
+@fastapi.Depends
+def active_workspace_id(cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage) -> str:
+    try:
+        return cookie_storage[CookieKey.ACTIVE_WORKSPACE_ID]
+    except KeyError:
+        raise fastapi.HTTPException(fastapi.status.HTTP_424_FAILED_DEPENDENCY, detail="no active workspace selected")

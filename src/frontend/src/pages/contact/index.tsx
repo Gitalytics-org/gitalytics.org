@@ -1,4 +1,4 @@
-import GitalyticsLogoSrc from "@assets/gitalytics_orange_dropshadow.svg";
+import GitalyticsLogoSrc from "@assets/gitalytics.svg";
 import Footer from "~/components/Footer";
 
 
