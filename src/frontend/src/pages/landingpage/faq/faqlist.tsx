@@ -16,8 +16,8 @@ export const FAQList: Array<{question: string, answer: string | JSX.Element}> = 
     {
         question: "What exactly is a workspace",
         answer: <>
-            <b>On GitHub:</b> it means either your Account or an Organization that you are part of.<br/>
-            <b>On Bitbucket and GitLab:</b> it means literally a Workspace.
+            <b>On GitHub:</b> it means either your Account or an Organization that you are part of.
+            {/* <b>On Bitbucket and GitLab:</b> it means literally a Workspace. */}
         </>,
     },
     {
