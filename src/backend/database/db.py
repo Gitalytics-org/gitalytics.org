@@ -11,7 +11,6 @@ from gitalytics_env import env
 # SQLALCHEMY_DATABASE_URL = "sqlite:///./gitalytics.db"
 database_url = f"mysql+pymysql://{env.MYSQL_USER}:{env.MYSQL_PASSWORD}@{env.APP_HOSTNAME}:3306/{env.MYSQL_DATABASE}"
 
-print(database_url)
 engine = sql.create_engine(
     database_url,
     echo=False,  # set to True or False for more or less output respectively
