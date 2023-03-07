@@ -109,7 +109,6 @@ async def verify(code: str, tasks: fastapi.BackgroundTasks,
                 access_token=data.access_token,
                 refresh_token=None,
                 platform=GitPlatform.GITHUB,
-                last_seen=datetime.now().date(),
             )
             connection.add(session)
             connection.commit()

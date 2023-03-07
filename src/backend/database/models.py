@@ -89,4 +89,4 @@ class Session(BigIdMixin, TimestampsMixin, BaseModel):
     refresh_token: Mapped[str] = mapped_column(sql.String(255), nullable=True)
     platform: Mapped[GitPlatform] = mapped_column(sql.Enum(GitPlatform), nullable=False)
     repositories: Mapped[Set["Repository"]] = relationship(secondary="repository_access")
-    last_seen: Mapped[date] = mapped_column(sql.Date(), nullable=False)
+    last_seen: Mapped[date] = mapped_column(sql.Date, default=date.today)
