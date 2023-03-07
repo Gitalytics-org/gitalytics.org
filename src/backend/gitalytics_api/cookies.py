@@ -37,7 +37,13 @@ class EncryptedCookieStorage:
         encrypted: str = self._request.cookies[key.value]
         json_string: str = self._fernet.decrypt(encrypted.encode()).decode()
         return json.loads(json_string)
-    
+
+    # def get(self, key: CookieKey, *, default=None):
+    #     try:
+    #         return self[key]
+    #     except KeyError:
+    #         return default
+
     def __setitem__(self, key: CookieKey, value):
         json_string = json.dumps(value)
         encrypted = self._fernet.encrypt(json_string.encode()).decode()
