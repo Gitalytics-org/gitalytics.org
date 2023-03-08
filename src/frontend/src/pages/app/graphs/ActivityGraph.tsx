@@ -3,7 +3,7 @@ import { useQueries } from "react-query";
 import useYearSelection from "~/hooks/useYearSelection";
 import Color from "@kurkle/color";
 import YearInputHandler from "~/elements/YearInputHandler";
-import { getWeekOfYearNumber, One2NArray, getDayCountOfYear } from "../utils";
+import { getCalenderWeek, One2NArray, getDayCountOfYear } from "../utils";
 
 
 type Response = Record<string, number>;
@@ -51,7 +51,7 @@ export function ActivityGraph({ year, data }: ActivityGraphProps) {
         <div className="">
             <h2 className="text-center text-[1.5vw]">{year}</h2>
         </div>
-        <div className="flex flex-row justify-evenly my-auto">
+        <div className="flex flex-row justify-around my-auto">
             {MONTHS.map(month => <div key={month} className="text-[1vw] text-center">
                 {month}
             </div>)}
@@ -62,15 +62,13 @@ export function ActivityGraph({ year, data }: ActivityGraphProps) {
             </div>)}
         </div>
         <div className="p-1">
-            <div className="grid gap-1" style={{gridTemplateColumns: "repeat(52, 1fr)", gridTemplateRows: "repeat(7, 1fr)"}}>
+            <div className="grid gap-1" style={{gridTemplateColumns: "repeat(53, 1fr)", gridTemplateRows: "repeat(7, 1fr)"}}>
                 {One2NArray(getDayCountOfYear(year)).map(dayOffset => {
-                    const date = new Date(Date.UTC(year, 0, dayOffset));
+                    const date = new Date(year, 0, dayOffset);
                     const dateStr = date.toISOString().split("T")[0];
                     const count = data[dateStr] ?? 0;
-                    const column = getWeekOfYearNumber(date);
-                    const row = new Date(dateStr).getUTCDay();
-                    if (dayOffset < 50 && column > 10) return null;
-                    // const row = date.getUTCDay();
+                    const column = getCalenderWeek(date);
+                    const row = date.getUTCDay();
                     return <div key={dateStr} className="w-full aspect-square border border-black border-opacity-10" style={{
                         backgroundColor: Color(BASE_COLOR)
                             .alpha(count / maxCount)
@@ -81,16 +79,5 @@ export function ActivityGraph({ year, data }: ActivityGraphProps) {
                 })}
             </div>
         </div>
-        {/* <div className="" style={{gridColumn: 2, gridRow: 2}}>
-            {Object.entries(data).map(
-                ([date, count]) => <div key={date} className="w-full aspect-square" style={{
-                    backgroundColor: Color(BASE_COLOR)
-                        .alpha(count / maxCount)
-                        .rgbString(),
-                    gridColumn: getWeekOfYearNumber(date),
-                    gridRow: new Date(date).getDay(),
-                }} title={`${date}\n${count} Commits`} />,
-            )}
-        </div> */}
     </div>;
 }

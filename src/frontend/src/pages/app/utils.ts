@@ -13,15 +13,16 @@ export function getCurrentYear() {
     return new Date().getFullYear();
 }
 
-export function getDayCountOfYear(year: number) {
+export function getDayCountOfYear(year: number): number {
     // eslint-disable-next-line no-magic-numbers
     return (((year % 4) === 0 && (year % 100) > 0) || (year % 400) === 0) ? 366 : 365;
 }
 
-export function getWeekOfYearNumber(date: Date){
+export function getCalenderWeek(date: Date): number {
     /* eslint-disable no-magic-numbers */
-    const dayNum = date.getUTCDay() || 7;
-    date.setUTCDate(date.getUTCDate() + 4 - dayNum);
-    const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
-    return Math.ceil((((date.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+    const calcDate = new Date(date);
+    const dayNum = calcDate.getUTCDay() || 7;
+    calcDate.setUTCDate(calcDate.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(calcDate.getUTCFullYear(), 0, 1));
+    return Math.ceil((((calcDate.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
 }
