@@ -4,6 +4,9 @@ import React, { type PropsWithChildren } from "react";
 type Direction = "top" | "right" | "bottom" | "left"
 interface Props extends PropsWithChildren {
     from?: Direction
+    delay?: number
+    duration?: number
+    className?: string
 }
 
 
@@ -22,8 +25,11 @@ function getTranslate(direction?: Direction) {
 }
 
 
+const DEFAULT_DURATION = 1.2;
+const TWO_THIRD = 0.66666;
+
 export default function FadeInBox(props: Props) {
-    const [isVisible, setVisible] = React.useState(true);
+    const [isVisible, setVisible] = React.useState(false);
     const domRef = React.useRef<HTMLDivElement>(null);
 
     React.useEffect(() => {
@@ -35,11 +41,14 @@ export default function FadeInBox(props: Props) {
         return () => observer.unobserve(divElement);
     }, []);
 
+    const delay = props.delay ?? 0;
+    const duration = props.duration ?? DEFAULT_DURATION;
+
     const style: React.CSSProperties = {
         opacity: 0,
         transform: getTranslate(props.from),
         visibility: "hidden",
-        transition: "opacity 0.8s ease-out, transform 1.2s ease-out",
+        transition: `opacity ${duration * TWO_THIRD}s ease-out ${delay}s, transform ${duration}s ease-out ${delay}s`,
         willChange: "opacity, visibility",
     };
     const visibleStyle: React.CSSProperties = {
@@ -49,7 +58,7 @@ export default function FadeInBox(props: Props) {
     };
 
     return (
-        <div style={{...style, ...(isVisible ? visibleStyle : {})}} ref={domRef}>
+        <div className={props.className} style={{...style, ...(isVisible ? visibleStyle : {})}} ref={domRef}>
             {props.children}
         </div>
     );
