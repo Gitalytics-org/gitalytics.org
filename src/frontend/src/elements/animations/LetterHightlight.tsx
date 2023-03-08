@@ -15,7 +15,7 @@ export default function LetterHighlight(props: Props) {
     return <>
         {Array
             .from(props.children)
-            .map((letter, i) => <span key={i} className={`¤${props.className} letter-highlight`} style={{
+            .map((letter, i) => <span key={i} className={`${props.className} letter-highlight`} style={{
                 animationDelay: `${STARTING_OFFSET + i * LETTER_DELAY}s`,
                 animationDirection: `${DURATION}s`,
             }}>
