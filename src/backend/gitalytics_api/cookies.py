@@ -80,7 +80,7 @@ def session_from_cookies(cookie_storage: EncryptedCookieStorage = EncryptedCooki
             session.last_seen = today
             connection.commit()
 
-    return session
+        yield session
 
 
 @fastapi.Depends
