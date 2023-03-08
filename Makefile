@@ -10,12 +10,12 @@ build-frontend:
 	npm run dev
 
 start-database:
-	docker compose up
+	docker-compose up
 
 restart-database:
 	docker stop gitalytics-database-1
 	docker rm gitalytics-database-1
-	docker compose up
+	docker-compose up
 
 # Depends on a running database and a built fronted
 start-server:
