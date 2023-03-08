@@ -1,0 +1,15 @@
+.letter-highlight {
+    display: inline-block;
+    transform: scaleY(1.0);
+    /* animation: name duration timing-function delay iteration-count direction fill-mode; */
+    animation-name: letter-size-increase;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
+}
+
+@keyframes letter-size-increase {
+    50% {
+        transform: scaleY(1.1);
+    }
+}

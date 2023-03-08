@@ -6,7 +6,7 @@ import InfoLetter from "~/elements/InfoLetter";
 
 export default function Pricing() {
     return <div className="flex justify-around" id="pricing">
-        <FadeInBox>
+        <FadeInBox duration={0.8}>
             <FreeTier />
         </FadeInBox>
     </div>;
