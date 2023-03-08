@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import ChevronRight from "../ChevronRight";
 
 
 function getCurrentYear() {
@@ -37,9 +38,37 @@ export default function YearSwitcherInput() {
     const hasPrevYear = year > STARTING_YEAR;
     const hasNextYear = year < getCurrentYear();
 
-    return <div className="flex gap-5 select-none justify-evenly">
-        <button className="w-5 grow" onClick={() => setYear(year - 1)} style={{visibility: hasPrevYear ? "visible" : "hidden"}}>&lt;</button>
-        <span>{year}</span>
-        <button className="w-5 grow" onClick={() => setYear(year + 1)} style={{visibility: hasNextYear ? "visible" : "hidden"}}>&gt;</button>
-    </div>;
+    const incrementYear = () => {
+        if (hasNextYear) {
+            setYear(year + 1);
+        }
+    };
+
+
+    const decrementYear = () => {
+        if (hasPrevYear) {
+            setYear(year - 1);
+        }
+    };
+
+
+    return (
+        <div className="flex select-none justify-center">
+            <div className="flex align-middle justify-center">
+                <ChevronRight
+                    className={"rotate-180 " + (hasPrevYear ? "text-white cursor-pointer" : "text-gray-600 cursor-default")}
+                    height="60px"
+                    width="60px"
+                    onClick={decrementYear}
+                />
+                <span className="text-6xl font-mono">{year}</span>
+                <ChevronRight
+                    className={hasNextYear ? "text-white cursor-pointer" : "text-gray-600 cursor-default"}
+                    height="60px"
+                    width="60px"
+                    onClick={incrementYear}
+                />
+            </div>
+        </div>
+    );
 }
