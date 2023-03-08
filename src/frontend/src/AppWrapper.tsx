@@ -15,6 +15,7 @@ axios.interceptors.response.use(null, error => {
         // important: change with different provider
         window.location.assign("/#/login");
     }
+    return Promise.reject(error);
 });
 
 ChartJS.register(...registerables);
