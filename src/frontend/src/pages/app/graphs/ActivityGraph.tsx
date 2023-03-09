@@ -52,7 +52,7 @@ export function ActivityGraph({ year, data }: ActivityGraphProps) {
         <div className="">
             <h2 className="text-center text-[1.5vw]">{year}</h2>
         </div>
-        <div className="flex flex-row justify-around my-auto">
+        <div className="flex flex-row justify-around my-auto px-[2%]">
             {MONTHS.map(month => <div key={month} className="text-[1vw] text-center">
                 {month}
             </div>)}
