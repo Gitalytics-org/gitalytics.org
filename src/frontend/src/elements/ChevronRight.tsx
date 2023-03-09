@@ -5,7 +5,7 @@ const ChevronRight = (props: JSX.IntrinsicElements["svg"]) => (
 );
 
 
-ChevronRight.defualtProps = {
+ChevronRight.defaultProps = {
     width: "48px",
     height: "48px",
 };
