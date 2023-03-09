@@ -33,7 +33,8 @@ export default function FadeInBox(props: Props) {
     const domRef = React.useRef<HTMLDivElement>(null);
 
     React.useEffect(() => {
-        const divElement = domRef.current!;
+        const divElement = domRef.current;
+        if (!divElement) return;
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => setVisible(entry.isIntersecting));
         });

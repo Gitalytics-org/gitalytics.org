@@ -1,8 +1,10 @@
+import React from "react";
 import "./letter-highlight.css";
 
 
 interface LetterHighlightProps {
     children: string
+    delay?: number
     className?: string
 }
 
@@ -15,7 +17,7 @@ export default function LetterHighlight(props: LetterHighlightProps) {
         {Array
             .from(props.children)
             .map((letter, i) => <span key={i} className={`${props.className} letter-highlight`} style={{
-                animationDelay: `${STARTING_OFFSET + i * LETTER_DELAY}s`,
+                animationDelay: `${(props.delay ?? STARTING_OFFSET) + i * LETTER_DELAY}s`,
                 animationDirection: `${DURATION}s`,
             }}>
                 {letter}
