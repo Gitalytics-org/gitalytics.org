@@ -1,8 +1,7 @@
-// import { PropsWithChildren } from "react";
-import "./style.css";
+import "./letter-highlight.css";
 
 
-interface Props {
+interface LetterHighlightProps {
     children: string
     className?: string
 }
@@ -11,7 +10,7 @@ const STARTING_OFFSET = 0.20;
 const LETTER_DELAY = 0.05;
 const DURATION = 0.5;
 
-export default function LetterHighlight(props: Props) {
+export default function LetterHighlight(props: LetterHighlightProps) {
     return <>
         {Array
             .from(props.children)

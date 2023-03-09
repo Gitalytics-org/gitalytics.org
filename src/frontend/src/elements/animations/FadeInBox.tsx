@@ -26,7 +26,7 @@ function getTranslate(direction?: Direction) {
 
 
 const DEFAULT_DURATION = 1.2;
-const TWO_THIRD = 0.66666;
+const TWO_THIRD = 2/3;  // eslint-disable-line no-magic-numbers
 
 export default function FadeInBox(props: Props) {
     const [isVisible, setVisible] = React.useState(false);
