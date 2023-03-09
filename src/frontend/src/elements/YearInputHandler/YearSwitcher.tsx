@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import ChevronRight from "../ChevronRight";
+import ChevronRight from "~/icons/ChevronRight";
 
 
 function getCurrentYear() {
