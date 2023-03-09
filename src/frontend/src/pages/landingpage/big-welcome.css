@@ -12,7 +12,8 @@
     left: 50%;
     transform: translateX(-50%);
     animation-name: bw-logo-animation;
-    animation-duration: 2s;
+    animation-delay: 1s;
+    animation-duration: 1s;
     animation-timing-function: ease-in-out;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
@@ -40,11 +41,6 @@
 }
 
 @keyframes bw-logo-animation {
-    50% {
-        top: 0px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
     100% {
         top: 0px;
         left: 0%;
