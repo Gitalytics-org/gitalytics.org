@@ -11,8 +11,9 @@ type QueryReturn = [number, Response]
 
 const BASE_COLOR = "#F05133";
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-// const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-const WEEKDAYS = ["Monday", "Wednesday", "Friday"];
+const WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+// const WEEKDAYS = ["Monday", "Wednesday", "Friday"];
+const WEEKS_PER_YEAR = 52;
 
 export default function ActivityGraphWrapper() {
     return <>
@@ -62,22 +63,32 @@ export function ActivityGraph({ year, data }: ActivityGraphProps) {
             </div>)}
         </div>
         <div className="p-1">
-            <div className="grid gap-1" style={{gridTemplateColumns: "repeat(53, 1fr)", gridTemplateRows: "repeat(7, 1fr)"}}>
+            <div className="grid gap-1" style={{gridTemplateColumns: "repeat(54, 1fr)", gridTemplateRows: "repeat(7, 1fr)"}}>
                 {One2NArray(getDayCountOfYear(year)).map(dayOffset => {
-                    const date = new Date(year, 0, dayOffset);
+                    const date = new Date(Date.UTC(year, 0, dayOffset));
                     const dateStr = date.toISOString().split("T")[0];
                     const count = data[dateStr] ?? 0;
-                    const column = getCalenderWeek(date);
-                    const row = date.getUTCDay();
+                    let column = getCalenderWeek(date);
+                    const row = SaturdayOffset(date.getUTCDay());  // make 0=Saturday to 0=Monday
+                    if (dayOffset < WEEKDAYS.length && column === WEEKS_PER_YEAR) {
+                        column = 0;
+                    }
                     return <div key={dateStr} className="w-full aspect-square border border-black border-opacity-10" style={{
                         backgroundColor: Color(BASE_COLOR)
                             .alpha(count / maxCount)
                             .rgbString(),
-                        gridColumn: column,
-                        gridRow: row,
+                        gridColumn: 1 + column,
+                        gridRow: 1 + row,
                     }} title={`${dateStr}\n${count} Commits`} />;
                 })}
             </div>
         </div>
     </div>;
+}
+
+
+// converts 0=Saturday to 0=Monday
+function SaturdayOffset(day: number): number {
+    // eslint-disable-next-line no-magic-numbers
+    return (day + 6) % 7;
 }
