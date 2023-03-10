@@ -32,12 +32,8 @@ jobs:
       - name: Create Path
         run: mkdir -p "${AVI_PATH}"
 
-      #- name: Create __version__.py
-      #  run: |
-      #    echo "$(python3 -c 'import datetime; print(datetime.datetime.now().strftime("__version_info__ = (%-y, %-m, %-d, %-H, %-M)"))')" > "${AVI_PATH}__version__.py"
-      #    echo "__version__ = '.'.join(str(_) for _ in __version_info__)" >> "${AVI_PATH}__version__.py"
       - name: Create __version__.py
-        run: python3 -c 'import datetime; ts = datetime.datetime.now().isoformat(timespec="seconds"); print(f"__version__ = \"{ts}\"")' > "${AVI_PATH%/}/__version__.py"
+        run: echo "__version__ = \"$(date +%Y.%m.%d-%T)\"" > "${AVI_PATH%/}/__version__.py"
       
       - name: Configure git
         run: |
