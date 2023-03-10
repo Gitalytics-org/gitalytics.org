@@ -25,9 +25,18 @@ def generate_key():
     print("Successfully generated new COOKIE_KEY ✅")
 
 
-def run_server(appname: str, host: str, port: int, reload: bool, workers: int):
+def run_server():
     import uvicorn
-    uvicorn.run(f"gitalytics_api:{appname}", host=host, port=port, reload=reload, workers=workers, log_config=None)
+    from gitalytics_env import env
+
+    uvicorn.run(
+        "gitalytics_api:app",
+        host=env.APP_HOSTNAME,
+        port=env.APP_PORT,
+        reload=env.APP_RELOAD_ON_FILE_CHANGE,
+        workers=env.APP_WORKER_THREADS,
+        log_config=None,
+    )
 
 
 # master parser
@@ -48,16 +57,6 @@ generateKeyParser.set_defaults(function=generate_key)
 # run-server
 runServerParser = subparsers.add_parser("run-server", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 runServerParser.set_defaults(function=run_server)
-runServerParser.add_argument("--api", action="store_const", dest="appname", const="api", default="app",
-                             help="disable static file service and only run the api")
-runServerParser.add_argument("--global", action="store_const", dest="host", const="0.0.0.0", default="127.0.0.1",
-                             help="make this api available in the local network")
-runServerParser.add_argument("-p", "--port", type=int, default=8000,
-                             help="port to bind to")
-runServerParser.add_argument("--reload", action="store_true", default=False,
-                             help="automatically reload after changes")
-runServerParser.add_argument("-w", "--workers", type=int,
-                             help="number of workers (for production)")
 
 # gitporter subparser register
 runGitPorterParser = subparsers.add_parser("gitporter", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
