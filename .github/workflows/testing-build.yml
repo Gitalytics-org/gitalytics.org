@@ -1,4 +1,4 @@
-name: Testing Build
+name: Testing
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-build:
+  frontend-build:
     runs-on: ubuntu-latest
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -19,3 +19,14 @@ jobs:
           cd src/frontend/
           npm install
           npm run build
+  backend-start:
+    run-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Test Start
+        run: |
+          cd src/backend/
+          pip install -U pip
+          pip install -U pipenv
+          pipenv install
+          PYTHONPATH="." pipenv run python3 gitalytics_api/testing.py
