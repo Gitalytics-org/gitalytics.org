@@ -4,6 +4,9 @@
 #   - start-server
 # That way, you can monitor potential errors in all areas.
 
+uasage:
+	echo "usage: make <command>"
+
 build-frontend:
 	cd ./src/frontend && \
 	npm install && \
