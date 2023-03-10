@@ -1,12 +1,12 @@
 import type { PropsWithChildren } from "react";
 import { Link } from "react-router-dom";
-import FadeInBox from "~/elements/FadeInBox";
+import FadeInBox from "~/elements/animations/FadeInBox";
 import InfoLetter from "~/elements/InfoLetter";
 
 
 export default function Pricing() {
     return <div className="flex justify-around" id="pricing">
-        <FadeInBox>
+        <FadeInBox duration={0.8}>
             <FreeTier />
         </FadeInBox>
     </div>;

@@ -1,9 +1,10 @@
 import Footer from "~/components/Footer";
+import Terms from "./terms";
 
 export default function TermsPage() {
     return <>
-        <div className="min-h-screen">
-            <h1>Terms</h1>
+        <div className="min-h-screen terms">
+            <Terms />
         </div>
         <Footer />
     </>;
