@@ -17,8 +17,8 @@ async def get_commits_per_day_in_month(
         .query(sql.func.extract("day", dbm.Commit.committed_at).label("day"),
                sql.func.count().label("count")) \
         .select_from(dbm.Session) \
-        .join(dbm.Repository) \
-        .join(dbm.Commit) \
+        .join(dbm.Repository, dbm.Session.repositories) \
+        .join(dbm.Commit, dbm.Repository.commits) \
         .filter(dbm.Session.id == session.id) \
         .filter(dbm.Repository.workspace_id == workspace_id) \
         .filter(sql.func.extract("year", dbm.Commit.committed_at) == year) \
