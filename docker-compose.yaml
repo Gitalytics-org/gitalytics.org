@@ -1,19 +1,5 @@
-name: gitalytics
 
 services:
-#  frontend:
-#    build: ./src/frontend
-#
-#  fastapi-server:
-#    build: ./src/backend
-#    ports:
-#      - "8000:8000" # change internal port to 60860 (random port))
-#    depends_on:
-#      database:
-#        condition: service_healthy
-#      frontend:
-#        condition: service_completed_successfully
-
   database:
     image: mysql
     env_file: ./src/backend/.env
