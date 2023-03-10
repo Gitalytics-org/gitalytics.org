@@ -1,0 +1,5 @@
+__pycache__/*
+backend-logs/*
+gitalytics.db
+README.md
+.gitignore

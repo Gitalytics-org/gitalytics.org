@@ -21,7 +21,7 @@ def generate_key():
     from cryptography.fernet import Fernet
 
     dotenv_file = dotenv.find_dotenv()
-    dotenv.set_key(dotenv_file, "COOKIE_KEY", Fernet.generate_key().decode())
+    dotenv.set_key(dotenv_file, "APP_COOKIE_KEY", Fernet.generate_key().decode())
     print("Successfully generated new COOKIE_KEY ✅")
 
 

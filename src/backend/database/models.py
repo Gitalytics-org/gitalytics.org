@@ -26,8 +26,8 @@ repository_access = sql.Table(
 class Workspace(IdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "workspace"
 
-    name: Mapped[str] = mapped_column(sql.String, nullable=False)
-    logo_url: Mapped[str] = mapped_column(sql.String, nullable=True)
+    name: Mapped[str] = mapped_column(sql.String(255), nullable=False)
+    logo_url: Mapped[str] = mapped_column(sql.String(255), nullable=True)
     platform: Mapped[GitPlatform] = mapped_column(sql.Enum(GitPlatform), nullable=False)
     repositories: Mapped[Set["Repository"]] = relationship(back_populates="workspace")
 
@@ -38,7 +38,7 @@ class Author(IdMixin, TimestampsMixin, BaseModel):
     commits: Mapped[Set["Commit"]] = relationship(back_populates="author")
 
     # Encoding surrogate characters is required, since sqlalchemy cannot handle them. Example from linux kernel repo logs: '\udcdf'
-    _name: Mapped[str] = mapped_column(sql.String, nullable=False)
+    _name: Mapped[str] = mapped_column(sql.String(255), nullable=False)
 
     @hybrid_property
     def name(self):
@@ -48,7 +48,7 @@ class Author(IdMixin, TimestampsMixin, BaseModel):
     def name(self, value: str):
         self._name = value.encode("utf-8", "surrogateescape")
 
-    _email: Mapped[str] = mapped_column(sql.String, nullable=False)
+    _email: Mapped[str] = mapped_column(sql.String(255), nullable=False)
 
     @hybrid_property
     def email(self):
@@ -62,8 +62,8 @@ class Author(IdMixin, TimestampsMixin, BaseModel):
 class Repository(IdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "repository"
 
-    name: Mapped[str] = mapped_column(sql.String, nullable=False)
-    last_commit_hash: Mapped[str] = mapped_column(sql.String, nullable=True)
+    name: Mapped[str] = mapped_column(sql.String(255), nullable=False)
+    last_commit_hash: Mapped[str] = mapped_column(sql.String(100), nullable=True)
     commits: Mapped[Set["Commit"]] = relationship(back_populates="repository")
     workspace_id: Mapped[int] = mapped_column(sql.ForeignKey("workspace.id"), nullable=False)
     workspace: Mapped["Workspace"] = relationship(back_populates="repositories")
@@ -82,11 +82,11 @@ class Commit(IdMixin, CreatedAtMixin, BaseModel):
     author: Mapped["Author"] = relationship(back_populates="commits")
 
 
-class Session(IdMixin, TimestampsMixin, BaseModel):
+class Session(BigIdMixin, TimestampsMixin, BaseModel):
     __tablename__ = "session"
 
-    access_token: Mapped[str] = mapped_column(sql.String, nullable=False)
-    refresh_token: Mapped[str] = mapped_column(sql.String, nullable=True)
+    access_token: Mapped[str] = mapped_column(sql.String(255), nullable=False)
+    refresh_token: Mapped[str] = mapped_column(sql.String(255), nullable=True)
     platform: Mapped[GitPlatform] = mapped_column(sql.Enum(GitPlatform), nullable=False)
     repositories: Mapped[Set["Repository"]] = relationship(secondary="repository_access")
-    last_seen: Mapped[date] = mapped_column(sql.Date(), server_default=sql.func.current_date())
+    last_seen: Mapped[date] = mapped_column(sql.Date, default=date.today)

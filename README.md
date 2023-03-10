@@ -11,3 +11,11 @@
 > Furthermore, we pride ourselves in our state-of-the-art security measures. We let our users securely log into our product with the help of OAuth 2.0 authentication. This means, you only need to log in via your Git platform provider and don’t have to worry about coming up with yet another secure password you need to memorize.
 > 
 > So if you're ready to take your development process to the next level, sign up for Gitaylitics today and start analyzing your data like never before.
+
+## Developer setup
+
+Make sure Docker is running and you have all necessary dependencies installed.
+
+The `Makefile` offers all commands you need to get your development environement running.
+Start one of the commands in the Makefile with `make <command>`.
+Read the Makefile to find more about hot it can be used.

@@ -4,19 +4,20 @@ r"""
 
 """
 import sqlalchemy as sql
-import sqlalchemy.orm
+import sqlalchemy.orm as orm
+from gitalytics_env import env
 
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./gitalytics.db"
-# SQLALCHEMY_DATABASE_URL = "postgresql://user:password@postgresserver/db"
+# SQLALCHEMY_DATABASE_URL = "sqlite:///./gitalytics.db"
+database_url = f"mysql+pymysql://{env.MYSQL_USER}:{env.MYSQL_PASSWORD}@{env.APP_HOSTNAME}:3306/{env.MYSQL_DATABASE}"
 
 engine = sql.create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False},
-    echo=False,  # set to False for less output
+    database_url,
+    echo=False,  # set to True or False for more or less output respectively
 )
 
 
-class DatabaseSession(sql.orm.Session):
+class DatabaseSession(orm.Session):
     def __enter__(self) -> sql.orm.Session:
         return super().__enter__()
 

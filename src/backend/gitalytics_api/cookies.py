@@ -9,7 +9,7 @@ import fastapi
 from cryptography.fernet import Fernet
 from database import createLocalSession, models as dbm
 from .enums import CookieKey
-from .env_variables import env
+from gitalytics_env import env
 
 
 @fastapi.Depends
@@ -23,7 +23,7 @@ class EncryptedCookieStorage:
     """
 
     def __init__(self, request: fastapi.Request, response: fastapi.Response):
-        self._fernet = Fernet(env.COOKIE_KEY)
+        self._fernet = Fernet(env.APP_COOKIE_KEY)
         self._request = request
         self._response = response
 
