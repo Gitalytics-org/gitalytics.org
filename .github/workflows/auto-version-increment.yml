@@ -33,7 +33,7 @@ jobs:
         run: mkdir -p "${AVI_PATH}"
 
       - name: Create __version__.py
-        run: echo "__version__ = \"$(date +%Y.%m.%d-%T)\"" > "${AVI_PATH%/}/__version__.py"
+        run: echo "__version__ = \"$(date -Iseconds)\"" > "${AVI_PATH%/}/__version__.py"
       
       - name: Configure git
         run: |
