@@ -17,4 +17,5 @@
 Make sure Docker is running and you have all necessary dependencies installed.
 
 The `Makefile` offers all commands you need to get your development environement running.
-Start one of the commands in the Makefile with `make <command>`
+Start one of the commands in the Makefile with `make <command>`.
+Read the Makefile to find more about hot it can be used.
