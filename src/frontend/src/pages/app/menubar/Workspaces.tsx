@@ -70,7 +70,7 @@ function ActiveWorkspace({ workspace }: ActiveWorkspaceProps) {
 }
 
 function SeparatorLine() {
-    return <div className="invisible w-4/5 h-px col-span-3 mx-auto bg-opacity-50 rounded-full group-hover:visible bg-secondary" />;
+    return <div className="invisible w-4/5 h-px col-span-3 mx-auto bg-opacity-50 rounded-full group-hover:visible bg-fgc" />;
 }
 
 type OtherWorkspaceProps = { workspace: WorkspaceType, activate: () => void }

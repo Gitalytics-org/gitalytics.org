@@ -5,23 +5,26 @@ export default  function GraphLandingPage() {
         <div className="m-auto select-none">
             <h1 className="text-[5vw]">Available Graphs</h1>
         </div>
+        <PreserveQueryLink to="/app/activity-graph">
+            Activity Graph
+        </PreserveQueryLink>
         <PreserveQueryLink to="/app/commits">
-            Average Commits
+            Commits
         </PreserveQueryLink>
         <PreserveQueryLink to="/app/commits-per-hour">
-            Average Commits per Hour
+            Commits per Hour
         </PreserveQueryLink>
         <PreserveQueryLink to="/app/commits-per-weekday">
-            Average Commits per Weekday
+            Commits per Weekday
         </PreserveQueryLink>
         <PreserveQueryLink to="/app/commits-per-day-in-month">
-            Average Commits per Day
+            Commits per Day
         </PreserveQueryLink>
         <PreserveQueryLink to="/app/commits-per-week">
-            Average Commits per Week
+            Commits per Week
         </PreserveQueryLink>
         <PreserveQueryLink to="/app/commits-per-month">
-            Average Commits per Month
+            Commits per Month
         </PreserveQueryLink>
     </div>;
 }
