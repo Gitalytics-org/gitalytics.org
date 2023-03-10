@@ -1,8 +1,9 @@
 import sqlalchemy as sql
 import fastapi
 import typing as t
-from database import models as dbm
+from database import models as dbm, DatabaseSession
 from gitalytics_api import get_database_connection, active_workspace_id, session_from_cookies
+
 
 router = fastapi.APIRouter()
 
@@ -12,7 +13,7 @@ class DatabaseRow(t.TypedDict):
 
 @router.get("/commits-per-weekday")
 async def get_commits_per_weekday(
-        connection: sql.orm.Session = get_database_connection,
+        connection: DatabaseSession = get_database_connection,
         session: dbm.Session = session_from_cookies,
         workspace_id: int = active_workspace_id,
         year: int = fastapi.Query(gt=0),

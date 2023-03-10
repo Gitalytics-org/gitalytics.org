@@ -8,7 +8,6 @@ import fastapi
 import sqlalchemy as sql
 from datetime import date
 from database import models as dbm
-from database.db import createLocalSession
 from gitalytics_api import active_workspace_id, session_from_cookies, get_database_connection
 
 
