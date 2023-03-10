@@ -1,4 +1,4 @@
-name: Auto-Version-Increment
+name: Testing Build
 
 on:
   push:
