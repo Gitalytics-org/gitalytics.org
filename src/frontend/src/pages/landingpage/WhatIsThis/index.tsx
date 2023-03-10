@@ -1,4 +1,4 @@
-import FadeInBox from "~/elements/FadeInBox";
+import FadeInBox from "~/elements/animations/FadeInBox";
 import GitGraph from "./images/git-graph.png";
 import ChartGraph from "./images/line-graph.png";
 

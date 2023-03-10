@@ -1,0 +1,53 @@
+.big-welcome {
+    animation-name: bw-background-color;
+    animation-duration: 2.5s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+.big-welcome .bw-icon {
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation-name: bw-logo-animation;
+    animation-delay: 1s;
+    animation-duration: 1s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+.big-welcome .bw-text {
+    opacity: 0;
+    animation-name: bw-make-visible;
+    animation-delay: 1.2s;
+    animation-duration: 0.7s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes bw-background-color {
+    0% {
+        background-color: black;
+    }
+    20% {
+        background-color: black;
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+@keyframes bw-logo-animation {
+    100% {
+        top: 0px;
+        left: 0%;
+        transform: none;
+    }
+}
+
+@keyframes bw-make-visible {
+    100% { opacity: 1;}
+}
