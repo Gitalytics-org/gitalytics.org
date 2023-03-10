@@ -1,0 +1,49 @@
+name: Auto-Version-Increment
+
+on:
+  push:
+    branches:
+      - main
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  AVI_PATH: ${{ vars.AVI_PATH }}
+  AVI_AUTHOR: ${{ vars.AVI_AUTHOR }}
+  AVI_COMMIT_MESSAGE: ${{ vars.AVI_COMMIT_MESSAGE }}
+
+jobs:
+  version-increment:
+    runs-on: ubuntu-latest
+    # could be adjusted, but dunno which one is right
+    permissions: write-all
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      
+      - name: Echo Variables
+        run: |
+          echo "Path: '${AVI_PATH:=./}'"
+          echo "Author: '${AVI_AUTHOR:=AVI}'"
+          echo "Commit-msg: '${AVI_COMMIT_MESSAGE:=AVI-Update}'"
+      
+      - name: Create Path
+        run: mkdir -p "${AVI_PATH}"
+
+      - name: Create __version__.py
+        run: echo "__version__ = \"$(date -Iseconds)\"" > "${AVI_PATH%/}/__version__.py"
+      
+      - name: Configure git
+        run: |
+          git config --global user.name "${AVI_AUTHOR}"
+          git config --global user.email "${AVI_AUTHOR}@users.noreply.github.com"
+      
+      - name: Commit Updates
+        run: |
+          git add -A
+          git commit -m "Automated Version-Increment"
+        
+      - name: Push Changes
+        run: git push
