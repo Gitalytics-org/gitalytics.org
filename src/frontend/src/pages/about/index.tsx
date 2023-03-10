@@ -3,7 +3,7 @@ import Footer from "~/components/Footer";
 
 export default function AboutPage() {
     return <>
-        <div className="w-screen min-h-screen">
+        <div className="min-h-screen">
             <h1 className="text-[5vw] text-center">About us and this project</h1>
             <p className="max-w-5xl px-5 mx-auto text-xl">
                 This project was created as part of a semester course. Therefore it is possible that it still contains slight errors, may not be extended and feedback on problems or responses to questions may take longer.
