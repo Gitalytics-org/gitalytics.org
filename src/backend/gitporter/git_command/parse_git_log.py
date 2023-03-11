@@ -18,7 +18,7 @@ REGEX = r"(?P<hash>[a-z0-9]+);(?P<committed_at>.+);(?P<author_name>.+);(?P<email
         r"(?: (?P<files_changed>\d+) files? changed,?)?" \
         r"(?: (?P<lines_inserted>\d+) insertions?\(\+\),?)?" \
         r"(?: (?P<lines_deleted>\d+) deletions?\(\-\))?"
-url = "https://github.com/konstantinlob/gitalytics.org"
+url = "https://github.com/Gitalytics-org/gitalytics.org"
 
 
 class ParsedCommit(pydantic.BaseModel):

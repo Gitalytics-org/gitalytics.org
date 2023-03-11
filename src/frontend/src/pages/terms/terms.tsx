@@ -2,7 +2,7 @@ import "./terms.style.css";
 
 
 export default function Terms() {
-    return <div className="max-w-5xl mx-auto">
+    return <div className="terms max-w-5xl mx-auto">
         <h1>Terms and Conditions</h1>
         <p>Last updated: March 04, 2023</p>
         <p>Please read these terms and conditions carefully before using Our Service.</p>
@@ -83,7 +83,7 @@ export default function Terms() {
         <h1>Contact Us</h1>
         <p>If you have any questions about these Terms and Conditions, You can contact us:</p>
         <ul>
-            <li>By visiting this page on our website: <a href="https://gitalytics.org/contact" rel="external nofollow noopener noreferrer" target="_blank">https://gitalytics.org/contact</a></li>
+            <li>By visiting this page on our website: <a href="https://gitalytics.org/#/contact" rel="external nofollow noopener noreferrer" target="_blank">https://gitalytics.org/#/contact</a></li>
         </ul>
     </div>;
 }

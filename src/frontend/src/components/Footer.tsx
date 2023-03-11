@@ -47,7 +47,7 @@ function Links() {
 }
 
 function CopyRight() {
-    const Gitalytics = () => <Link to="https://github.com/konstantinlob/gitalytics.org" className="hover:underline">Gitalytics</Link>;
+    const Gitalytics = () => <Link to="https://github.com/Gitalytics-org/gitalytics.org" className="hover:underline">Gitalytics</Link>;
     const Github = () => <Link to="https://github.com" className="hover:underline">Github</Link>;
     const Bitbucket = () => <Link to="https://bitbucket.org/" className="hover:underline">Bitbucket</Link>;
     const Gitlab = () => <Link to="https://about.gitlab.com/" className="hover:underline">Gitlab</Link>;
