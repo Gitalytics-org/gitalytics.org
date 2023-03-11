@@ -7,7 +7,7 @@ from gitalytics_api import get_database_connection, active_workspace_id, session
 
 router = fastapi.APIRouter()
 
-@router.get("/commits-per-week")
+@router.get("/commits-per-week", response_model=t.Dict[int, int])
 async def get_commits_per_week(
         connection: DatabaseSession = get_database_connection,
         session: dbm.Session = session_from_cookies,
