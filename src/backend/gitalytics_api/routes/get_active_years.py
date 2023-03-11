@@ -15,7 +15,7 @@ class ResponseModel(pydantic.BaseModel):
 async def get_active_years(
     connection: DatabaseSession = get_database_connection,
     session: dbm.Session = session_from_cookies, 
-    active_workspace_id: int = active_workspace_id
+    active_workspace_id: int = active_workspace_id,
 ):
     active_years_result: t.List[sql.Row] = connection \
         .query(sql.func.extract("year", dbm.Commit.committed_at)) \
