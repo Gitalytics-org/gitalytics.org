@@ -63,9 +63,13 @@ export function CommitsPerWeekday() {
                 ticks: {
                     display: false,
                 },
-                // grid: {
-                //     color: "white",
-                // },
+                grid: {
+                    color: "#6666",
+                },
+                pointLabels: {
+                    display: true,
+                    centerPointLabels: true,
+                },
             },
         },
     }} width="100%" height="100%" />;

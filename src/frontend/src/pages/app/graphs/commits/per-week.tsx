@@ -60,11 +60,17 @@ export function CommitsPerWeek() {
                     display: true,
                     text: "Week of the Year",
                 },
+                grid: {
+                    color: "#6666",
+                },
             },
             y: {
                 title: {
                     display: true,
                     text: "Commits",
+                },
+                grid: {
+                    color: "#6666",
                 },
             },
         },

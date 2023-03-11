@@ -44,6 +44,7 @@ export function CommitsPerHour() {
             };
         }),
     }} options={{
+        responsive: true,
         maintainAspectRatio: false,
         plugins: {
             title: {
@@ -63,9 +64,13 @@ export function CommitsPerHour() {
                 ticks: {
                     display: false,
                 },
-                // grid: {
-                //     color: "white",
-                // },
+                grid: {
+                    color: "#6666",
+                },
+                pointLabels: {
+                    display: true,
+                    centerPointLabels: true,
+                },
             },
         },
     }} width="100%" height="100%" />;

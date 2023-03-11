@@ -62,11 +62,17 @@ export function CommitsPerDayInMonth() {
                     display: true,
                     text: "Day of the Month",
                 },
+                grid: {
+                    color: "#6666",
+                },
             },
             y: {
                 title: {
                     display: true,
                     text: "Commits",
+                },
+                grid: {
+                    color: "#6666",
                 },
             },
         },
