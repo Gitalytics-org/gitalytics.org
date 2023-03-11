@@ -8,12 +8,12 @@ import { DarkModeContext } from "./RootDarkModeProvider";
 
 
 export default function Footer() {
-    return <div className="relative flex flex-col justify-center gap-1 py-1 from-transparent to-slate-300 dark:to-slate-900 bg-gradient-to-b">
+    return <footer className="relative flex flex-col justify-center gap-1 py-1 from-transparent to-slate-300 dark:to-slate-900 bg-gradient-to-b">
         <SeparatorLine />
         <Links />
         <CopyRight />
         <DarkLightToggle />
-    </div>;
+    </footer>;
 }
 
 function SeparatorLine() {
@@ -52,10 +52,11 @@ function CopyRight() {
     const Bitbucket = () => <Link to="https://bitbucket.org/" className="hover:underline">Bitbucket</Link>;
     const Gitlab = () => <Link to="https://about.gitlab.com/" className="hover:underline">Gitlab</Link>;
 
-    return <div>
-        <p className="text-center">
+    return <div className="text-center">
+        <p>
             <Gitalytics /> is a tool to analyze all your Repositories from <Github />, <Bitbucket /> and <Gitlab />
         </p>
+        <small>&copy; Copyright { new Date().getFullYear() }, <Gitalytics />.org</small>
         <img className="w-10 h-10 mx-auto" src={GitalyticsLogoSrc} alt="logo" />
     </div>;
 }
