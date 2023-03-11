@@ -21,7 +21,7 @@ async def get_commits_per_weekday(
     # 'dow' == day-of-week
     result: t.List[sql.engine.row.Row] = connection \
         .query(sql.func.dayofweek(dbm.Commit.committed_at).label("weekday"),
-               sql.func.count().label("count")) \
+               sql.func.count().label("commit_count")) \
         .select_from(dbm.Session) \
         .join(dbm.Repository, dbm.Session.repositories) \
         .join(dbm.Commit, dbm.Repository.commits) \
@@ -33,4 +33,4 @@ async def get_commits_per_weekday(
 
     # could add to convert 0=sunday to 0=monday (wd - 1) % 7
     # but not because of https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getDay
-    return {row.weekday: row.count for row in result}
+    return {row.weekday: row.commit_count for row in result}
