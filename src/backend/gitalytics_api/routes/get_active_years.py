@@ -22,9 +22,8 @@ async def get_active_years(
         .select_from(dbm.Session) \
         .join(dbm.Repository, dbm.Session.repositories) \
         .join(dbm.Commit, dbm.Repository.commits) \
-        .join(dbm.Workspace, dbm.Repository.workspace) \
         .filter(dbm.Session.id == session.id) \
-        .filter(dbm.Workspace.id == active_workspace_id) \
+        .filter(dbm.Repository.workspace_id == active_workspace_id) \
         .group_by(sql.func.extract("year", dbm.Commit.committed_at)) \
         .all()
     
