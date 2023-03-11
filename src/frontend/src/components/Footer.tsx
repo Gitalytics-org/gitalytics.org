@@ -47,7 +47,7 @@ function Links() {
 }
 
 function CopyRight() {
-    const Gitalytics = () => <Link to="https://github.com/konstantinlob/gitalytics.org" className="hover:underline">Gitalytics</Link>;
+    const Gitalytics = () => <Link to="https://github.com/konstantinlob/gitalytics.org" className="hover:underline">Gitalytics.org</Link>;
     const Github = () => <Link to="https://github.com" className="hover:underline">Github</Link>;
     const Bitbucket = () => <Link to="https://bitbucket.org/" className="hover:underline">Bitbucket</Link>;
     const Gitlab = () => <Link to="https://about.gitlab.com/" className="hover:underline">Gitlab</Link>;
@@ -56,7 +56,7 @@ function CopyRight() {
         <p>
             <Gitalytics /> is a tool to analyze all your Repositories from <Github />, <Bitbucket /> and <Gitlab />
         </p>
-        <small>&copy; Copyright { new Date().getFullYear() }, <Gitalytics />.org</small>
+        <small>&copy; Copyright { new Date().getFullYear() }, <Gitalytics /></small>
         <img className="w-10 h-10 mx-auto" src={GitalyticsLogoSrc} alt="logo" />
     </div>;
 }
