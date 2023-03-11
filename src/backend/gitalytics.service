@@ -3,6 +3,7 @@ Description=Gitalytics Backend
 
 [Service]
 Type=simple
+User=gitalyitcs-app
 WorkingDirectory=%h/gitalytics.org/src/backend/
 ExecStart=pipenv run python3 -O -X utf8 main.py run-server
 RestartSec=10s
@@ -10,3 +11,4 @@ Restart=no
 
 [Install]
 WantedBy=multi-user.target
+
