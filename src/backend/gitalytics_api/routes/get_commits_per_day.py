@@ -13,11 +13,6 @@ from gitalytics_api import active_workspace_id, session_from_cookies, get_databa
 
 router = fastapi.APIRouter()
 
-class DatabaseRow(t.TypedDict):
-    date: date
-    count: int
-
-
 @router.get("/commits-per-day", response_model=t.Dict[date, int])
 async def get_commits_per_day(
         db_connection: sql.orm.Session = get_database_connection,
@@ -28,9 +23,9 @@ async def get_commits_per_day(
     r"""
     get commits per day in the workspace from a specific year
     """
-    result: t.List[DatabaseRow] = db_connection \
+    result: t.List[sql.engine.row.Row] = db_connection \
         .query(sql.func.cast(dbm.Commit.committed_at, sql.DATE).label("date"), 
-               sql.func.count().label("count")) \
+               sql.func.count().label("commit_count")) \
         .select_from(dbm.Session) \
         .join(dbm.Repository, dbm.Session.repositories) \
         .join(dbm.Commit, dbm.Repository.commits) \
@@ -39,5 +34,5 @@ async def get_commits_per_day(
         .filter(sql.extract("year", dbm.Commit.committed_at) == year) \
         .group_by(sql.func.cast(dbm.Commit.committed_at, sql.DATE)) \
         .all()
-
-    return {row.date: row.count for row in result}
+    
+    return {row.date: row.commit_count for row in result}

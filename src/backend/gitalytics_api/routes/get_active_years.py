@@ -17,7 +17,7 @@ async def get_active_years(
     session: dbm.Session = session_from_cookies, 
     active_workspace_id: int = active_workspace_id
 ):
-    active_years_result: t.List[t.Tuple[int]] = connection \
+    active_years_result: t.List[sql.engine.row.Row] = connection \
         .query(sql.func.extract("year", dbm.Commit.committed_at)) \
         .select_from(dbm.Session) \
         .join(dbm.Repository, dbm.Session.repositories) \

@@ -1,5 +1,6 @@
 import sqlalchemy as sql
 import fastapi
+import typing as t
 from database import models as dbm, DatabaseSession
 from gitalytics_api import get_database_connection, active_workspace_id, session_from_cookies
 
@@ -13,7 +14,7 @@ async def get_commits_per_week(
         workspace_id: int = active_workspace_id,
         year: int = fastapi.Query(gt=0),
 ):
-    stats = connection \
+    result: t.List[sql.engine.row.Row] = connection \
         .query(sql.func.extract("week", dbm.Commit.committed_at).label("week"),
                sql.func.count().label("count")) \
         .select_from(dbm.Session) \
@@ -25,4 +26,4 @@ async def get_commits_per_week(
         .group_by(sql.func.extract("week", dbm.Commit.committed_at)) \
         .all()
 
-    return {row.week: row.count for row in stats}
+    return {row.week: row.count for row in result}

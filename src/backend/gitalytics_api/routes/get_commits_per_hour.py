@@ -1,5 +1,6 @@
 import fastapi
 import sqlalchemy as sql
+import typing as t
 from database import models as dbm, DatabaseSession
 from gitalytics_api import active_workspace_id, get_database_connection, session_from_cookies
 
@@ -13,9 +14,9 @@ async def get_commits_per_hour(
         workspace_id: int = active_workspace_id,
         year: int = fastapi.Query(gt=0),
 ):
-    stats = connection \
+    stats: t.List[sql.engine.row.Row] = connection \
         .query(sql.func.extract("hour", dbm.Commit.committed_at).label("hour"),
-               sql.func.count().label("count")) \
+               sql.func.count().label("commit_count")) \
         .select_from(dbm.Session) \
         .join(dbm.Repository, dbm.Session.repositories) \
         .join(dbm.Commit, dbm.Repository.commits) \
@@ -25,4 +26,4 @@ async def get_commits_per_hour(
         .group_by(sql.func.extract("hour", dbm.Commit.committed_at)) \
         .all()
 
-    return {row.hour: row.count for row in stats}
+    return {row.hour: row.commit_count for row in stats}

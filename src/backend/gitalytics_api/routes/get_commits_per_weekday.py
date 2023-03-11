@@ -7,10 +7,6 @@ from gitalytics_api import get_database_connection, active_workspace_id, session
 
 router = fastapi.APIRouter()
 
-class DatabaseRow(t.TypedDict):
-    weekday: int
-    count: int
-
 @router.get("/commits-per-weekday")
 async def get_commits_per_weekday(
         connection: DatabaseSession = get_database_connection,
@@ -23,7 +19,7 @@ async def get_commits_per_weekday(
         weekday of 0 means sunday
     """
     # 'dow' == day-of-week
-    stats: t.List[DatabaseRow] = connection \
+    result: t.List[sql.engine.row.Row] = connection \
         .query(sql.func.dayofweek(dbm.Commit.committed_at).label("weekday"),
                sql.func.count().label("count")) \
         .select_from(dbm.Session) \
@@ -37,4 +33,4 @@ async def get_commits_per_weekday(
 
     # could add to convert 0=sunday to 0=monday (wd - 1) % 7
     # but not because of https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getDay
-    return {row.weekday: row.count for row in stats}
+    return {row.weekday: row.count for row in result}
