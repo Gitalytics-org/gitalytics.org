@@ -14,7 +14,7 @@ async def get_commits_per_hour(
         workspace_id: int = active_workspace_id,
         year: int = fastapi.Query(gt=0),
 ):
-    stats: t.List[sql.engine.row.Row] = connection \
+    result: t.List[sql.Row] = connection \
         .query(sql.func.extract("hour", dbm.Commit.committed_at).label("hour"),
                sql.func.count().label("commit_count")) \
         .select_from(dbm.Session) \
@@ -26,4 +26,4 @@ async def get_commits_per_hour(
         .group_by(sql.func.extract("hour", dbm.Commit.committed_at)) \
         .all()
 
-    return {row.hour: row.commit_count for row in stats}
+    return {row.hour: row.commit_count for row in result}

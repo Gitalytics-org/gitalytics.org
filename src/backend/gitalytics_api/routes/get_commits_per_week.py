@@ -14,9 +14,9 @@ async def get_commits_per_week(
         workspace_id: int = active_workspace_id,
         year: int = fastapi.Query(gt=0),
 ):
-    result: t.List[sql.engine.row.Row] = connection \
+    result: t.List[sql.Row] = connection \
         .query(sql.func.extract("week", dbm.Commit.committed_at).label("week"),
-               sql.func.count().label("count")) \
+               sql.func.count().label("commit_count")) \
         .select_from(dbm.Session) \
         .join(dbm.Repository, dbm.Session.repositories) \
         .join(dbm.Commit, dbm.Repository.commits) \
@@ -26,4 +26,4 @@ async def get_commits_per_week(
         .group_by(sql.func.extract("week", dbm.Commit.committed_at)) \
         .all()
 
-    return {row.week: row.count for row in result}
+    return {row.week: row.commit_count for row in result}

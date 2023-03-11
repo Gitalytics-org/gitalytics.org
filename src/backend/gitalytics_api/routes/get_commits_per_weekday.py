@@ -19,7 +19,7 @@ async def get_commits_per_weekday(
         weekday of 0 means sunday
     """
     # 'dow' == day-of-week
-    result: t.List[sql.engine.row.Row] = connection \
+    result: t.List[sql.Row] = connection \
         .query(sql.func.dayofweek(dbm.Commit.committed_at).label("weekday"),
                sql.func.count().label("commit_count")) \
         .select_from(dbm.Session) \

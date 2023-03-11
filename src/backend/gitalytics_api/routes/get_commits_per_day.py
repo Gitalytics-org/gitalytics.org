@@ -23,7 +23,7 @@ async def get_commits_per_day(
     r"""
     get commits per day in the workspace from a specific year
     """
-    result: t.List[sql.engine.row.Row] = db_connection \
+    result: t.List[sql.Row] = db_connection \
         .query(sql.func.cast(dbm.Commit.committed_at, sql.DATE).label("date"), 
                sql.func.count().label("commit_count")) \
         .select_from(dbm.Session) \

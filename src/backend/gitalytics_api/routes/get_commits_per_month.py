@@ -14,7 +14,7 @@ async def get_commits_per_month(
         workspace_id: int = active_workspace_id,
         year: int = fastapi.Query(gt=0),
 ):
-    result: t.List[sql.engine.row.Row] = connection \
+    result: t.List[sql.Row] = connection \
         .query(sql.func.extract("month", dbm.Commit.committed_at).label("month"),
                sql.func.count().label("commit_count")) \
         .select_from(dbm.Session) \
