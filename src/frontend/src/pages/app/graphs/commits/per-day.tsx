@@ -38,11 +38,10 @@ export function CommitsPerDayInMonth() {
     return <Bar data={{
         labels: DAYS,
         datasets: queries.map(result => {
-            if (result.isLoading) return {label: "loading...", data: []};
-            if (!result.isSuccess) return {label: "failed", data: []};
+            if (!result.isSuccess) return {label: "", data: []};
             const [year, data] = result.data;
             return {
-                label: `${year}`,
+                label: years.length > 1 ? `${year}` : "",
                 data: DAYS.map(day => data[day] ?? 0),
             };
         }),

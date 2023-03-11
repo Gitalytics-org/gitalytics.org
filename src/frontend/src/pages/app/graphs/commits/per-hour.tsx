@@ -33,17 +33,13 @@ export function CommitsPerHour() {
         })),
     );
 
-    // const maxValue = Math.max(...queries.map(result => Object.values(result.data?.[1]).flat()));
-    // const maxValue = Math.max(...Object.values(query.data!));
-
     return <PolarArea data={{
         labels: HOURS.map(h => `${h} o Clock`),
         datasets: queries.map(result => {
-            if (result.isLoading) return {label: "loading...", data: []};
-            if (!result.isSuccess) return {label: "failed", data: []};
+            if (!result.isSuccess) return {label: "", data: []};
             const [year, data] = result.data;
             return {
-                label: `${year}`,
+                label: years.length > 1 ? `${year}` : "",
                 data: HOURS.map(hour => data[hour] ?? 0),
             };
         }),
