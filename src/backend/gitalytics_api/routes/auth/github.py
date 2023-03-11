@@ -69,8 +69,11 @@ async def login_redirect():
             responses={
                 fastapi.status.HTTP_400_BAD_REQUEST: {}
             })
-async def verify(code: str, tasks: fastapi.BackgroundTasks,
-                 cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage):
+async def verify(
+    code: str, 
+    tasks: fastapi.BackgroundTasks,
+    cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage
+):
     r"""
     callback endpoint from GitHub
     """
@@ -116,11 +119,13 @@ async def verify(code: str, tasks: fastapi.BackgroundTasks,
             connection.refresh(session)
         cookie_storage[CookieKey.SESSION_ID] = session.id
 
-    threading.Thread(
-        target=update_session_repositories,
-        name=f"update-session-repositories for {session.id=}",
-        kwargs=dict(session_id=session.id),
-        daemon=False,
-    ).start()
+    # threading.Thread(
+    #     target=update_session_repositories,
+    #     name=f"update-session-repositories for {session.id=}",
+    #     kwargs=dict(session_id=session.id),
+    #     daemon=False,
+    # ).start()
+
+    tasks.add_task(update_session_repositories, session_id=session.id)
 
     return cookie_storage.to_redirect_response(url="/#/app")
