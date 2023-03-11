@@ -25,5 +25,5 @@ start-server:
 	cd ./src/backend && \
 	pipenv sync && \
 	pipenv run python3 main.py create-database && \
-	pipenv run python3 main.py run-server --reload
+	pipenv run python3 main.py run-server
 	

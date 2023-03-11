@@ -6,9 +6,9 @@ r"""
 import typing as t
 import fastapi
 import pydantic
-from database import createLocalSession, models as dbm
+from database import DatabaseSession, models as dbm
 from database.enums import GitPlatform
-from gitalytics_api.cookies import session_from_cookies, EncryptedCookieStorage
+from gitalytics_api import session_from_cookies, EncryptedCookieStorage, get_database_connection
 from gitalytics_api.enums import CookieKey
 
 
@@ -30,18 +30,21 @@ class ResponseModel(pydantic.BaseModel):
 
 
 @router.get("/get-workspaces", response_model=ResponseModel)
-async def get_workspaces(session: dbm.Session = session_from_cookies,
-                         cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage):
+async def get_workspaces(
+    db_connection: DatabaseSession = get_database_connection,
+    session: dbm.Session = session_from_cookies,
+    cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage,
+):
     r"""
     list all workspaces for the current user (session)
     """
-    with createLocalSession() as connection:
-        workspaces: t.List[dbm.Workspace] = connection.query(dbm.Workspace) \
-            .select_from(dbm.Session) \
-            .join(dbm.Repository, dbm.Session.repositories) \
-            .join(dbm.Workspace) \
-            .filter(dbm.Session.id == session.id) \
-            .all()
+    workspaces: t.List[dbm.Workspace] = db_connection \
+        .query(dbm.Workspace) \
+        .select_from(dbm.Session) \
+        .join(dbm.Repository, dbm.Session.repositories) \
+        .join(dbm.Workspace) \
+        .filter(dbm.Session.id == session.id) \
+        .all()
 
     if len(workspaces) == 0:
         raise fastapi.HTTPException(fastapi.status.HTTP_425_TOO_EARLY)

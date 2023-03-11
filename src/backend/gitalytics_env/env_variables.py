@@ -3,6 +3,9 @@ from pydantic import BaseSettings
 
 class Settings(BaseSettings):
     APP_HOSTNAME: str
+    APP_PORT: int
+    APP_RELOAD_ON_FILE_CHANGE: bool
+    APP_WORKER_THREADS: int
     APP_COOKIE_KEY: str
     MYSQL_DATABASE: str
     MYSQL_USER: str
