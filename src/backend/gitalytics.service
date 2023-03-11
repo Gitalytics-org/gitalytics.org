@@ -4,7 +4,7 @@ Description=Gitalytics Backend
 [Service]
 Type=simple
 User=gitalytics-app
-WorkingDirectory=~/gitalytics.org/src/backend/
+WorkingDirectory=gitalytics.org/src/backend/
 ExecStart=pipenv run python3 -O -X utf8 main.py run-server
 RestartSec=10s
 Restart=no
