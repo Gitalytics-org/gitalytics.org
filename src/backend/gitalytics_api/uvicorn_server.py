@@ -40,6 +40,14 @@ api.add_middleware(
     allow_headers=["*"],
 )
 
+
+@api.middleware("http")
+async def debug_middleware(request: fastapi.Request, call_next):
+    logging.warning("success")
+    logging.warning(str(vars(request)))
+    return await call_next(request)
+
+
 if __debug__:
     @api.middleware("http")
     async def add_process_time_header(request: fastapi.Request, call_next):
