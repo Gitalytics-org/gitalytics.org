@@ -5,10 +5,9 @@ Description=Gitalytics Backend
 Type=simple
 User=gitalytics-app
 WorkingDirectory=/home/gitalytics-app/gitalytics.org/src/backend/
-ExecStart=pipenv run python3 -O -X utf8 main.py run-server
+ExecStart=bash -c "pipenv sync && pipenv run python3 -O -X utf8 main.py run-server"
 RestartSec=10s
 Restart=no
 
 [Install]
 WantedBy=multi-user.target
-
