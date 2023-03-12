@@ -6,12 +6,10 @@ r"""
 import threading
 import typing as t
 import urllib.parse as urlparse
-# import secrets
 import fastapi
 import pydantic
 import httpx
-from datetime import datetime
-from gitalytics_api.cookies import EncryptedCookieStorage
+from gitalytics_api.cookies import EncryptedCookieStorage, get_encrypted_cookie_storage
 from gitalytics_api.enums import CookieKey
 from database import createLocalSession, models as dbm
 from database.enums import GitPlatform
@@ -69,8 +67,9 @@ async def login_redirect():
             responses={
                 fastapi.status.HTTP_400_BAD_REQUEST: {}
             })
-async def verify(code: str, tasks: fastapi.BackgroundTasks,
-                 cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage):
+async def verify(code: str,
+                 tasks: fastapi.BackgroundTasks,
+                 cookie_storage: EncryptedCookieStorage = get_encrypted_cookie_storage):
     r"""
     callback endpoint from GitHub
     """
@@ -116,11 +115,12 @@ async def verify(code: str, tasks: fastapi.BackgroundTasks,
             connection.refresh(session)
         cookie_storage[CookieKey.SESSION_ID] = session.id
 
-    threading.Thread(
-        target=update_session_repositories,
-        name=f"update-session-repositories for {session.id=}",
-        kwargs=dict(session_id=session.id),
-        daemon=False,
-    ).start()
+    # threading.Thread(
+    #     target=update_session_repositories,
+    #     name=f"update-session-repositories for {session.id=}",
+    #     kwargs=dict(session_id=session.id),
+    #     daemon=False,
+    # ).start()
+    tasks.add_task(update_session_repositories, session_id=session.id)
 
     return cookie_storage.to_redirect_response(url="/#/app")
