@@ -90,13 +90,15 @@ async def verify(code: str,
                 "Accept": "application/json"
             }
         )
-        response.raise_for_status()
-        data = response.json()
+        if not response.is_success:
+            return cookie_storage.to_redirect_response(url="/#/app")
+
+        response_data = response.json()
 
     try:
-        data = GithubResponse(**data)
+        data = GithubResponse(**response_data)
     except pydantic.ValidationError:
-        raise fastapi.HTTPException(fastapi.status.HTTP_400_BAD_REQUEST, detail=data.get("error_description"))
+        return cookie_storage.to_redirect_response(url="/#/app")
 
     with createLocalSession() as connection:
 
