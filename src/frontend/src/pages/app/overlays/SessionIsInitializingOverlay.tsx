@@ -26,7 +26,7 @@ export default function SessionIsInitializingOverlay() {
         <div>
             <img className="h-[10vh] animate-pulse mx-auto" src={LogoSrc} alt="" />
             <span className="text-[4vw] max-w-[50vw] text-center">
-                Please wait while your data is being validated
+                Please wait while your data is being loaded
             </span>
         </div>
     </div>;

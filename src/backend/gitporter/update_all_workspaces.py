@@ -9,7 +9,6 @@ def update_all_workspaces():
     """
     with createLocalSession() as connection:
         recent_sessions_query = connection.query(dbm.Session) \
-            .filter(dbm.Session.is_initialized,
-                    dbm.Session.last_seen > (datetime.today() - timedelta(days=30)))
+            .filter(dbm.Session.last_seen > (datetime.today() - timedelta(days=30)))
         for session in recent_sessions_query:
             update_session_repositories(session_id=session.id)

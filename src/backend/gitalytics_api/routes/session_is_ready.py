@@ -3,6 +3,7 @@
 r"""
 
 """
+import typing as t
 import fastapi
 import pydantic
 from gitalytics_api.cookies import session_from_cookies
@@ -13,13 +14,13 @@ router = fastapi.APIRouter()
 
 
 class ResponseModel(pydantic.BaseModel):
-    is_ready: bool = True
+    is_ready: t.Literal[True]
 
 
 @router.get("/is-session-ready", response_model=ResponseModel, responses={425: {}})
 def is_session_ready(
-        connection: dbm.Session = session_from_cookies
+        session: dbm.Session = session_from_cookies
 ):
-    if not connection.is_initialized:
+    if not session.is_initialized:
         raise fastapi.HTTPException(fastapi.status.HTTP_425_TOO_EARLY)
-    return {}
+    return {"is_ready": True}
