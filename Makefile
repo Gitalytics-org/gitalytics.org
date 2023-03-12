@@ -16,8 +16,8 @@ start-database:
 	docker-compose up
 
 restart-database:
-	docker stop gitalytics-database-1
-	docker rm gitalytics-database-1
+	docker stop gitalyticsorg-database-1
+	docker rm gitalyticsorg-database-1
 	docker-compose up
 
 # Depends on a running database and a built fronted
