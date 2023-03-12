@@ -4,7 +4,7 @@
 #   - start-server
 # That way, you can monitor potential errors in all areas.
 
-uasage:
+usage:
 	echo "usage: make <command>"
 
 build-frontend:
@@ -26,4 +26,3 @@ start-server:
 	pipenv sync && \
 	pipenv run python3 main.py create-database && \
 	pipenv run python3 main.py run-server
-	

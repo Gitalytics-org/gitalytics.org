@@ -16,3 +16,6 @@ def update_session_repositories(session_id: int):
         session = connection.query(dbm.Session).filter(dbm.Session.id == session_id).one()
         for remote_repository in get_remote_repositories(session=session):
             update_repository(remote_repository=remote_repository, session=session, database_connection=connection)
+        if not session.is_initialized:
+            session.is_initialized = True
+            connection.commit()

@@ -28,7 +28,6 @@ export default function Workspaces() {
         () => axios
             .get<GetWorkspaceResponse>("/get-workspaces")
             .then(response => response.data),
-        { refetchInterval: 60_000 },
     );
     const setWorkspace = useMutation(
         // eslint-disable-next-line camelcase
