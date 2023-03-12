@@ -1,9 +1,9 @@
 import Footer from "~/components/Footer";
 import Anchor from "~/elements/BackendLink";
 import FadeInBox from "~/elements/animations/FadeInBox";
-import GithubIconSrc from "@assets/github.png";
+import GitHubIconSrc from "@assets/github.png";
 import BitbucketIconSrc from "@assets/bitbucket.png";
-import GitlabIconSrc from "@assets/gitlab.png";
+import GitLabIconSrc from "@assets/gitlab.png";
 import HomeIconSrc from "@assets/home-icon.png";
 import { Link } from "react-router-dom";
 
@@ -16,7 +16,7 @@ export default function LoginPage() {
             <div className="flex justify-around gap-20 px-5 grow">
                 <FadeInBox from="bottom" duration={1.0} delay={0} className="my-auto">
                     <Anchor className="my-auto" href="/api/auth/github/login">
-                        <img className="dark:invert" src={GithubIconSrc} alt="github" />
+                        <img className="dark:invert" src={GitHubIconSrc} alt="github" />
                         <p className="text-center opacity-50">Login via Github</p>
                     </Anchor>
                 </FadeInBox>
@@ -28,7 +28,7 @@ export default function LoginPage() {
                 </FadeInBox>
                 <FadeInBox from="bottom" duration={1.0} delay={0.2} className="my-auto">
                     <Anchor className="my-auto cursor-not-allowed grayscale" href="/api/auth/gitlab/login" onClick={(e) => e.preventDefault()} title="not available yet">
-                        <img src={GitlabIconSrc} alt="gitlab" />
+                        <img src={GitLabIconSrc} alt="gitlab" />
                         <p className="text-center line-through opacity-50">Login via Gitlab</p>
                     </Anchor>
                 </FadeInBox>
