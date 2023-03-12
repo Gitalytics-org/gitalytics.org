@@ -36,11 +36,10 @@ export function CommitsPerWeekday() {
     return <PolarArea data={{
         labels: WEEKDAYS,
         datasets: queries.map(result => {
-            if (result.isLoading) return {label: "loading...", data: []};
-            if (!result.isSuccess) return {label: "failed", data: []};
+            if (!result.isSuccess) return {label: "", data: []};
             const [year, data] = result.data;
             return {
-                label: `${year}`,
+                label: years.length > 1 ? `${year}` : "",
                 data: weekdays.map(weekday => data[weekday] ?? 0),
             };
         }),
@@ -64,9 +63,13 @@ export function CommitsPerWeekday() {
                 ticks: {
                     display: false,
                 },
-                // grid: {
-                //     color: "white",
-                // },
+                grid: {
+                    color: "#6666",
+                },
+                pointLabels: {
+                    display: true,
+                    centerPointLabels: true,
+                },
             },
         },
     }} width="100%" height="100%" />;

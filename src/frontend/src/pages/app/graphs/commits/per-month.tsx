@@ -36,11 +36,10 @@ export function CommitsPerMonth() {
     return <Radar data={{
         labels: MONTHS,
         datasets: queries.map(result => {
-            if (result.isLoading) return {label: "loading...", data: []};
-            if (!result.isSuccess) return {label: "failed", data: []};
+            if (!result.isSuccess) return {label: "", data: []};
             const [year, data] = result.data;
             return {
-                label: `${year}`,
+                label: years.length > 1 ? `${year}` : "",
                 data: months.map(month => data[month] ?? 0),
             };
         }),
@@ -66,9 +65,9 @@ export function CommitsPerMonth() {
                 ticks: {
                     display: false,
                 },
-                // grid: {
-                //     color: "white",
-                // },
+                grid: {
+                    color: "#6666",
+                },
             },
         },
     }} width="100%" height="100%" />;

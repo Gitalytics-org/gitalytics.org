@@ -28,7 +28,7 @@ type GraphLinkProps = {
 }
 function GraphLink(props: GraphLinkProps) {
     return <PreserveQueryLink to={`/app/${props.name}`} className="flex flex-col gap-1 hover:scale-110 transition-transform">
-        <img className="max-w-xs border border-fgc rounded-lg mx-auto grow object-contain" src={props.assetSrc} alt="" />
+        <img className="max-w-xs border border-fgc rounded-lg mx-auto grow object-contain bg-slate-800" src={props.assetSrc} alt="" />
         <span>{props.children}</span>
     </PreserveQueryLink>;
 }
