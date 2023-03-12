@@ -8,7 +8,7 @@
 
 
 
-uasage:
+usage:
 	echo "usage: make <command>"
 
 build-frontend:
