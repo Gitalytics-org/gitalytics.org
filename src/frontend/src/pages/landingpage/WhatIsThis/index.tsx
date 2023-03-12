@@ -5,7 +5,7 @@ import BitbucketIconSrc from "@assets/bitbucket.png";
 import GitLabIconSrc from "@assets/gitlab.png";
 import CodeBoxSrc from "./images/code-box.svg";
 import GitGraph from "./images/activity-graph.png";
-import ChartGraph from "./images/line-graph.png";
+// import ChartGraph from "./images/line-graph.png";
 
 
 export default function WhatIsThis() {
@@ -29,16 +29,16 @@ export default function WhatIsThis() {
             <img className="mx-auto" src={GitGraph} alt="git-graph" />
         </FadeInBox>
         <TextSection>
-            For example you can see how many commits you had last year or all the years before.<br />
-            On top of that you can also compare your stats from different years.
+            Our variety of graphs help you analyze your coding behavior in your Workspaces.<br />
+            Moreover, you can compare your statistics between years.
         </TextSection>
 
-        <TextSection>
+        {/* <TextSection>
             Currently wee offer many different graphs so your can gain the most insight
         </TextSection>
         <FadeInBox from="right">
             <img className="mx-auto" src={ChartGraph} alt="chart-graph" />
-        </FadeInBox>
+        </FadeInBox> */}
     </div>;
 }
 
