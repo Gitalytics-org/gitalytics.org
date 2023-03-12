@@ -40,7 +40,7 @@ function FreeTier() {
             </InfoLetter>
         </Element>
         <Element>
-            <Link to="/login" className="block w-3/4 py-1 mx-auto rounded-lg bg-accent bg-opacity-60 hover:bg-opacity-80 hover:w-4/5 transition-[width]">
+            <Link to="/app" className="block w-3/4 py-1 mx-auto rounded-lg bg-accent bg-opacity-60 hover:bg-opacity-80 hover:w-4/5 transition-[width]">
                 Do it now
             </Link>
         </Element>

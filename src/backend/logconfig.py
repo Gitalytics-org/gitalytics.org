@@ -4,6 +4,7 @@ r"""
 
 """
 import os
+import gzip
 import logging.handlers
 
 
@@ -22,6 +23,13 @@ class WatchFilesFilter(logging.Filter):
         return not record.name.startswith("watchfiles")
 
 
+def gzip_rotator(source, dest):
+    os.rename(source, dest)
+    with open(dest, 'rb') as f_in, gzip.open(f"{dest}.gz", 'wb') as f_out:
+        f_out.writelines(f_in)
+    os.remove(dest)
+
+
 debugHandler = logging.handlers.TimedRotatingFileHandler(
     filename=os.path.join(LOGGING_PATH, "backend.log"),
     when="midnight",
@@ -31,6 +39,7 @@ debugHandler = logging.handlers.TimedRotatingFileHandler(
 )
 debugHandler.addFilter(WatchFilesFilter())
 debugHandler.setLevel(logging.DEBUG if __debug__ else logging.INFO)  # DEBUG/INFO and up
+debugHandler.rotator = gzip_rotator
 
 warningHandler = logging.handlers.TimedRotatingFileHandler(
     filename=os.path.join(LOGGING_PATH, "backend-warning.log"),
@@ -41,6 +50,7 @@ warningHandler = logging.handlers.TimedRotatingFileHandler(
 )
 warningHandler.addFilter(WatchFilesFilter())
 warningHandler.setLevel(logging.WARNING)  # WARNING and up
+warningHandler.rotator = gzip_rotator
 
 consoleLoggingHandler = logging.StreamHandler()
 consoleLoggingHandler.addFilter(WatchFilesFilter())
