@@ -14,11 +14,12 @@ export default function WhatIsThis() {
             <ProviderGroupIcon />
         </FadeInBox>
         <TextSection>
-            We offer analysis for GitHub, Bitbucket and GitLab
+            We offer workspace analysis for GitHub, Bitbucket and GitLab*<br/>
+            <small className="opacity-50">*Bitbucket and GitLab are under development</small>
         </TextSection>
 
         <TextSection>
-            Instead of analyzing only one repository, we can analyze an entire workspace. A feature, that many other products lack
+            Instead of analyzing only one repository, we can analyze an entire workspace <span className="opacity-5">A feature, that many other products lack</span>
         </TextSection>
         <FadeInBox from="right">
             <img className="max-h-64 mx-auto" src={CodeBoxSrc} alt="Code-Box" />
@@ -52,7 +53,7 @@ function TextSection(props: PropsWithChildren) {
 function ProviderGroupIcon() {
     return <div className="flex gap-2 justify-evenly">
         <img className="w-1/4 dark:invert" src={GitHubIconSrc} alt="GitHub" />
-        <img className="w-1/4" src={BitbucketIconSrc} alt="Bitbucket" />
-        <img className="w-1/4" src={GitLabIconSrc} alt="GitLab" />
+        <img className="w-1/4 grayscale cursor-not-allowed" src={BitbucketIconSrc} alt="Bitbucket" title="Not Available yet" />
+        <img className="w-1/4 grayscale cursor-not-allowed" src={GitLabIconSrc} alt="GitLab" title="Not Available yet" />
     </div>;
 }
