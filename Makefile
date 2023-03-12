@@ -1,8 +1,12 @@
-# It is reccomended to start 3 terminal tabs/windows. One for each of the following:
+# First you need to start the database server with "make start-database".
+# The database can be completely wiped with "make restart-database". Note, that you will need to restart the gitalyitcs server.
+#
+# It is reccomended to start 2 terminal tabs/windows. One for each of the following:
 #   - build-frontend
-#   - start-database
 #   - start-server
 # That way, you can monitor potential errors in all areas.
+
+
 
 uasage:
 	echo "usage: make <command>"
@@ -13,12 +17,12 @@ build-frontend:
 	npm run dev
 
 start-database:
-	docker-compose up
+	docker-compose up -d
 
 restart-database:
-	docker stop gitalytics-database-1
-	docker rm gitalytics-database-1
-	docker-compose up
+	docker stop gitalyticsorg-database-1
+	docker rm gitalyticsorg-database-1
+	docker-compose up -d
 
 # Depends on a running database and a built fronted
 start-server:
