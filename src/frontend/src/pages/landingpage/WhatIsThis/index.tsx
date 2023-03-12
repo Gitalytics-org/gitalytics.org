@@ -1,26 +1,59 @@
 import FadeInBox from "~/elements/animations/FadeInBox";
-import GitGraph from "./images/git-graph.png";
-import ChartGraph from "./images/line-graph.png";
+import { type PropsWithChildren } from "react";
+import GitHubIconSrc from "@assets/github.png";
+import BitbucketIconSrc from "@assets/bitbucket.png";
+import GitLabIconSrc from "@assets/gitlab.png";
+import CodeBoxSrc from "./images/code-box.svg";
+import GitGraph from "./images/activity-graph.png";
+// import ChartGraph from "./images/line-graph.png";
 
 
 export default function WhatIsThis() {
-    return <div className="grid grid-cols-2 gap-5 p-2">
+    return <div className="grid grid-cols-2 gap-10 p-2">
         <FadeInBox from="left">
-            <img src={GitGraph} alt="git-graph" />
+            <ProviderGroupIcon />
         </FadeInBox>
-        <div className="grid">
-            <p className="m-auto text-center">
-                See how many commits you had last year and all the years before
-            </p>
-        </div>
+        <TextSection>
+            We offer workspace analysis for GitHub, Bitbucket and GitLab*<br/>
+            <small className="opacity-50">*Bitbucket and GitLab are under development</small>
+        </TextSection>
 
-        <div className="grid">
-            <p className="m-auto text-center">
-                View some other stuff
-            </p>
-        </div>
+        <TextSection>
+            Instead of analyzing only one repository, we can analyze an entire workspace <span className="opacity-5">A feature, that many other products lack</span>
+        </TextSection>
         <FadeInBox from="right">
-            <img className="bg-blend-color-burn" src={ChartGraph} alt="chart-graph" />
+            <img className="max-h-64 mx-auto" src={CodeBoxSrc} alt="Code-Box" />
         </FadeInBox>
+
+        <FadeInBox from="left">
+            <img className="mx-auto" src={GitGraph} alt="git-graph" />
+        </FadeInBox>
+        <TextSection>
+            Our variety of graphs help you analyze your coding behavior in your Workspaces.<br />
+            Moreover, you can compare your statistics between years.
+        </TextSection>
+
+        {/* <TextSection>
+            Currently wee offer many different graphs so your can gain the most insight
+        </TextSection>
+        <FadeInBox from="right">
+            <img className="mx-auto" src={ChartGraph} alt="chart-graph" />
+        </FadeInBox> */}
+    </div>;
+}
+
+
+function TextSection(props: PropsWithChildren) {
+    return <div className="grid place-content-center text-center">
+        {props.children}
+    </div>;
+}
+
+
+function ProviderGroupIcon() {
+    return <div className="flex gap-2 justify-evenly">
+        <img className="w-1/4 dark:invert" src={GitHubIconSrc} alt="GitHub" />
+        <img className="w-1/4 grayscale cursor-not-allowed" src={BitbucketIconSrc} alt="Bitbucket" title="Not Available yet" />
+        <img className="w-1/4 grayscale cursor-not-allowed" src={GitLabIconSrc} alt="GitLab" title="Not Available yet" />
     </div>;
 }
