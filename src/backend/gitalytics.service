@@ -6,6 +6,7 @@ Type=simple
 User=gitalytics-app
 WorkingDirectory=/home/gitalytics-app/gitalytics.org/src/backend/
 ExecStart=bash -c "pipenv sync && pipenv run python3 -O -X utf8 main.py run-server"
+TasksMax=200
 RestartSec=10s
 Restart=no
 
