@@ -4,7 +4,7 @@ r"""
 
 """
 import fastapi
-from gitalytics_api.cookies import EncryptedCookieStorage
+from gitalytics_api.cookies import EncryptedCookieStorage, get_encrypted_cookie_storage
 from gitalytics_api.enums import CookieKey
 
 
@@ -12,7 +12,7 @@ router = fastapi.APIRouter()
 
 
 @router.get("/auth/logout")
-async def logout(cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage):
+async def logout(cookie_storage: EncryptedCookieStorage = get_encrypted_cookie_storage):
     r"""
     logout the current user
     """

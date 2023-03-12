@@ -13,15 +13,18 @@ from gitalytics_env import env
 
 
 @fastapi.Depends
-class EncryptedCookieStorage:
+async def get_encrypted_cookie_storage(request: fastapi.Request, response: fastapi.Response):
     r"""
     @router.get("/")
-    async def endpoint(, cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage):
+    async def endpoint(, cookie_storage: EncryptedCookieStorage = get_encrypted_cookie_storage):
         if CookieKey.SOME_KEY not in cookie_storage:
             # do something
         cookie_storage[CookieKey.SOME_KEY] = "foobar"
     """
+    return EncryptedCookieStorage(request=request, response=response)
 
+
+class EncryptedCookieStorage:
     def __init__(self, request: fastapi.Request, response: fastapi.Response):
         self._fernet = Fernet(env.APP_COOKIE_KEY)
         self._request = request
@@ -29,7 +32,7 @@ class EncryptedCookieStorage:
 
     def to_redirect_response(self, url: str):
         return fastapi.responses.RedirectResponse(url, headers=self._response.headers)
-    
+
     def __contains__(self, key: CookieKey) -> bool:
         return key.value in self._request.cookies
 
@@ -54,7 +57,7 @@ class EncryptedCookieStorage:
 
 
 @fastapi.Depends
-def session_from_cookies(cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage) -> dbm.Session:
+async def session_from_cookies(cookie_storage: EncryptedCookieStorage = get_encrypted_cookie_storage) -> dbm.Session:
     r"""
     requires and loads the secret session-key from the cookies
     important: filter by this session when accessing the Database
@@ -84,7 +87,7 @@ def session_from_cookies(cookie_storage: EncryptedCookieStorage = EncryptedCooki
 
 
 @fastapi.Depends
-def active_workspace_id(cookie_storage: EncryptedCookieStorage = EncryptedCookieStorage) -> int:
+async def get_active_workspace_id(cookie_storage: EncryptedCookieStorage = get_encrypted_cookie_storage) -> int:
     try:
         return cookie_storage[CookieKey.ACTIVE_WORKSPACE_ID]
     except KeyError:
