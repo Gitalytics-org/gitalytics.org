@@ -48,7 +48,7 @@ export function CommitsPerWeek() {
         plugins: {
             title: {
                 display: true,
-                text: "Avg Commits per Week",
+                text: "Commits per Week",
             },
             legend: {
                 display: false,

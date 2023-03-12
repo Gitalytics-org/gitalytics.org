@@ -1,6 +1,7 @@
 import MenuBar from "./menubar";
 import { Outlet } from "react-router";
-import MutationOverlay from "./MutationOverlay";
+import MutationOverlay from "./overlays/MutationOverlay";
+import SessionIsInitializingOverlay from "./overlays/SessionIsInitializingOverlay";
 
 
 export default function AppPage() {
@@ -12,6 +13,7 @@ export default function AppPage() {
             <Outlet />
         </div>
         <MutationOverlay />
+        <SessionIsInitializingOverlay />
     </div>;
 }
 

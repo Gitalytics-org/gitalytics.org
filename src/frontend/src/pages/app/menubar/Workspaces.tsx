@@ -28,13 +28,14 @@ export default function Workspaces() {
         () => axios
             .get<GetWorkspaceResponse>("/get-workspaces")
             .then(response => response.data),
-        { refetchInterval: 60_000 },
     );
     const setWorkspace = useMutation(
         // eslint-disable-next-line camelcase
         (workspace_name: string) => axios.put("/set-active-workspace", null, { params: { workspace_name } }),
         { onSuccess: () => {
-            queryClient.invalidateQueries();
+            queryClient.resetQueries({
+                predicate: (query) => query.queryKey[0] !== "is-session-ready",
+            });
         } },
     );
 

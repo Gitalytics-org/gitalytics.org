@@ -48,7 +48,7 @@ export function CommitsPerMonth() {
         plugins: {
             title: {
                 display: true,
-                text: "Avg Commits per Month",
+                text: "Commits per Month",
             },
         },
         interaction: {

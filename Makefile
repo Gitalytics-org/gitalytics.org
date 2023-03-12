@@ -29,4 +29,3 @@ start-server:
 	pipenv sync && \
 	pipenv run python3 main.py create-database && \
 	pipenv run python3 main.py run-server
-	

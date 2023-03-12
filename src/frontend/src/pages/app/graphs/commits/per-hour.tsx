@@ -49,7 +49,7 @@ export function CommitsPerHour() {
         plugins: {
             title: {
                 display: true,
-                text: "Avg Commits per Hour",
+                text: "Commits per Hour",
             },
             legend: {
                 display: false,

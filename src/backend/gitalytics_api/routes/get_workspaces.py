@@ -30,7 +30,7 @@ class ResponseModel(pydantic.BaseModel):
     other_workspaces: t.List[Workspace]
 
 
-@router.get("/get-workspaces", response_model=ResponseModel)
+@router.get("/get-workspaces", response_model=ResponseModel, responses={425: {}})
 async def get_workspaces(
         db_connection: DatabaseSession = get_database_connection,
         session: dbm.Session = session_from_cookies,

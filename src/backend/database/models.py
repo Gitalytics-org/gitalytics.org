@@ -90,3 +90,4 @@ class Session(BigIdMixin, TimestampsMixin, BaseModel):
     platform: Mapped[GitPlatform] = mapped_column(sql.Enum(GitPlatform), nullable=False)
     repositories: Mapped[Set["Repository"]] = relationship(secondary="repository_access")
     last_seen: Mapped[date] = mapped_column(sql.Date, default=date.today)
+    is_initialized: Mapped[bool] = mapped_column(sql.Boolean, default=False)
