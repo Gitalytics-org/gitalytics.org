@@ -11,7 +11,10 @@ const DARK = "dark";
 // const LIGHT = "light";
 const STORAGE_KEY = "dark-mode";
 
-const initialDark = !!(localStorage.getItem(STORAGE_KEY) ?? window.matchMedia("(prefers-color-scheme: dark)").matches);
+// browser preference
+//const initialDark = !!(localStorage.getItem(STORAGE_KEY) ?? window.matchMedia("(prefers-color-scheme: dark)").matches);
+// dark-mode as default
+const initialDark = !!(localStorage.getItem(STORAGE_KEY) ?? true);
 if (initialDark) {
     document.documentElement.classList.add(DARK);
 }
