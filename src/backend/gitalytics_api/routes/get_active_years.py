@@ -13,7 +13,7 @@ class ResponseModel(pydantic.BaseModel):
     active_years: t.List[int]
 
 
-@router.get("/get-active-years", response_model=ResponseModel)
+@router.get("/active-years", response_model=ResponseModel)
 async def get_active_years(
         connection: DatabaseSession = get_database_connection,
         session: dbm.Session = session_from_cookies,
