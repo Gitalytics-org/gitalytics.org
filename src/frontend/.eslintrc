@@ -25,6 +25,8 @@
     "@typescript-eslint/no-require-imports": "error",
     "@typescript-eslint/require-array-sort-compare": "error",
     "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/ban-ts-comment": "warn",
+
 
     "no-duplicate-imports": "warn",
     "no-use-before-define": ["warn", {
