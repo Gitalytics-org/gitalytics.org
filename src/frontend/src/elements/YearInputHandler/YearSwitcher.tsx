@@ -1,67 +1,20 @@
-import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSelectedYear } from "./hooks/useSelectedYear";
 import ChevronRight from "~/icons/ChevronRight";
 
 
-function getCurrentYear() {
-    return new Date().getFullYear();
-}
-
-function useYearManipulation(): [number, (y: number) => void] {
-    const [searchParams, setSearchParams] = useSearchParams();
-
-    function setYear(year: number) {
-        setSearchParams((prev) => {
-            prev.set("year", `${year}`);
-            return prev;
-        }, { replace: true });
-    }
-
-    const years = searchParams.getAll("year");
-    const year = years.length ? parseInt(years.at(-1) as string) : getCurrentYear();
-
-    useEffect(() => {
-        if (years.length > 1) {
-            setYear(year);
-        }
-    });
-
-    return [year, setYear];
-}
-
-const STARTING_YEAR = 2000;
-
-
 export default function YearSwitcherInput() {
-    const [year, setYear] = useYearManipulation();
-
-    const hasPrevYear = year > STARTING_YEAR;
-    const hasNextYear = year < getCurrentYear();
-
-    const incrementYear = () => {
-        if (hasNextYear) {
-            setYear(year + 1);
-        }
-    };
-
-
-    const decrementYear = () => {
-        if (hasPrevYear) {
-            setYear(year - 1);
-        }
-    };
-
+    const { selectedYear, hasNextYear, hasPreviousYear, incrementYear, decrementYear} = useSelectedYear();
 
     return (
         <div className="flex select-none justify-center">
             <div className="flex align-middle justify-center">
                 <ChevronRight
-                    className={"rotate-180 " + (hasPrevYear ? "text-white cursor-pointer" : "text-gray-600 cursor-default")}
+                    className={"rotate-180 " + (hasPreviousYear ? "text-white cursor-pointer" : "text-gray-600 cursor-default")}
                     height="60px"
                     width="60px"
                     onClick={decrementYear}
                 />
-                <span className="text-6xl font-mono">{year}</span>
+                <span className="text-6xl font-mono">{selectedYear}</span>
                 <ChevronRight
                     className={hasNextYear ? "text-white cursor-pointer" : "text-gray-600 cursor-default"}
                     height="60px"
