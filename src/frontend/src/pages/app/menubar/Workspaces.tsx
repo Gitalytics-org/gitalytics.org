@@ -33,9 +33,7 @@ export default function Workspaces() {
         // eslint-disable-next-line camelcase
         (workspace_name: string) => axios.put("/set-active-workspace", null, { params: { workspace_name } }),
         { onSuccess: () => {
-            queryClient.resetQueries({
-                predicate: (query) => query.queryKey[0] !== "is-session-ready",
-            });
+            queryClient.resetQueries(["data"]);
         } },
     );
 

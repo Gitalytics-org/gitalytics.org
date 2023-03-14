@@ -28,7 +28,7 @@ export function ActivityGraphHandler() {
 
     const queries = useQueries(
         years.sort((a, b) => b-a).map(year => ({
-            queryKey: ["commits-per-day", year],
+            queryKey: ["data", "commits-per-day", year],
             queryFn: () => axios
                 .get<Response>("/commits-per-day", { params: { year } })
                 .then<QueryReturn>(response => [year, response.data]),
