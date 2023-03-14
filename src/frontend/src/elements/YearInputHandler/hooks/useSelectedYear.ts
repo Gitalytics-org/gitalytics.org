@@ -3,10 +3,6 @@ import { useEffect } from "react";
 import { useAvailableYears } from "./useAvailableYears";
 
 
-function getCurrentYear() {
-    return new Date().getFullYear();
-}
-
 type useSelectedYearReturnType = {
     selectedYear: number,
     hasNextYear: boolean,
@@ -26,32 +22,35 @@ export function useSelectedYear(): useSelectedYearReturnType {
         }, { replace: true });
     }
 
-    const years = searchParams.getAll("year");
-    const year = years.length > 0 ? parseInt(years.at(-1) as string) : getCurrentYear();
+    const queryParamYears = searchParams.getAll("year").map(parseInt);
+    const selectedYear = queryParamYears.at(-1) ?? availableYears[0];
 
     useEffect(() => {
-        if (years.length > 1) {
-            setYear(year);
+        if (queryParamYears.length > 1) {
+            setYear(selectedYear);
         }
     });
 
-    const hasNextYear = availableYears.includes(year + 1);
-    const hasPreviousYear = availableYears.includes(year - 1);
+    const largerYears = availableYears.filter(y => y > selectedYear);
+    const smallerYears = availableYears.filter(y => y < selectedYear);
+
+    const hasNextYear = largerYears.length > 0;
+    const hasPreviousYear = smallerYears.length > 0;
 
     const incrementYear = () => {
         if (hasNextYear) {
-            setYear(year + 1);
+            setYear(smallerYears[smallerYears.length - 1]);
         }
     };
 
     const decrementYear = () => {
         if (hasPreviousYear) {
-            setYear(year - 1);
+            setYear(largerYears[0]);
         }
     };
 
     return {
-        selectedYear: year,
+        selectedYear,
         hasNextYear,
         hasPreviousYear,
         incrementYear,

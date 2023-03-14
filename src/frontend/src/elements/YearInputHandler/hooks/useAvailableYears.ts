@@ -6,13 +6,13 @@ type ActiveYears = number[]
 type ActiveYearsResponse = {
     active_years: ActiveYears,
 }
-type SortedActiveYears = ActiveYears;
+type ActiveYearsSortedAscending = number[];
 
 function getCurrentYear() {
     return new Date().getFullYear();
 }
 
-export function useAvailableYears(): SortedActiveYears {
+export function useAvailableYears(): ActiveYearsSortedAscending {
     const activeYearsResult = useQuery<ActiveYearsResponse>(
         ["active-years"],
         () => axios
