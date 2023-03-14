@@ -21,7 +21,9 @@ export function useSelectedYears(): useSelectedYearsReturnType {
         }, { replace: true });
     };
 
-    const selectedYears = searchParams.getAll("year").map(y => parseInt(y));
+    const selectedYears = searchParams.getAll("year")
+        .map(y => parseInt(y))
+        .filter(n => !Number.isNaN(n));
 
     const addSelectedYear = (year: number) => {
         if (!selectedYears.includes(year)) {
