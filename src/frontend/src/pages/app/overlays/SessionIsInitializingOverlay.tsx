@@ -23,11 +23,22 @@ export default function SessionIsInitializingOverlay() {
         <button className="absolute top-5 right-5 w-5 h-5 opacity-30 hover:opacity-100 transition-opacity dark:invert" title="close at your own risk" onClick={() => setIgnore(true)}>
             <img src={CrossSrc} alt="X" />
         </button>
-        <div>
-            <img className="h-[10vh] animate-pulse mx-auto" src={LogoSrc} alt="" />
-            <span className="text-[4vw] max-w-[50vw] text-center">
-                Please wait while your data is being loaded
-            </span>
-        </div>
+        {query.isError ?
+            <div>
+                <span className="text-[4vw] max-w-[50vw] text-center">
+                    Something went wrong. Fuck.
+                </span>
+                <span className="text-[2vw] max-w-[50vw] text-center opacity-50">
+                    We have no Idea what went wrong. Try a page reload and contact us if that doesn&apos;t work
+                </span>
+            </div>
+            :
+            <div>
+                <img className="h-[10vh] animate-pulse mx-auto" src={LogoSrc} alt="" />
+                <span className="text-[4vw] max-w-[50vw] text-center">
+                    Please wait while your data is being loaded
+                </span>
+            </div>
+        }
     </div>;
 }
