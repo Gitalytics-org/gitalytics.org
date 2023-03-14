@@ -26,7 +26,7 @@ export default function SessionIsInitializingOverlay() {
         {query.isError ?
             <div>
                 <span className="text-[4vw] max-w-[50vw] text-center">
-                    Something went wrong. Fuck.
+                    Oops, something went wrong.
                 </span>
                 <span className="text-[2vw] max-w-[50vw] text-center opacity-50">
                     We have no Idea what went wrong. Try a page reload and contact us if that doesn&apos;t work
