@@ -1,6 +1,8 @@
 import { useSearchParams } from "react-router-dom";
+import { useAvailableYears } from "./useAvailableYears";
 
 type useSelectedYearsReturnType = {
+    availableYears: number[],
     selectedYears: number[],
     addSelectedYear: (year: number) => void,
     removeSelectedYear: (year: number) => void,
@@ -8,28 +10,30 @@ type useSelectedYearsReturnType = {
 
 export function useSelectedYears(): useSelectedYearsReturnType {
     const [searchParams, setSearchParams] = useSearchParams();
+    const availableYears = useAvailableYears();
 
-    function setYears(years: number[]) {
+    const setYears = (years: number[]) => {
         setSearchParams((prev) => {
             prev.delete("year");
             years.sort((a, b) => a-b)
                 .forEach(y => prev.append("year", `${y}`));
             return prev;
         }, { replace: true });
-    }
+    };
 
-    const getYears = () => searchParams.getAll("year").map(y => parseInt(y));
+    const selectedYears = searchParams.getAll("year").map(y => parseInt(y));
 
-    const addSelectedYear = (year: number) => setYears(getYears().concat(year));
+    const addSelectedYear = (year: number) => {
+        if (!selectedYears.includes(year)) {
+            setYears(selectedYears.concat(year));
+        }
+    };
 
-    function removeSelectedYear(year: number) {
-        const newYears = getYears();
-        newYears.splice(newYears.indexOf(year), 1);
-        setYears(newYears);
-    }
+    const removeSelectedYear = (year: number) => setYears(selectedYears.splice(selectedYears.indexOf(year), 1));
 
     return {
-        selectedYears: getYears(),
+        availableYears: availableYears.filter(y => !selectedYears.includes(y)),
+        selectedYears,
         addSelectedYear,
         removeSelectedYear,
     };

@@ -1,10 +1,8 @@
 import { useSelectedYears } from "./hooks/useSelectedYears";
-import { useAvailableYears } from "./hooks/useAvailableYears";
 
 
 export default function YearSelectionInput() {
-    const availableYears = useAvailableYears();
-    const {selectedYears, addSelectedYear, removeSelectedYear} = useSelectedYears();
+    const {selectedYears, addSelectedYear, removeSelectedYear, availableYears} = useSelectedYears();
 
     return (
         <div className="flex gap-1 p-1 rounded-lg select-none bg-fgc bg-opacity-10">

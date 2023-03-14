@@ -15,18 +15,18 @@ export function useSelectedYear(): useSelectedYearReturnType {
     const [searchParams, setSearchParams] = useSearchParams();
     const availableYears = useAvailableYears();
 
-    function setYear(year: number) {
+    const setYear = (year: number) => {
         setSearchParams((prev) => {
             prev.set("year", `${year}`);
             return prev;
         }, { replace: true });
-    }
+    };
 
-    const queryParamYears = searchParams.getAll("year").map(parseInt);
+    const queryParamYears = searchParams.getAll("year").map(y => parseInt(y));
     const selectedYear = queryParamYears.at(-1) ?? availableYears[0];
 
     useEffect(() => {
-        if (queryParamYears.length > 1) {
+        if (queryParamYears.length === 0) {
             setYear(selectedYear);
         }
     });
@@ -37,14 +37,14 @@ export function useSelectedYear(): useSelectedYearReturnType {
     const hasNextYear = largerYears.length > 0;
     const hasPreviousYear = smallerYears.length > 0;
 
-    const incrementYear = () => {
-        if (hasNextYear) {
+    const decrementYear = () => {
+        if (hasPreviousYear) {
             setYear(smallerYears[smallerYears.length - 1]);
         }
     };
 
-    const decrementYear = () => {
-        if (hasPreviousYear) {
+    const incrementYear = () => {
+        if (hasNextYear) {
             setYear(largerYears[0]);
         }
     };

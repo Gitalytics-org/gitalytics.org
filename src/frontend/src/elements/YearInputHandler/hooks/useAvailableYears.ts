@@ -20,10 +20,14 @@ export function useAvailableYears(): ActiveYearsSortedAscending {
             .then(response => response.data),
     );
 
-    if (!activeYearsResult.isSuccess) {
+    if (activeYearsResult.isLoading || !activeYearsResult.isSuccess) {
         return [getCurrentYear()];
     }
 
     const sortedActiveYears = activeYearsResult.data.active_years.sort((a, b) => a - b);
+    if (sortedActiveYears.length === 0) {
+        return [getCurrentYear()];
+    }
+
     return sortedActiveYears;
 }
