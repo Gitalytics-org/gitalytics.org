@@ -13,6 +13,7 @@ database_url = f"mysql+pymysql://{env.MYSQL_USER}:{env.MYSQL_PASSWORD}@{env.APP_
 
 engine = sql.create_engine(
     database_url,
+    pool_pre_ping=True,
     echo=False,  # set to True or False for more or less output respectively
 )
 
