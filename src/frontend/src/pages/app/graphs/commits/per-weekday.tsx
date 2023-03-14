@@ -1,16 +1,22 @@
 import axios from "axios";
 import { useQueries } from "react-query";
 import { PolarArea } from "react-chartjs-2";
-import { Zero2NArray } from "../../utils";
 import YearInputHandler from "~/elements/YearInputHandler";
 import useYearSelection from "~/hooks/useYearSelection";
 
 
-type CommitsPerWeekdayResponse = Record<number, number>
-type QueryReturn = [number, CommitsPerWeekdayResponse]
+const WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
-const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-const weekdays = Zero2NArray(WEEKDAYS.length-1);
+type CommitsPerWeekdayResponse = {
+    monday: number,
+    tuesday: number,
+    wednesday: number,
+    thursday: number,
+    friday: number,
+    saturday: number,
+    sunday: number,
+}
+type QueryReturn = [number, CommitsPerWeekdayResponse]
 
 export default function CommitsPerWeekdayWrapper() {
     return <div className="flex flex-col h-screen">
@@ -37,10 +43,14 @@ export function CommitsPerWeekday() {
         labels: WEEKDAYS,
         datasets: queries.map(result => {
             if (!result.isSuccess) return {label: "", data: []};
-            const [year, data] = result.data;
+            const [year, countPerWeekday] = result.data;
+            const lowerCaseWeekdays = WEEKDAYS.map(s => s.toLowerCase());
             return {
                 label: years.length > 1 ? `${year}` : "",
-                data: weekdays.map(weekday => data[weekday] ?? 0),
+                data: Object.keys(countPerWeekday)
+                    .sort((a, b) => lowerCaseWeekdays.indexOf(b) - lowerCaseWeekdays.indexOf(a))
+                    // @ts-ignore: key is garanteed to be a valid key, not just any string. TS isn't smart enough
+                    .map((key: string) => countPerWeekday[key]),
             };
         }),
     }} options={{
