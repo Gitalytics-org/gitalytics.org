@@ -20,11 +20,7 @@ export function useSelectedYears(): useSelectedYearsReturnType {
 
     const getYears = () => searchParams.getAll("year").map(y => parseInt(y));
 
-    function addSelectedYear(year: number) {
-        const newYears = getYears();
-        newYears.push(year);
-        setYears(getYears().concat(year));
-    }
+    const addSelectedYear = (year: number) => setYears(getYears().concat(year));
 
     function removeSelectedYear(year: number) {
         const newYears = getYears();
