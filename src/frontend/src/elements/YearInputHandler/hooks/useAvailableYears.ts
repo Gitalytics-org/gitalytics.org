@@ -25,5 +25,5 @@ export function useAvailableYears(): SortedActiveYears {
     }
 
     const sortedActiveYears = activeYearsResult.data.active_years.sort((a, b) => a - b);
-    return sortedActiveYears ?? [getCurrentYear()];
+    return sortedActiveYears;
 }
