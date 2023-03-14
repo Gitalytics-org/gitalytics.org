@@ -29,7 +29,7 @@ export default function SessionIsInitializingOverlay() {
                     Oops, something went wrong.
                 </span>
                 <span className="text-[2vw] max-w-[50vw] text-center opacity-50">
-                    We have no Idea what went wrong. Try a page reload and contact us if that doesn&apos;t work
+                    This is on us. Don't worry, it's not your fault. Try reloading the page and please contact us if that doesn&apos;t work.
                 </span>
             </div>
             :
