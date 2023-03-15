@@ -19,6 +19,9 @@ build-frontend:
 start-database:
 	docker-compose up -d
 
+stop-database:
+	docker-compose down
+
 restart-database:
 	docker-compose down
 	docker-compose up -d
