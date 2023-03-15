@@ -23,7 +23,7 @@ export function useSelectedYear(): useSelectedYearReturnType {
     };
 
     const queryParamYears = searchParams.getAll("year").map(y => parseInt(y));
-    const selectedYear = queryParamYears.at(-1) ?? availableYears[0];
+    const selectedYear = queryParamYears.at(-1) ?? availableYears.at(-1)!;
 
     useEffect(() => {
         if (queryParamYears.length === 0) {

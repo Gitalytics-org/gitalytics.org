@@ -20,7 +20,7 @@ export function useAvailableYears(): ActiveYearsSortedAscending {
             .then(response => response.data),
     );
 
-    if (activeYearsResult.isLoading || !activeYearsResult.isSuccess) {
+    if (!activeYearsResult.isSuccess) {
         return [getCurrentYear()];
     }
 
