@@ -26,7 +26,7 @@ export function useSelectedYear(): useSelectedYearReturnType {
     const selectedYear = queryParamYears.at(-1) ?? availableYears.at(-1)!;
 
     useEffect(() => {
-        if (queryParamYears.length === 0) {
+        if (queryParamYears.length !== 1) {
             setYear(selectedYear);
         }
     });
