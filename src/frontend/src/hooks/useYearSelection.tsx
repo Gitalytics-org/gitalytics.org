@@ -5,7 +5,7 @@ function getCurrentYear() {
     return new Date().getFullYear();
 }
 
-
+// TODO: resolve naming/usage conflict with /elements/YearInputHandler/hooks/...
 export default function useYearSelection(): number[] {
     const [searchParams] = useSearchParams();
 
