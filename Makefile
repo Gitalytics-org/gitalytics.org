@@ -17,6 +17,8 @@ build-frontend:
 
 start-database:
 	docker-compose up -d
+	cd ./src/backend && \
+	pipenv sync && \
 	pipenv run python3 main.py create-database
 
 stop-database:
