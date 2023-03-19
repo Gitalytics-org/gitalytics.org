@@ -8,7 +8,7 @@ import CommitsPerMonthSrc from "./images/commits-per-month.png";
 
 
 export default  function GraphLandingPage() {
-    return <div className="min-h-screen select-none p-5">
+    return <div className="min-h-screen p-5 select-none">
         <h1 className="text-[5vw] text-center"><span className="text-accent">Gitalytics</span> Graphs</h1>
         <div className="grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] mx-auto gap-5 px-5 text-center">
             <GraphLink name="activity-graph" assetSrc={ActivityGraphSrc}>Activity Graph</GraphLink>
@@ -27,8 +27,8 @@ type GraphLinkProps = {
     assetSrc: string
 }
 function GraphLink(props: GraphLinkProps) {
-    return <PreserveQueryLink to={`/app/${props.name}`} className="flex flex-col gap-1 hover:scale-110 transition-transform">
-        <img className="max-w-xs border border-fgc rounded-lg mx-auto grow object-contain bg-slate-800" src={props.assetSrc} alt="" />
+    return <PreserveQueryLink to={`/app/${props.name}`} className="flex flex-col gap-1 transition-transform hover:scale-110">
+        <img className="object-contain max-w-xs mx-auto border rounded-lg border-fgc grow bg-slate-800" src={props.assetSrc} alt="" />
         <span>{props.children}</span>
     </PreserveQueryLink>;
 }

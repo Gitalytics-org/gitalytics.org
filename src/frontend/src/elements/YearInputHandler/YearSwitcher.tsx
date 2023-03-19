@@ -53,15 +53,15 @@ export default function YearSwitcherInput() {
 
 
     return (
-        <div className="flex select-none justify-center">
-            <div className="flex align-middle justify-center">
+        <div className="flex justify-center select-none">
+            <div className="flex justify-center align-middle">
                 <ChevronRight
                     className={"rotate-180 " + (hasPrevYear ? "text-white cursor-pointer" : "text-gray-600 cursor-default")}
                     height="60px"
                     width="60px"
                     onClick={decrementYear}
                 />
-                <span className="text-6xl font-mono">{year}</span>
+                <span className="font-mono text-6xl">{year}</span>
                 <ChevronRight
                     className={hasNextYear ? "text-white cursor-pointer" : "text-gray-600 cursor-default"}
                     height="60px"
