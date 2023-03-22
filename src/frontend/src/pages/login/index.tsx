@@ -5,14 +5,20 @@ import GitHubIconSrc from "@assets/github.png";
 import BitbucketIconSrc from "@assets/bitbucket.png";
 import GitLabIconSrc from "@assets/gitlab.png";
 import HomeIconSrc from "@assets/home-icon.png";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 
 export default function LoginPage() {
+    const [urlParams] = useSearchParams();
+    const errorMessage = urlParams.get("error");
+    const errorDetail = urlParams.get("detail");
+
     return <>
         <div className="relative flex flex-col h-screen">
             <h1 className="text-center text-[10vw] select-none">Login to <span className="text-accent">Gitalytics</span></h1>
             <p className="text-center opacity-50 select-none">Please log in with your git platform of choice</p>
+            {errorMessage && <p className="px-1 py-px mx-auto text-xl text-center bg-red-500 border border-red-600 rounded-md cursor-default select-all bg-opacity-70 w-fit">{errorMessage}</p>}
+            {errorDetail && <p className="text-center cursor-default select-all opacity-70">({errorDetail})</p>}
             <div className="flex justify-around gap-20 px-5 grow">
                 <FadeInBox from="bottom" duration={1.0} delay={0} className="my-auto">
                     <Anchor className="my-auto" href="/api/auth/github/login">
@@ -33,7 +39,7 @@ export default function LoginPage() {
                     </Anchor>
                 </FadeInBox>
             </div>
-            <Link to="/" className="w-10 border border-white rounded-full p-1 absolute left-1 bottom-1 opacity-50 hover:opacity-100">
+            <Link to="/" className="absolute w-10 p-1 border border-white rounded-full opacity-50 left-1 bottom-1 hover:opacity-100">
                 <img className="w-full dark:invert" src={HomeIconSrc} alt="" />
             </Link>
         </div>
