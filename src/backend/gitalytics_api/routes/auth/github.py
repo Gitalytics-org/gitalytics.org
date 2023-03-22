@@ -83,15 +83,14 @@ async def verify(tasks: fastapi.BackgroundTasks,
             url="/#/login",
             error="your login is corrupted and had to be canceled for security reasons"
         )
+    else:
+        del cookie_storage[CookieKey.AUTH_STATE]
 
     if not hmac.compare_digest(state, cookie_state):
         return cookie_storage.to_redirect_response(
             url="/#/login",
             error="your login is corrupted and had to be canceled for security reasons"
         )
-
-    # maybe move this to after the httpx request
-    del cookie_storage[CookieKey.AUTH_STATE]
 
     params = dict(
         client_id=env.GITHUB_CLIENT_ID,
