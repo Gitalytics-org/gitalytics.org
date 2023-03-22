@@ -3,9 +3,9 @@
 r"""
 
 """
-import threading
+import hmac
+import secrets
 import typing as t
-import urllib.parse as urlparse
 import fastapi
 import pydantic
 import httpx
@@ -30,7 +30,7 @@ class GithubResponse(pydantic.BaseModel):
     token_type: t.Literal["bearer"]
 
 
-class GithubErrorResponse(pydantic.BaseModel):
+class GithubErrorResponse(t.TypedDict):
     error: str
     error_description: str
     error_uri: str
@@ -39,11 +39,21 @@ class GithubErrorResponse(pydantic.BaseModel):
 router = fastapi.APIRouter(prefix="/auth/github")
 
 
+@router.get("/see-app")
+async def gh_app_page_redirect():
+    r"""
+    here the user can see our app and revoke access
+    """
+    return fastapi.responses.RedirectResponse(
+        url=f"https://github.com/settings/connections/applications/{env.GITHUB_CLIENT_ID}"
+    )
+
+
 @router.get("/login", status_code=fastapi.status.HTTP_307_TEMPORARY_REDIRECT,
             response_class=fastapi.responses.RedirectResponse)
-async def login_redirect():
+async def login_redirect(cookie_storage: EncryptedCookieStorage = get_encrypted_cookie_storage):
     r"""
-    redirects to the Github login-page
+    redirects to the GitHub login-page
     """
     # try:
     #     session_from_cookies.dependency(request=request)
@@ -51,54 +61,75 @@ async def login_redirect():
     #     pass  # not existing or wrong token
     # else:
     #     return fastapi.responses.RedirectResponse(url="/#/app")
-    # state = secrets.token_hex()
+    state = secrets.token_hex()
+    cookie_storage[CookieKey.AUTH_STATE] = state
+    url = "https://github.com/login/oauth/authorize"
     params = dict(
         client_id=env.GITHUB_CLIENT_ID,
         scope=",".join(SCOPES),
-        # state=state
+        state=state,
+        allow_signup=False
     )
-    urlbase = "https://github.com/login/oauth/authorize"
-    url = f"{urlbase}?{urlparse.urlencode(params)}"
-    return fastapi.responses.RedirectResponse(url=url)
+    return cookie_storage.to_redirect_response(url=url, **params)
 
 
 @router.get("/verify", status_code=fastapi.status.HTTP_307_TEMPORARY_REDIRECT,
             response_class=fastapi.responses.RedirectResponse,
             responses={
-                fastapi.status.HTTP_400_BAD_REQUEST: {}
+                fastapi.status.HTTP_400_BAD_REQUEST: {},
+                fastapi.status.HTTP_406_NOT_ACCEPTABLE: {},
             })
-async def verify(code: str,
-                 tasks: fastapi.BackgroundTasks,
+async def verify(tasks: fastapi.BackgroundTasks,
+                 code: str = fastapi.Query(),
+                 state: str = fastapi.Query(),
                  cookie_storage: EncryptedCookieStorage = get_encrypted_cookie_storage):
     r"""
     callback endpoint from GitHub
     """
     # https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${requestToken}
 
+    if not hmac.compare_digest(state, cookie_storage[CookieKey.AUTH_STATE]):
+        return cookie_storage.to_redirect_response(
+            url="/#/login",
+            error="your login is corrupted and had to be canceled for security reasons"
+        )
+
+    # maybe move this to after the httpx request
+    del cookie_storage[CookieKey.AUTH_STATE]
+
     params = dict(
         client_id=env.GITHUB_CLIENT_ID,
         client_secret=env.GITHUB_CLIENT_SECRET,
         code=code,
     )
-    urlbase = "https://github.com/login/oauth/access_token"
+    url = "https://github.com/login/oauth/access_token"
 
     async with httpx.AsyncClient() as client:
         response = await client.post(
-            urlbase,
+            url=url,
             params=params,
             headers={
                 "Accept": "application/json"
             }
         )
         if not response.is_success:
-            return cookie_storage.to_redirect_response(url="/#/app")
+            return cookie_storage.to_redirect_response(
+                url="/#/login",
+                error="failed to retrieve auth-key",
+                detail=f"{response.status_code}: {response.reason_phrase}",
+            )
 
         response_data = response.json()
 
     try:
         data = GithubResponse(**response_data)
     except pydantic.ValidationError:
-        return cookie_storage.to_redirect_response(url="/#/app")
+        response_data: GithubErrorResponse
+        return cookie_storage.to_redirect_response(
+            url="/#/login",
+            error="failed to retrieve auth-key",
+            detail=response_data['error_description']
+        )
 
     with createLocalSession() as connection:
 
