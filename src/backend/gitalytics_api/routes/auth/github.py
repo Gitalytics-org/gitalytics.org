@@ -66,11 +66,7 @@ async def login_redirect(cookie_storage: EncryptedCookieStorage = get_encrypted_
 
 @router.get("/auth/github/verify",
             status_code=fastapi.status.HTTP_307_TEMPORARY_REDIRECT,
-            response_class=fastapi.responses.RedirectResponse,
-            responses={
-                fastapi.status.HTTP_400_BAD_REQUEST: {},
-                fastapi.status.HTTP_406_NOT_ACCEPTABLE: {},
-            })
+            response_class=fastapi.responses.RedirectResponse)
 async def verify(tasks: fastapi.BackgroundTasks,
                  code: str = fastapi.Query(),
                  state: str = fastapi.Query(),
