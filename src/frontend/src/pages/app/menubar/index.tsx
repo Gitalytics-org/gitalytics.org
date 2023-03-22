@@ -3,6 +3,7 @@ import LogoutButton from "./LogoutButton";
 import DarkLightToggle from "./DarkLightToggle";
 import GraphLandingPageLink from "./GraphLandingPageLink";
 import Workspaces from "./Workspaces";
+import AccountLink from "./AccountLink";
 
 
 export default function MenuBar() {
@@ -17,6 +18,7 @@ export default function MenuBar() {
         </MenuGrid>
         <EmptySpace />
         <MenuGrid>
+            <AccountLink />
             <LogoutButton />
             <DarkLightToggle />
         </MenuGrid>

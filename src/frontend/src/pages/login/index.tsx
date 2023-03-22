@@ -1,5 +1,5 @@
 import Footer from "~/components/Footer";
-import Anchor from "~/elements/BackendLink";
+import Anchor from "~/elements/Anchor";
 import FadeInBox from "~/elements/animations/FadeInBox";
 import GitHubIconSrc from "@assets/github.png";
 import BitbucketIconSrc from "@assets/bitbucket.png";

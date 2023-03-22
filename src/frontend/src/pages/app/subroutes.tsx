@@ -8,10 +8,12 @@ import CommitsPerMonth from "./graphs/commits/per-month";
 import CommitsPerWeek from "./graphs/commits/per-week";
 import CommitsPerWeekday from "./graphs/commits/per-weekday";
 import ActivityGraph from "./graphs/ActivityGraph";
+import AccountInformation from "./account";
 
 export function getAppRoutes() {
     return <>
         <Route index element={<GraphLandingPage />} />
+        <Route path="account" element={<AccountInformation />} />
 
         <Route path="commits" element={<CombinedCommitsGraph />} />
         <Route path="commits-per-hour" element={<CommitsPerHour />} />

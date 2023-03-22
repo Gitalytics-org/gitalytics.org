@@ -1,5 +1,5 @@
 import LogoutIconSrc from "@assets/logout-icon.png";
-import Anchor from "~/elements/BackendLink";
+import Anchor from "~/elements/Anchor";
 
 
 export default function LogoutButton() {

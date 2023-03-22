@@ -36,20 +36,11 @@ class GithubErrorResponse(t.TypedDict):
     error_uri: str
 
 
-router = fastapi.APIRouter(prefix="/auth/github")
+router = fastapi.APIRouter()
 
 
-@router.get("/see-app")
-async def gh_app_page_redirect():
-    r"""
-    here the user can see our app and revoke access
-    """
-    return fastapi.responses.RedirectResponse(
-        url=f"https://github.com/settings/connections/applications/{env.GITHUB_CLIENT_ID}"
-    )
-
-
-@router.get("/login", status_code=fastapi.status.HTTP_307_TEMPORARY_REDIRECT,
+@router.get("/auth/github/login",
+            status_code=fastapi.status.HTTP_307_TEMPORARY_REDIRECT,
             response_class=fastapi.responses.RedirectResponse)
 async def login_redirect(cookie_storage: EncryptedCookieStorage = get_encrypted_cookie_storage):
     r"""
@@ -73,7 +64,8 @@ async def login_redirect(cookie_storage: EncryptedCookieStorage = get_encrypted_
     return cookie_storage.to_redirect_response(url=url, **params)
 
 
-@router.get("/verify", status_code=fastapi.status.HTTP_307_TEMPORARY_REDIRECT,
+@router.get("/auth/github/verify",
+            status_code=fastapi.status.HTTP_307_TEMPORARY_REDIRECT,
             response_class=fastapi.responses.RedirectResponse,
             responses={
                 fastapi.status.HTTP_400_BAD_REQUEST: {},
@@ -88,7 +80,15 @@ async def verify(tasks: fastapi.BackgroundTasks,
     """
     # https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${requestToken}
 
-    if not hmac.compare_digest(state, cookie_storage[CookieKey.AUTH_STATE]):
+    try:
+        cookie_state = cookie_storage[CookieKey.AUTH_STATE]
+    except KeyError:
+        return cookie_storage.to_redirect_response(
+            url="/#/login",
+            error="your login is corrupted and had to be canceled for security reasons"
+        )
+
+    if not hmac.compare_digest(state, cookie_state):
         return cookie_storage.to_redirect_response(
             url="/#/login",
             error="your login is corrupted and had to be canceled for security reasons"
