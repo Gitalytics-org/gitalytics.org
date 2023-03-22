@@ -33,7 +33,7 @@ export default function LoginPage() {
                     </Anchor>
                 </FadeInBox>
             </div>
-            <Link to="/" className="w-10 border border-white rounded-full p-1 absolute left-1 bottom-1 opacity-50 hover:opacity-100">
+            <Link to="/" className="absolute w-10 p-1 border border-white rounded-full opacity-50 left-1 bottom-1 hover:opacity-100">
                 <img className="w-full dark:invert" src={HomeIconSrc} alt="" />
             </Link>
         </div>

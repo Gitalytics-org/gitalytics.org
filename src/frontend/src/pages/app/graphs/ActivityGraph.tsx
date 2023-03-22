@@ -73,7 +73,7 @@ export function ActivityGraph({ year, data }: ActivityGraphProps) {
                     if (dayOffset < WEEKDAYS.length && column === WEEKS_PER_YEAR) {
                         column = 0;
                     }
-                    return <div key={dateStr} className="w-full aspect-square border border-black dark:border-white border-opacity-10 dark:border-opacity-5" style={{
+                    return <div key={dateStr} className="w-full border border-black aspect-square dark:border-white border-opacity-10 dark:border-opacity-5" style={{
                         backgroundColor: Color(BASE_COLOR)
                             .alpha(count / maxCount)
                             .rgbString(),

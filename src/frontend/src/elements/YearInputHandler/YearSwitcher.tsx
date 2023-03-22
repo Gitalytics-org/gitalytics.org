@@ -6,15 +6,15 @@ export default function YearSwitcherInput() {
     const { selectedYear, hasNextYear, hasPreviousYear, incrementYear, decrementYear} = useSelectedYear();
 
     return (
-        <div className="flex select-none justify-center">
-            <div className="flex align-middle justify-center">
+        <div className="flex justify-center select-none">
+            <div className="flex justify-center align-middle">
                 <ChevronRight
                     className={"rotate-180 text-fgd " + (hasPreviousYear ? "cursor-pointer" : "opacity-50 cursor-default")}
                     height="60px"
                     width="60px"
                     onClick={decrementYear}
                 />
-                <span className="text-6xl font-mono">{selectedYear}</span>
+                <span className="font-mono text-6xl">{selectedYear}</span>
                 <ChevronRight
                     className={"text-fgd " + (hasNextYear ? "cursor-pointer" : "opacity-50 cursor-default")}
                     height="60px"

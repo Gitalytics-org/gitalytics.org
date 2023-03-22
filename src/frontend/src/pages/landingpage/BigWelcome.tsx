@@ -5,8 +5,8 @@ import "./big-welcome.css";
 
 
 export default function BigWelcome() {
-    return <div className="big-welcome relative w-screen h-screen">
-        <img className="bw-icon h-full p-5 aspect-square" src={GitalyticsLogoSrc} alt="" />
+    return <div className="relative w-screen h-screen big-welcome">
+        <img className="h-full p-5 bw-icon aspect-square" src={GitalyticsLogoSrc} alt="" />
         <h1 className="bw-text text-[10vw] absolute top-1/2 left-1/2 -translate-y-1/2 backdrop-blur-sm -translate-x-1/2 sm:translate-x-0 select-none rounded-full">
             <LetterHighlight delay={1.8}>
                 Gitalytics

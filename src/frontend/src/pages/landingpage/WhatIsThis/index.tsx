@@ -22,7 +22,7 @@ export default function WhatIsThis() {
             Instead of analyzing only one repository, we can analyze an entire workspace <span className="opacity-5">A feature, that many other products lack</span>
         </TextSection>
         <FadeInBox from="right">
-            <img className="max-h-64 mx-auto" src={CodeBoxSrc} alt="Code-Box" />
+            <img className="mx-auto max-h-64" src={CodeBoxSrc} alt="Code-Box" />
         </FadeInBox>
 
         <FadeInBox from="left">
@@ -44,7 +44,7 @@ export default function WhatIsThis() {
 
 
 function TextSection(props: PropsWithChildren) {
-    return <div className="grid place-content-center text-center">
+    return <div className="grid text-center place-content-center">
         {props.children}
     </div>;
 }
@@ -53,7 +53,7 @@ function TextSection(props: PropsWithChildren) {
 function ProviderGroupIcon() {
     return <div className="flex gap-2 justify-evenly">
         <img className="w-1/4 dark:invert" src={GitHubIconSrc} alt="GitHub" />
-        <img className="w-1/4 grayscale cursor-not-allowed" src={BitbucketIconSrc} alt="Bitbucket" title="Not Available yet" />
-        <img className="w-1/4 grayscale cursor-not-allowed" src={GitLabIconSrc} alt="GitLab" title="Not Available yet" />
+        <img className="w-1/4 cursor-not-allowed grayscale" src={BitbucketIconSrc} alt="Bitbucket" title="Not Available yet" />
+        <img className="w-1/4 cursor-not-allowed grayscale" src={GitLabIconSrc} alt="GitLab" title="Not Available yet" />
     </div>;
 }
