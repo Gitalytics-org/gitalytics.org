@@ -19,6 +19,8 @@ axios.interceptors.response.use(null, error => {
 });
 
 ChartJS.register(...registerables);
+// look here to remove the @ts-expect-error
+// TODO: https://www.chartjs.org/docs/latest/developers/plugins.html#typescript-typings
 // even if typescript says that 'colors' does not exist. it does!
 // @ts-expect-error: fuck chartjs in combination with typescript
 ChartJS.defaults.plugins.colors.forceOverride = true;
