@@ -1,3 +1,8 @@
+#!/usr/bin/python3
+# -*- coding=utf-8 -*-
+r"""
+
+"""
 import inspect
 import functools
 import logging
