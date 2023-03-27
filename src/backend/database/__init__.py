@@ -6,3 +6,5 @@ r"""
 from .db import createLocalSession, DatabaseSession
 from . import models
 from . import crud
+from .enums import GitPlatform
+

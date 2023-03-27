@@ -5,17 +5,22 @@ r"""
 """
 import fastapi
 from gitalytics_env import env
+from database import models as dbm, GitPlatform
+from gitalytics_api.cookies import session_from_cookies
 
 
 router = fastapi.APIRouter()
 
 
 @router.get("/auth/see-app")
-async def app_page_redirect():
+async def app_page_redirect(session: dbm.Session = session_from_cookies):
     r"""
     here the user can see our app and revoke access
     """
     # TODO: update between GitHub, Bitbucket and GitLab
-    return fastapi.responses.RedirectResponse(
-        url=f"https://github.com/settings/connections/applications/{env.GITHUB_CLIENT_ID}"
-    )
+    match session.platform:
+        case GitPlatform.GITHUB:
+            url = f"https://github.com/settings/connections/applications/{env.GITHUB_CLIENT_ID}"
+        case _:
+            raise fastapi.HTTPException(fastapi.status.HTTP_501_NOT_IMPLEMENTED)
+    return fastapi.responses.RedirectResponse(url=url)
