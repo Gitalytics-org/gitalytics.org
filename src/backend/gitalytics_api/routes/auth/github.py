@@ -6,11 +6,13 @@ r"""
 import hmac
 import secrets
 import typing as t
+import urllib.parse as urlparse
 import fastapi
 import pydantic
 import httpx
 from gitalytics_api.cookies import EncryptedCookieStorage, get_encrypted_cookie_storage
 from gitalytics_api.enums import CookieKey
+from gitalytics_api.exception_util import add_exception_handler
 from database import createLocalSession, models as dbm
 from database.enums import GitPlatform
 from gitporter import update_session_repositories
@@ -64,9 +66,21 @@ async def login_redirect(cookie_storage: EncryptedCookieStorage = get_encrypted_
     return cookie_storage.to_redirect_response(url=url, **params)
 
 
+def verify_handler(exception: Exception):
+    query = dict(
+        error="we fucked up badly. maybe try a page-reload and then again",
+        detail=f"{fastapi.status.HTTP_500_INTERNAL_SERVER_ERROR}: {exception.__class__.__name__} ({exception})"
+    )
+    return fastapi.responses.RedirectResponse(
+        url=f"/#/login?{urlparse.urlencode(query)}",
+    )
+
+
 @router.get("/auth/github/verify",
             status_code=fastapi.status.HTTP_307_TEMPORARY_REDIRECT,
             response_class=fastapi.responses.RedirectResponse)
+# general catch because the user shouldn't see a json-response
+@add_exception_handler(ExceptionClass=Exception, handler=verify_handler)
 async def verify(tasks: fastapi.BackgroundTasks,
                  code: str = fastapi.Query(),
                  state: str = fastapi.Query(),
