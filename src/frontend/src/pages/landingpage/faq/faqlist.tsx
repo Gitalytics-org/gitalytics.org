@@ -33,7 +33,7 @@ export const FAQList: Array<{question: string, answer: string | JSX.Element}> = 
         question: "Where can I report Bugs or propose Ideas?",
         answer: <>
             We currently don&apos;t have a builtin feature for that.
-            Please create an issue <Link href="https://github.com/Gitalytics-org/gitalytics.org/issues/new/choose">here</Link>.
+            Please create an issue <Link href="https://github.com/Gitalytics-org/docs/issues/new/choose">here</Link>.
         </>,
     },
 ];
