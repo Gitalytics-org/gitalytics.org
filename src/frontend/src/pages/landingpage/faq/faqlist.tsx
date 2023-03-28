@@ -1,17 +1,22 @@
 import type { PropsWithChildren } from "react";
+import DiscordIconSrc from "@assets/discord.png";
 
 
 const Link = ({href, children}: PropsWithChildren<{ href: string }>) => <a className="text-blue-700 dark:text-blue-400 hover:underline" href={href}>{children}</a>;
 
 
-export const FAQList: Array<{question: string, answer: string | JSX.Element}> = [
+export const FAQList: Array<{question: string, answer: JSX.Element}> = [
     {
         question: "What is the difference to other git analysis sites?",
-        answer: "Instead of analyzing only one repository, we can analyze an entire workspace. A feature, that many other products lack.",
+        answer: <>
+            Instead of analyzing only one repository, we can analyze an entire workspace. A feature, that many other products lack.
+        </>,
     },
     {
         question: "How secure is this site?",
-        answer: "We use OAuth 2.0 to authenticate a user, saving you the hassle of creating a new account and a new vulnerability. Furthermore, Gitalytics only has read-only access to your GitHub/GitLab/BitBucket repositories.",
+        answer: <>
+            We use OAuth 2.0 to authenticate a user, saving you the hassle of creating a new account and a new vulnerability. Furthermore, Gitalytics only has read-only access to your GitHub/GitLab/BitBucket repositories.
+        </>,
     },
     {
         question: "What exactly is a workspace?",
@@ -32,8 +37,11 @@ export const FAQList: Array<{question: string, answer: string | JSX.Element}> = 
     {
         question: "Where can I report Bugs or propose Ideas?",
         answer: <>
-            We currently don&apos;t have a builtin feature for that.
-            Please create an issue <Link href="https://github.com/Gitalytics-org/gitalytics.org/issues/new/choose">here</Link>.
+            We currently don&apos;t have a builtin feature for that.<br/>
+            Please create an issue or propose your idea on our <Link href="https://discord.gg/vkKPtEtp9p">
+                <img src={DiscordIconSrc} alt="" className="h-4 inline-block mr-1" />
+                Discord Server
+            </Link>.
         </>,
     },
 ];
