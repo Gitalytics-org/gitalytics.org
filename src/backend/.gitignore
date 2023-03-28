@@ -1,6 +1,7 @@
 gitalytics.db
 gitalytics_api/web-ui/
 backend-logs/
+announcements.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
