@@ -5,10 +5,12 @@ import CommitsPerWeekdaySrc from "./images/commits-per-weekday.png";
 import CommitsPerDaySrc from "./images/commits-per-day.png";
 import CommitsPerWeekSrc from "./images/commits-per-week.png";
 import CommitsPerMonthSrc from "./images/commits-per-month.png";
+import AnnouncementsBox from "~/components/AnnouncementsBox";
 
 
 export default  function GraphLandingPage() {
     return <div className="min-h-screen p-5 select-none">
+        <AnnouncementsBox />
         <h1 className="text-[5vw] text-center"><span className="text-accent">Gitalytics</span> Graphs</h1>
         <div className="grid grid-cols-[repeat(auto-fill,minmax(400px,1fr))] mx-auto gap-5 px-5 text-center">
             <GraphLink name="activity-graph" assetSrc={ActivityGraphSrc}>Activity Graph</GraphLink>
