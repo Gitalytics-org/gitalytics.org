@@ -51,7 +51,7 @@ const queryClient = new QueryClient({
 export default function AppWrapper() {
     return (
         <Router>
-            <ScrollToTop />
+            <ScrollToHash />
             <QueryClientProvider client={queryClient}>
                 <RootDarkModeProvider>
                     <App />
@@ -62,12 +62,18 @@ export default function AppWrapper() {
 }
 
 // react-router sometimes doesn't scrolls to top after page-change
-function ScrollToTop() {
-    const { pathname } = useLocation();
+function ScrollToHash() {
+    const { pathname, hash } = useLocation();
 
     useEffect(() => {
-        window.scrollTo({left: 0, top: 0});
-    }, [pathname]);
+        const id = hash.slice(1);  // remove the # at the beginning
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+        } else {
+            window.scrollTo({ left: 0, top: 0 });
+        }
+    }, [pathname, hash]);
 
     return null;
 }

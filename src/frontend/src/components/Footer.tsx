@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { HashLink } from "react-router-hash-link";
 import GitalyticsLogoSrc from "@assets/gitalytics.svg";
 import DarkSrc from "@assets/dark.png";
 import LightSrc from "@assets/light.png";
@@ -28,9 +27,9 @@ function Links() {
             Home
         </Link>
         <Dot />
-        <HashLink smooth to={{pathname: "/", hash: "faq"}} className="hover:underline">
+        <Link to={{pathname: "/", hash: "faq"}} className="hover:underline">
             FAQ
-        </HashLink>
+        </Link>
         <Dot />
         <Link to="/about" className="hover:underline">
             About
@@ -50,11 +49,11 @@ function CopyRight() {
     const Gitalytics = () => <Link to="https://github.com/Gitalytics-org/gitalytics.org" className="hover:underline">Gitalytics.org</Link>;
     const Github = () => <Link to="https://github.com" className="hover:underline">Github</Link>;
     const Bitbucket = () => <Link to="https://bitbucket.org/" className="hover:underline">Bitbucket</Link>;
-    const Gitlab = () => <Link to="https://about.gitlab.com/" className="hover:underline">Gitlab</Link>;
+    const GitLab = () => <Link to="https://about.gitlab.com/" className="hover:underline">GitLab</Link>;
 
     return <div className="text-center">
         <p>
-            <Gitalytics /> is a tool to analyze all your Repositories from <Github />, <Bitbucket /> and <Gitlab />
+            <Gitalytics /> is a tool to analyze all your Repositories from <Github />, <Bitbucket /> and <GitLab />
         </p>
         <small>&copy; Copyright { new Date().getFullYear() }, <Gitalytics /></small>
         <img className="w-10 h-10 mx-auto" src={GitalyticsLogoSrc} alt="logo" />
