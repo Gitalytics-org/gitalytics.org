@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { DarkModeContext } from "./RootDarkModeProvider";
 import GitalyticsLogoSrc from "@assets/gitalytics.svg";
 import DarkSrc from "@assets/dark.png";
 import LightSrc from "@assets/light.png";
-import { useContext } from "react";
-import { DarkModeContext } from "./RootDarkModeProvider";
+import DiscordIconSrc from "@assets/discord.png";
 
 
 export default function Footer() {
@@ -41,6 +42,11 @@ function Links() {
         <Dot />
         <Link to="/terms" className="hover:underline">
             Terms
+        </Link>
+        <Dot />
+        <Link to="https://discord.gg/vkKPtEtp9p" className="hover:underline">
+            <img src={DiscordIconSrc} alt="" className="h-4 inline-block mr-1" />
+            Discord
         </Link>
     </div>;
 }
