@@ -38,7 +38,7 @@ def add_exception_handler(
     """
 
     def decorator(function):
-        if inspect.iscoroutine(function):
+        if inspect.iscoroutinefunction(function):
             @functools.wraps(function)
             async def wrapper(*args, **kwargs):
                 try:
@@ -53,5 +53,4 @@ def add_exception_handler(
                 except ExceptionClass as exc:
                     return handler(exc)
         return wrapper
-
     return decorator
