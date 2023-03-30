@@ -35,18 +35,28 @@ export function ActivityGraphHandler() {
         })),
     );
 
+    const maxCount = Math.max(
+        ...queries
+            .filter(q => q.isSuccess)
+            .map(q => Object.values(q.data![1]))
+            .flat(),
+    );
+
     return <>
-        {queries.map(result => {
-            if (!result.isSuccess) return null;
-            const [year, data] = result.data;
-            return <ActivityGraph key={year} year={year} data={data} />;
-        })}
+        {queries
+            .filter(q => q.isSuccess)
+            .map(query => {
+                const [year, data] = query.data!;
+                return <ActivityGraph key={year} year={year} data={data} maxCount={maxCount} />;
+            })
+        }
     </>;
 }
 
-type ActivityGraphProps = { year: number, data: Response }
-export function ActivityGraph({ year, data }: ActivityGraphProps) {
-    const maxCount = Math.max(...Object.values(data));
+// maxCount optional in case we want to embed this graph into graph-landing-page
+type ActivityGraphProps = { year: number, data: Response, maxCount?: number }
+export function ActivityGraph({ year, data, maxCount }: ActivityGraphProps) {
+    maxCount = maxCount ?? Math.max(...Object.values(data));
 
     return <div className="w-full grid grid-cols-[auto,1fr] grid-rows-[auto,1fr] gap-1 select-none p-1">
         <div className="">
@@ -75,7 +85,7 @@ export function ActivityGraph({ year, data }: ActivityGraphProps) {
                     }
                     return <div key={dateStr} className="w-full border border-black aspect-square dark:border-white border-opacity-10 dark:border-opacity-5" style={{
                         backgroundColor: Color(BASE_COLOR)
-                            .alpha(count / maxCount)
+                            .alpha(count / maxCount!)
                             .rgbString(),
                         gridColumn: 1 + column,
                         gridRow: 1 + row,
