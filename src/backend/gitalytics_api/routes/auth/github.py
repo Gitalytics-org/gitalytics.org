@@ -97,7 +97,7 @@ async def verify(tasks: fastapi.BackgroundTasks,
             url="/#/login",
             error="your login is corrupted and had to be canceled for security reasons"
         )
-    else:
+    finally:
         del cookie_storage[CookieKey.AUTH_STATE]
 
     if not hmac.compare_digest(state, cookie_state):
