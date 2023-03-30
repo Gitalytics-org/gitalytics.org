@@ -3,7 +3,6 @@
 r"""
 
 """
-import hmac
 import secrets
 import typing as t
 import urllib.parse as urlparse
@@ -100,7 +99,7 @@ async def verify(tasks: fastapi.BackgroundTasks,
     finally:
         del cookie_storage[CookieKey.AUTH_STATE]
 
-    if not hmac.compare_digest(state, cookie_state):
+    if state != cookie_state:
         return cookie_storage.to_redirect_response(
             url="/#/login",
             error="your login is corrupted and had to be canceled for security reasons"
