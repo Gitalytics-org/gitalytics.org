@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { HashLink } from "react-router-hash-link";
 import { useContext } from "react";
 import { DarkModeContext } from "./RootDarkModeProvider";
 import GitalyticsLogoSrc from "@assets/gitalytics.svg";
@@ -29,9 +28,9 @@ function Links() {
             Home
         </Link>
         <Dot />
-        <HashLink smooth to={{pathname: "/", hash: "faq"}} className="hover:underline">
+        <Link to={{pathname: "/", hash: "faq"}} className="hover:underline">
             FAQ
-        </HashLink>
+        </Link>
         <Dot />
         <Link to="/about" className="hover:underline">
             About

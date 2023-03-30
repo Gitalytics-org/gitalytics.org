@@ -17,4 +17,5 @@ async def logout(cookie_storage: EncryptedCookieStorage = get_encrypted_cookie_s
     logout the current user
     """
     del cookie_storage[CookieKey.SESSION_ID]
+    del cookie_storage[CookieKey.ACTIVE_WORKSPACE_ID]
     return cookie_storage.to_redirect_response("/")
