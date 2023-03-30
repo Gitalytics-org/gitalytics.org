@@ -15,7 +15,7 @@ router = fastapi.APIRouter()
 @router.get("/auth/see-app")
 async def app_page_redirect(session: dbm.Session = session_from_cookies):
     r"""
-    here the user can see our app and revoke access
+    Here, the user can see our app and revoke access on his Git provider-platform.
     """
     # TODO: update between GitHub, Bitbucket and GitLab
     match session.platform:

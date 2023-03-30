@@ -111,11 +111,10 @@ async def verify(tasks: fastapi.BackgroundTasks,
         client_secret=env.GITHUB_CLIENT_SECRET,
         code=code,
     )
-    url = "https://github.com/login/oauth/access_token"
 
     async with httpx.AsyncClient() as client:
         response = await client.post(
-            url=url,
+            url="https://github.com/login/oauth/access_token",
             params=params,
             headers={
                 "Accept": "application/json"
@@ -141,7 +140,6 @@ async def verify(tasks: fastapi.BackgroundTasks,
         )
 
     with createLocalSession() as connection:
-
         session = connection \
             .query(dbm.Session) \
             .filter(dbm.Session.access_token == data.access_token) \
