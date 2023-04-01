@@ -3,8 +3,7 @@ import { HashLink } from "react-router-hash-link";
 import GitalyticsLogoSrc from "@assets/gitalytics.svg";
 import DarkSrc from "@assets/dark.png";
 import LightSrc from "@assets/light.png";
-import { useContext } from "react";
-import { DarkModeContext } from "./RootDarkModeProvider";
+import DiscordIconSrc from "@assets/discord.png";
 
 
 export default function Footer() {
@@ -33,9 +32,9 @@ function Links() {
             Home
         </DotLink>
         <Dot />
-        <HashLink smooth to={{pathname: "/", hash: "faq"}}>
+        <DotLink to={{pathname: "/", hash: "faq"}}>
             FAQ
-        </HashLink>
+        </DotLink>
         <Dot />
         <DotLink to="/about">
             About
@@ -52,6 +51,11 @@ function Links() {
         <DotLink to="https://gitalytics-org.github.io/docs/" target="_blank">
             Docs
         </DotLink>
+        <Dot />
+        <Link to="https://discord.gg/vkKPtEtp9p" className="hover:underline">
+            <img src={DiscordIconSrc} alt="" className="h-4 inline-block mr-1" />
+            Discord
+        </Link>
     </div>;
 }
 
