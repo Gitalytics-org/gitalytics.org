@@ -1,3 +1,4 @@
+import AnnouncementsBox from "~/components/AnnouncementsBox";
 import Footer from "~/components/Footer";
 import BigWelcome from "./BigWelcome";
 import FAQSection from "./faq";
@@ -10,6 +11,7 @@ import WhatIsThis from "./WhatIsThis";
 export default function LandingPage() {
     return <div className="flex flex-col gap-10 overflow-hidden">
         <BigWelcome />
+        <AnnouncementsBox />
         <ViewMyGraphs />
         <WhatIsThis />
         <Pricing />
