@@ -20,14 +20,25 @@ export default function SessionIsInitializingOverlay() {
     if (ignoreThis || query.isSuccess) return null;
 
     return <div className="fixed inset-0 z-50 grid bg-black bg-opacity-40 backdrop-blur-sm place-content-center">
-        <button className="absolute top-5 right-5 w-5 h-5 opacity-30 hover:opacity-100 transition-opacity dark:invert" title="close at your own risk" onClick={() => setIgnore(true)}>
+        <button className="absolute w-5 h-5 transition-opacity top-5 right-5 opacity-30 hover:opacity-100 dark:invert" title="close at your own risk" onClick={() => setIgnore(true)}>
             <img src={CrossSrc} alt="X" />
         </button>
-        <div>
-            <img className="h-[10vh] animate-pulse mx-auto" src={LogoSrc} alt="" />
-            <span className="text-[4vw] max-w-[50vw] text-center">
-                Please wait while your data is being loaded
-            </span>
-        </div>
+        {query.isError ?
+            <div>
+                <span className="text-[4vw] max-w-[50vw] text-center">
+                    Oops, something went wrong.
+                </span>
+                <span className="text-[2vw] max-w-[50vw] text-center opacity-50">
+                    This is on us. Don&apos;t worry, it&apos;s not your fault. Try reloading the page and please contact us if that doesn&apos;t work.
+                </span>
+            </div>
+            :
+            <div>
+                <img className="h-[10vh] animate-pulse mx-auto" src={LogoSrc} alt="" />
+                <span className="text-[4vw] max-w-[50vw] text-center">
+                    Please wait while your data is being loaded
+                </span>
+            </div>
+        }
     </div>;
 }

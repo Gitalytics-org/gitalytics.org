@@ -18,6 +18,7 @@ def update_repository(session: dbm.Session, remote_repository: RemoteRepositoryI
             logo_url=remote_repository.workspace_logo_url,
         )
         database_connection.add(workspace)
+        database_connection.commit()
 
     repository: dbm.Repository = database_connection.query(dbm.Repository) \
         .filter(dbm.Repository.name == remote_repository.repository_name,
