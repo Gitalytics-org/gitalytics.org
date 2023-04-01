@@ -20,7 +20,7 @@ export default function SessionIsInitializingOverlay() {
     if (ignoreThis || query.isSuccess) return null;
 
     return <div className="fixed inset-0 z-50 grid bg-black bg-opacity-40 backdrop-blur-sm place-content-center">
-        <button className="absolute top-5 right-5 w-5 h-5 opacity-30 hover:opacity-100 transition-opacity dark:invert" title="close at your own risk" onClick={() => setIgnore(true)}>
+        <button className="absolute w-5 h-5 transition-opacity top-5 right-5 opacity-30 hover:opacity-100 dark:invert" title="close at your own risk" onClick={() => setIgnore(true)}>
             <img src={CrossSrc} alt="X" />
         </button>
         {query.isError ?
