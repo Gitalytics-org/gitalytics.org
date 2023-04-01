@@ -5,6 +5,7 @@ r"""
 """
 import json
 import datetime
+import urllib.parse as urlparse
 import fastapi
 from cryptography.fernet import Fernet
 from database import createLocalSession, models as dbm
@@ -30,7 +31,9 @@ class EncryptedCookieStorage:
         self._request = request
         self._response = response
 
-    def to_redirect_response(self, url: str):
+    def to_redirect_response(self, url: str, **query):
+        if query:
+            url = f"{url}?{urlparse.urlencode(query)}"
         return fastapi.responses.RedirectResponse(url, headers=self._response.headers)
 
     def __contains__(self, key: CookieKey) -> bool:

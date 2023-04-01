@@ -1,3 +1,8 @@
+#!/usr/bin/python3
+# -*- coding=utf-8 -*-
+r"""
+
+"""
 import inspect
 import functools
 import logging
@@ -5,7 +10,7 @@ import logging
 
 def add_error_logging(*, reraise_exception: bool):
     def decorator(function):
-        if inspect.iscoroutine(function):
+        if inspect.iscoroutinefunction(function):
             @functools.wraps(function)
             async def wrapper(*args, **kwargs):
                 try:

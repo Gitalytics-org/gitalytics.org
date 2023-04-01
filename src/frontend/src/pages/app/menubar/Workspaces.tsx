@@ -62,7 +62,7 @@ export default function Workspaces() {
 type ActiveWorkspaceProps = { workspace: WorkspaceType }
 function ActiveWorkspace({ workspace }: ActiveWorkspaceProps) {
     return <>
-        <img src={workspace.logo_url} alt="" draggable={false} className="object-contain w-12 h-12 rounded-full mix-blend-color-burn" />
+        <img src={workspace.logo_url} alt="" draggable={false} className="object-contain w-12 h-12 rounded-full" />
         <p className="w-full text-left select-none whitespace-nowrap">
             {workspace.name}
         </p>
@@ -79,7 +79,7 @@ function SeparatorLine() {
 type OtherWorkspaceProps = { workspace: WorkspaceType, activate: () => void }
 function OtherWorkspace({ workspace, activate }: OtherWorkspaceProps) {
     return <>
-        <img src={workspace.logo_url} alt="" draggable={false} className="object-contain w-12 h-12 rounded-full mix-blend-color-burn" />
+        <img src={workspace.logo_url} alt="" draggable={false} className="object-contain w-12 h-12 rounded-full" />
         <button className="w-full text-left whitespace-nowrap" onClick={activate}>
             {workspace.name}
         </button>

@@ -24,12 +24,13 @@ export default function SessionIsInitializingOverlay() {
             <img src={CrossSrc} alt="X" />
         </button>
         {query.isError ?
-            <div>
+            <div className="flex flex-col gap-1">
                 <span className="text-[4vw] max-w-[50vw] text-center">
                     Oops, something went wrong.
                 </span>
                 <span className="text-[2vw] max-w-[50vw] text-center opacity-50">
-                    This is on us. Don&apos;t worry, it&apos;s not your fault. Try reloading the page and please contact us if that doesn&apos;t work.
+                    This is on us. Don&apos;t worry, it&apos;s not your fault.<br/>
+                    Try reloading the page and please contact us if that doesn&apos;t work.
                 </span>
             </div>
             :

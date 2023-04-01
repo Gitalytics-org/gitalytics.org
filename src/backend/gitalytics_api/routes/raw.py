@@ -20,7 +20,7 @@ class RawRequestsSettings(pydantic.BaseSettings):
 
 
 settings = RawRequestsSettings()
-router = fastapi.APIRouter(prefix="/raw")
+router = fastapi.APIRouter()
 
 
 class MeResponseModel(pydantic.BaseModel):
@@ -31,7 +31,7 @@ class MeResponseModel(pydantic.BaseModel):
     blog: t.Optional[str]
 
 
-@router.get("/me", summary="Get current User", response_model=MeResponseModel,
+@router.get("/raw/me", summary="Get current User", response_model=MeResponseModel,
             responses={
                 fastapi.status.HTTP_401_UNAUTHORIZED: {}
             })
