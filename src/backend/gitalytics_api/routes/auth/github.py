@@ -47,12 +47,6 @@ async def login_redirect(cookie_storage: EncryptedCookieStorage = get_encrypted_
     r"""
     redirects to the GitHub login-page
     """
-    # try:
-    #     session_from_cookies.dependency(request=request)
-    # except fastapi.HTTPException:
-    #     pass  # not existing or wrong token
-    # else:
-    #     return fastapi.responses.RedirectResponse(url="/#/app")
     state = secrets.token_hex()
     cookie_storage[CookieKey.AUTH_STATE] = state
     url = "https://github.com/login/oauth/authorize"
