@@ -61,7 +61,7 @@ async def login_redirect(cookie_storage: EncryptedCookieStorage = get_encrypted_
 
 def verify_handler(exception: Exception):
     query = dict(
-        error="we fucked up badly. maybe try a page-reload and then again",
+        error="Oops, something went wrong. Try reloading the page or contact us if this problem won't go away",
         detail=f"{fastapi.status.HTTP_500_INTERNAL_SERVER_ERROR}: {exception.__class__.__name__} ({exception})"
     )
     return fastapi.responses.RedirectResponse(
