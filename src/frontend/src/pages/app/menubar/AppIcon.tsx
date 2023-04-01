@@ -9,7 +9,7 @@ export default function AppIcon() {
         <Link to="/"  className="whitespace-nowrap">
             gitalytics.org
         </Link>
-        <a href="https://github.com/Gitalytics-org/gitalytics.org#readme" target="_blank" rel="noreferrer" className="cursor-pointer">
+        <a href="https://github.com/Gitalytics-org/" target="_blank" rel="noreferrer" className="cursor-pointer">
             <img src={GitIconSrc} alt="" draggable={false} className="h-6 dark:invert" />
         </a>
     </>;

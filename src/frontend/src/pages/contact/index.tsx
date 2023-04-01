@@ -12,9 +12,9 @@ export default function ContactPage() {
                     {/* <span className="select-none">Email:</span>
                     <a className="text-blue-600 hover:underline" href="mailto:developer@gitalytics.org" target="_blank" rel="noreferrer">developer@gitalytics.org</a> */}
                     <span className="select-none">Github:</span>
-                    <a className="text-blue-600 hover:underline" href="https://github.com/Gitalytics-org/gitalytics.org" target="_blank" rel="noreferrer">Gitalytics-org/gitalytics.org</a>
+                    <a className="text-blue-600 hover:underline" href="https://github.com/Gitalytics-org/" target="_blank" rel="noreferrer">Gitalytics-org</a>
                     <span className="select-none">Report Bug:</span>
-                    <a className="text-blue-600 hover:underline" href="https://github.com/Gitalytics-org/gitalytics.org/issues/new/choose" target="_blank" rel="noreferrer">here</a>
+                    <a className="text-blue-600 hover:underline" href="https://github.com/Gitalytics-org/docs/issues/new/choose" target="_blank" rel="noreferrer">here</a>
                 </div>
             </div>
         </div>

@@ -2,6 +2,7 @@ import { FAQList } from "./faqlist";
 import QuestionIconSrc from "./icons/question.svg";
 import AnswerIconSrc from "./icons/answer.svg";
 import { Fragment } from "react";
+import { Link } from "react-router-dom";
 
 
 export default function FAQSection() {
@@ -22,6 +23,12 @@ export default function FAQSection() {
                 </p>
             </div>
         </Fragment>)}
+        <SeparatorLine />
+        <p className="text-xl text-center select-none">
+            For further questions it may be helpful to search in our <Link to="https://gitalytics-org.github.io/docs/" target="_blank" className="text-blue-500 hover:underline">
+                Documentation
+            </Link> first
+        </p>
     </div>;
 }
 

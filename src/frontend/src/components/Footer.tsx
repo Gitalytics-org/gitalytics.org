@@ -1,6 +1,5 @@
-import { Link } from "react-router-dom";
-import { useContext } from "react";
-import { DarkModeContext } from "./RootDarkModeProvider";
+import { Link, LinkProps } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
 import GitalyticsLogoSrc from "@assets/gitalytics.svg";
 import DarkSrc from "@assets/dark.png";
 import LightSrc from "@assets/light.png";
@@ -20,29 +19,38 @@ function SeparatorLine() {
     return <div className="h-1 mx-5 my-2 bg-opacity-50 rounded-md bg-fgc" />;
 }
 
+// special link to slightly indicate that it is a link
+function DotLink(props: LinkProps) {
+    return <Link {...props} className={`border-b-[1px] border-dotted hover:border-solid ${props.className}`} />;
+}
+
 function Links() {
     const Dot = () => <div className="w-1 h-1 my-auto rounded-full bg-accent" />;
 
     return <div className="flex justify-center gap-1">
-        <Link to="/" className="hover:underline">
+        <DotLink to="/">
             Home
-        </Link>
+        </DotLink>
         <Dot />
-        <Link to={{pathname: "/", hash: "faq"}} className="hover:underline">
+        <DotLink to={{pathname: "/", hash: "faq"}}>
             FAQ
-        </Link>
+        </DotLink>
         <Dot />
-        <Link to="/about" className="hover:underline">
+        <DotLink to="/about">
             About
-        </Link>
+        </DotLink>
         <Dot />
-        <Link to="/contact" className="hover:underline">
+        <DotLink to="/contact">
             Contact
-        </Link>
+        </DotLink>
         <Dot />
-        <Link to="/terms" className="hover:underline">
+        <DotLink to="/terms">
             Terms
-        </Link>
+        </DotLink>
+        <Dot />
+        <DotLink to="https://gitalytics-org.github.io/docs/" target="_blank">
+            Docs
+        </DotLink>
         <Dot />
         <Link to="https://discord.gg/vkKPtEtp9p" className="hover:underline">
             <img src={DiscordIconSrc} alt="" className="h-4 inline-block mr-1" />
@@ -52,10 +60,10 @@ function Links() {
 }
 
 function CopyRight() {
-    const Gitalytics = () => <Link to="https://github.com/Gitalytics-org/gitalytics.org" className="hover:underline">Gitalytics.org</Link>;
-    const Github = () => <Link to="https://github.com" className="hover:underline">Github</Link>;
-    const Bitbucket = () => <Link to="https://bitbucket.org/" className="hover:underline">Bitbucket</Link>;
-    const GitLab = () => <Link to="https://about.gitlab.com/" className="hover:underline">GitLab</Link>;
+    const Gitalytics = () => <DotLink to="https://github.com/Gitalytics-org/" target="_blank">Gitalytics.org</DotLink>;
+    const Github = () => <DotLink to="https://github.com" target="_blank">Github</DotLink>;
+    const Bitbucket = () => <DotLink to="https://bitbucket.org/" target="_blank">Bitbucket</DotLink>;
+    const GitLab = () => <DotLink to="https://about.gitlab.com/" target="_blank">GitLab</DotLink>;
 
     return <div className="text-center">
         <p>
