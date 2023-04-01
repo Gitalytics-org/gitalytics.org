@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import { HashLink } from "react-router-hash-link";
+import { useContext } from "react";
+import { DarkModeContext } from "./RootDarkModeProvider";
 import GitalyticsLogoSrc from "@assets/gitalytics.svg";
 import DarkSrc from "@assets/dark.png";
 import LightSrc from "@assets/light.png";
-import { useContext } from "react";
-import { DarkModeContext } from "./RootDarkModeProvider";
+import DiscordIconSrc from "@assets/discord.png";
 
 
 export default function Footer() {
@@ -28,9 +28,9 @@ function Links() {
             Home
         </Link>
         <Dot />
-        <HashLink smooth to={{pathname: "/", hash: "faq"}} className="hover:underline">
+        <Link to={{pathname: "/", hash: "faq"}} className="hover:underline">
             FAQ
-        </HashLink>
+        </Link>
         <Dot />
         <Link to="/about" className="hover:underline">
             About
@@ -43,6 +43,11 @@ function Links() {
         <Link to="/terms" className="hover:underline">
             Terms
         </Link>
+        <Dot />
+        <Link to="https://discord.gg/vkKPtEtp9p" className="hover:underline">
+            <img src={DiscordIconSrc} alt="" className="h-4 inline-block mr-1" />
+            Discord
+        </Link>
     </div>;
 }
 
@@ -50,11 +55,11 @@ function CopyRight() {
     const Gitalytics = () => <Link to="https://github.com/Gitalytics-org/gitalytics.org" className="hover:underline">Gitalytics.org</Link>;
     const Github = () => <Link to="https://github.com" className="hover:underline">Github</Link>;
     const Bitbucket = () => <Link to="https://bitbucket.org/" className="hover:underline">Bitbucket</Link>;
-    const Gitlab = () => <Link to="https://about.gitlab.com/" className="hover:underline">Gitlab</Link>;
+    const GitLab = () => <Link to="https://about.gitlab.com/" className="hover:underline">GitLab</Link>;
 
     return <div className="text-center">
         <p>
-            <Gitalytics /> is a tool to analyze all your Repositories from <Github />, <Bitbucket /> and <Gitlab />
+            <Gitalytics /> is a tool to analyze all your Repositories from <Github />, <Bitbucket /> and <GitLab />
         </p>
         <small>&copy; Copyright { new Date().getFullYear() }, <Gitalytics /></small>
         <img className="w-10 h-10 mx-auto" src={GitalyticsLogoSrc} alt="logo" />
