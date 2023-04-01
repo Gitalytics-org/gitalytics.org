@@ -26,7 +26,7 @@ export function CommitsPerWeek() {
 
     const queries = useQueries(
         years.map(year => ({
-            queryKey: ["commits-per-week", year],
+            queryKey: ["data", "commits-per-week", year],
             queryFn: () => axios
                 .get<CommitsPerWeekResponse>("/commits-per-week", { params: { year } })
                 .then<QueryReturn>(response => [year, response.data]),

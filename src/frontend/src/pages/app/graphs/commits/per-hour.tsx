@@ -26,7 +26,7 @@ export function CommitsPerHour() {
 
     const queries = useQueries(
         years.map(year => ({
-            queryKey: ["commits-per-hour", year],
+            queryKey: ["data", "commits-per-hour", year],
             queryFn: () => axios
                 .get<CommitsPerWeekdayResponse>("/commits-per-hour", { params: { year } })
                 .then<QueryReturn>(response => [year, response.data]),

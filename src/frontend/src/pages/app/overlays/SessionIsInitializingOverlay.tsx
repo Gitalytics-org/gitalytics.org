@@ -12,9 +12,9 @@ export default function SessionIsInitializingOverlay() {
     const query = useQuery(
         ["is-session-ready"],
         () => axios.get("/is-session-ready"),
-        { retryDelay: 5_000, onSuccess: () => queryClient.resetQueries({
-            predicate: (query) => query.queryKey[0] !== "is-session-ready",
-        }) },
+        { retryDelay: 5_000, onSuccess: () => {
+            queryClient.resetQueries(["data"]);
+        } },
     );
 
     if (ignoreThis || query.isSuccess) return null;
